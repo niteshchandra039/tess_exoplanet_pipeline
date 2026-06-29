@@ -61,3 +61,11 @@ tess-pipeline.toml
 
 # Notes
 Notes/*
+
+# Logs
+notebooks/logs/*
+logs/*
+*.log
+
+# .fits files anywhere 
+*.fits
