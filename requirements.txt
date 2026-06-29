@@ -1,0 +1,12 @@
+# Core dependencies (mirrors pyproject.toml [project.dependencies])
+# This file is for convenience only; pyproject.toml is the source of truth.
+lightkurve>=2.4
+astropy>=5.3
+astroquery>=0.4.7
+numpy>=1.24
+scipy>=1.11
+matplotlib>=3.7
+batman-package>=2.4.9
+pandas>=2.0
+transitleastsquares>=1.0.31
+tqdm>=4.66

@@ -1,0 +1,46 @@
+2026-06-29 12:29:13  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 261136679
+2026-06-29 12:29:13  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 261136679' to TIC 261136679
+2026-06-29 12:29:13  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /home/astro-nitesh/Desktop/Siya/exoplanet_modelling/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 261136679 (matched 1 row(s))
+2026-06-29 12:29:13  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 261136679 from local archive
+2026-06-29 12:29:13  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 261136679
+2026-06-29 12:29:13  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 261136679
+2026-06-29 12:29:13  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /home/astro-nitesh/Desktop/Siya/exoplanet_modelling/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 261136679 (matched 1 row(s))
+2026-06-29 12:29:13  INFO      tess_pipeline.analysis.stages.period  Archive period: 6.267832 d (ref: Local NASA Exoplanet Archive TOI export: /home/astro-nitesh/Desktop/Siya/exoplanet_modelling/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv)
+2026-06-29 12:29:13  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 261136679
+2026-06-29 12:29:19  INFO      tess_pipeline.data.download  [download] Starting download for TIC 261136679 (author=SPOC, cadence=120, sectors=1, force_download=False)
+2026-06-29 12:29:19  INFO      tess_pipeline.data.download  [download] Step 1/5: validated input arguments
+2026-06-29 12:29:19  INFO      tess_pipeline.data.download  [download] Local FITS files not found (or force_download=True), querying MAST
+2026-06-29 12:29:19  INFO      tess_pipeline.data.download  [download] Step 3/5: searching MAST for TIC 261136679 with timeout=120s
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [download] Found 24 available sector(s) for TIC 261136679
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [download] Step 4/5: selected 1 sector(s) for analysis
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [download] Step 5/5: downloading selected light curve products
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [fits] Step 2/4: 1 FITS file(s) queued
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/1: data/fits/tess2018206045859-s0001-0000000261136679-0120-s_lc.fits
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 1 light curve(s) from local FITS in 0.2s
+2026-06-29 12:29:28  INFO      tess_pipeline.data.download  [download] Completed TIC 261136679 download in 9.8s (1 sector file(s))
+2026-06-29 12:29:28  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+2026-06-29 12:29:29  DEBUG     tess_pipeline.data.preprocess  Stitched 1 sectors → 18263 cadences
+2026-06-29 12:29:29  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 18258 cadences remain
+2026-06-29 12:29:30  INFO      tess_pipeline.analysis.session  Saved step plot: output/TIC 261136679/plots/raw.png
+2026-06-29 12:29:31  INFO      tess_pipeline.analysis.session  Saved step plot: output/TIC 261136679/plots/flat.png
+2026-06-29 12:29:31  INFO      tess_pipeline.transit.detection  Running TLS (period 0.5–100.0 d)
+2026-06-29 12:29:33  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 0.5, 'period_max': 100.0}
+2026-06-29 12:30:16  INFO      tess_pipeline.transit.tls  TLS: period=6.267548 d, epoch=1325.5046, duration=2.99 h, depth=0.999833, SDE=20.14
+2026-06-29 12:30:17  INFO      tess_pipeline.analysis.session  Saved step plot: output/TIC 261136679/plots/tls_periodogram.png
+2026-06-29 12:30:18  INFO      tess_pipeline.analysis.session  Saved step plot: output/TIC 261136679/plots/phase.png
+2026-06-29 12:30:18  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+2026-06-29 12:30:27  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+2026-06-29 12:30:27  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (isoclassify)
+2026-06-29 12:30:27  WARNING   tess_pipeline.catalogs.stellar  Insufficient Gaia parameters for isoclassify (need r_star, teff, parallax)
+2026-06-29 12:30:27  WARNING   tess_pipeline.catalogs.stellar  isoclassify failed; falling back to Gaia-only parameters
+2026-06-29 12:30:27  WARNING   tess_pipeline.catalogs.stellar  Gaia R★ unavailable; stellar characterization incomplete
+2026-06-29 12:30:27  INFO      tess_pipeline.analysis.stages.stellar  Querying SDSS for radial velocity
+2026-06-29 12:30:30  INFO      tess_pipeline.catalogs.sdss  No SDSS spectroscopic match within 3 arcsec
+2026-06-29 12:30:30  INFO      tess_pipeline.analysis.stages.stellar  No SDSS RV available for this target
+2026-06-29 12:30:33  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+2026-06-29 12:30:33  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=18258 points, period=6.267832 d)
+2026-06-29 12:30:33  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+2026-06-29 12:30:33  INFO      tess_pipeline.inference.bayesian  Finding MAP solution
+2026-06-29 12:30:33  WARNING   tess_pipeline.inference.bayesian  MAP optimization failed (module 'exoplanet' has no attribute 'optimize'); using default initvals
+2026-06-29 12:30:33  INFO      tess_pipeline.inference.bayesian  Sampling: 2 chains × 50 draws (tune=50, target_accept=0.90)
