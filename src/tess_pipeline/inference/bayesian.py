@@ -12,6 +12,7 @@ Implements the primary parameter estimation workflow following:
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 import numpy as np
@@ -74,13 +75,24 @@ def run_bayesian_fit(
             "Reinstall with: pip install -e \".[inference]\""
         ) from exc
 
-    time = np.asarray(lc.time.value, dtype=float)
-    flux = np.asarray(lc.flux.value, dtype=float)
-    flux_err = (
+    # Clean duplicates and sort to satisfy celerite2's strict sorting requirement
+    time_raw = np.asarray(lc.time.value, dtype=float)
+    flux_raw = np.asarray(lc.flux.value, dtype=float)
+    flux_err_raw = (
         np.asarray(lc.flux_err.value, dtype=float)
         if lc.flux_err is not None
-        else np.ones_like(flux) * 1e-3
+        else np.ones_like(flux_raw) * 1e-3
     )
+
+    sidx = np.argsort(time_raw)
+    time_sorted = time_raw[sidx]
+    flux_sorted = flux_raw[sidx]
+    flux_err_sorted = flux_err_raw[sidx]
+
+    uniq_mask = np.concatenate([[True], np.diff(time_sorted) > 0])
+    time = time_sorted[uniq_mask]
+    flux = flux_sorted[uniq_mask]
+    flux_err = flux_err_sorted[uniq_mask]
 
     # Estimate transit depth from minimum flux
     depth_estimate = float(1.0 - np.percentile(flux, 1))
@@ -101,24 +113,25 @@ def run_bayesian_fit(
         # ── Priors ────────────────────────────────────────────────────────────
         stellar_vars = add_stellar_priors(model, stellar)
         orbital_vars = add_orbital_priors(model, period=period, epoch=epoch, period_fixed=False)
-        shape_vars = add_transit_shape_priors(model, depth_estimate=depth_estimate)
+        shape_vars = add_transit_shape_priors(model, depth_estimate=depth_estimate, fit_duration=False)
         sys_vars = add_systematic_priors(model, n_sectors=1)
 
+        rho_star_var = stellar_vars["rho_star"]
         t0 = orbital_vars["t0"]
         period_var = orbital_vars["period"]
         rp_r_star = shape_vars["rp_r_star"]
         b = shape_vars["b"]
-        t14 = shape_vars["t14"]
         u1 = shape_vars["u1"]
         u2 = shape_vars["u2"]
         mean_flux = sys_vars["mean_flux"]
 
         # ── Keplerian orbit ───────────────────────────────────────────────────
+        # Sourced from Winn (2010) and Seager & Mallen-Ornelas (2003). Orbit is constrained physically by stellar density.
         orbit = xo.orbits.KeplerianOrbit(
             period=period_var,
             t0=t0,
             b=b,
-            duration=t14,
+            rho_star=rho_star_var,
             ror=rp_r_star,
         )
 
@@ -158,11 +171,25 @@ def run_bayesian_fit(
         )
         pm.Deterministic("lc_pred", pm.math.sum(lc_pred_curves, axis=-1) + 1.0)
 
-        # ── MAP optimization (multi-stage, following exoplanet tutorials) ──────
-        log.info("Finding MAP solution")
-        map_soln = _find_map(model)
+        # ── NUTS initialization and sampling ──────────────────────────────────
+        rp_init = math.sqrt(max(depth_estimate, 1e-5))
+        init_dict = {
+            "period": period,
+            "t0": t0_init,
+            "b": 0.1,
+            "q1": 0.3,
+            "q2": 0.3,
+            "mean_flux": np.array([0.0]),
+            "log_jitter": -6.0,
+            "log_sigma_gp": -3.0,
+            "log_rho_gp": np.log(10.0),
+            "log_rp": np.log(rp_init),
+        }
+        if "rho_star" in stellar and stellar["rho_star"] is not None:
+            init_dict["rho_star"] = stellar["rho_star"]
+        else:
+            init_dict["rho_star"] = 1.40984
 
-        # ── NUTS sampling ─────────────────────────────────────────────────────
         log.info(
             "Sampling: %d chains × %d draws (tune=%d, target_accept=%.2f)",
             chains, draws, tune, target_accept,
@@ -172,7 +199,8 @@ def run_bayesian_fit(
             tune=tune,
             chains=chains,
             target_accept=target_accept,
-            initvals=map_soln,
+            initvals=init_dict,
+            init="adapt_diag",
             return_inferencedata=True,
             progressbar=True,
         )
@@ -183,21 +211,6 @@ def run_bayesian_fit(
     model_outputs = _extract_model_outputs(trace, time, flux)
 
     return trace, model_outputs
-
-
-def _find_map(model: Any) -> dict[str, Any]:
-    """
-    Multi-stage MAP optimization following the exoplanet TESS tutorial.
-    Returns the MAP solution dict for use as NUTS initialization.
-    """
-    try:
-        import exoplanet as xo
-
-        map_soln = xo.optimize(model=model)
-        return map_soln
-    except Exception as exc:  # noqa: BLE001
-        log.warning("MAP optimization failed (%s); using default initvals", exc)
-        return {}
 
 
 def _extract_model_outputs(
@@ -229,4 +242,11 @@ def _extract_model_outputs(
         }
     except Exception as exc:  # noqa: BLE001
         log.warning("Could not extract model outputs: %s", exc)
-        return {"time": time, "flux_model": None, "gp_model": None, "transit_model": None, "residuals": None}
+        return {
+            "time": time,
+            "flux_model": None,
+            "gp_model": None,
+            "transit_model": None,
+            "residuals": None,
+        }
+

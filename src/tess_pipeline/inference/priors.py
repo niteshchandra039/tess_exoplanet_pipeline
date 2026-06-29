@@ -111,11 +111,13 @@ def add_transit_shape_priors(
     model: Any,
     *,
     depth_estimate: float | None = None,
+    fit_duration: bool = False,
 ) -> dict[str, Any]:
     """
-    Add transit shape priors (Rp/R★, b, T14, limb darkening).
+    Add transit shape priors (Rp/R★, b, limb darkening, and optionally T14).
 
     Uses Kipping (2013) q1/q2 parameterization for quadratic limb darkening.
+    Reference: Kipping (2013, MNRAS 435, 2152) for the efficient limb darkening parameterization.
     """
     import pymc as pm
     import numpy as np
@@ -136,14 +138,15 @@ def add_transit_shape_priors(
         b = pm.Uniform("b", lower=0.0, upper=1.0 + rp_r_star, initval=0.1)
 
         # ── Transit duration T14 (days) ────────────────────────────────────────
-        # Fit T14 directly (TESS-Keck XV approach; avoids circular density bias)
-        log_t14 = pm.Uniform(
-            "log_t14",
-            lower=np.log(0.01),
-            upper=np.log(0.5),
-            initval=np.log(0.1),
-        )
-        t14 = pm.Deterministic("t14", pm.math.exp(log_t14))
+        t14 = None
+        if fit_duration:
+            log_t14 = pm.Uniform(
+                "log_t14",
+                lower=np.log(0.01),
+                upper=np.log(0.5),
+                initval=np.log(0.1),
+            )
+            t14 = pm.Deterministic("t14", pm.math.exp(log_t14))
 
         # ── Kipping (2013) limb darkening ──────────────────────────────────────
         q1 = pm.Uniform("q1", lower=0.0, upper=1.0, initval=0.3)
@@ -154,15 +157,17 @@ def add_transit_shape_priors(
         u1 = pm.Deterministic("u1", 2.0 * sqrt_q1 * q2)
         u2 = pm.Deterministic("u2", sqrt_q1 * (1.0 - 2.0 * q2))
 
-    return {
+    res = {
         "rp_r_star": rp_r_star,
         "b": b,
-        "t14": t14,
         "q1": q1,
         "q2": q2,
         "u1": u1,
         "u2": u2,
     }
+    if fit_duration:
+        res["t14"] = t14
+    return res
 
 
 def add_systematic_priors(

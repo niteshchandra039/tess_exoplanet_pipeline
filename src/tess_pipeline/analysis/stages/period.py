@@ -42,6 +42,7 @@ class PeriodStage:
                 "value": self.archive_period,
                 "source": "archive",
                 "reference": archive_result.get("reference", ""),
+                "epoch": archive_result.get("epoch"),
             }
             log.info(
                 "Archive period: %.6f d (ref: %s)",
@@ -83,11 +84,18 @@ class PeriodStage:
         try:
             from tess_pipeline.transit.detection import search_period
 
+            # Optimize the search by restricting the range to a narrow window around
+            # the known archive period. This avoids scanning the full period range (e.g., 0.5–100d)
+            # and reduces computation time of the TLS/BLS grid by orders of magnitude.
+            half_width = min(0.01, self.archive_period * 0.002)
+            search_min = max(cfg.period_min, self.archive_period - half_width)
+            search_max = min(cfg.period_max, self.archive_period + half_width)
+
             detection = search_period(
                 lc,
                 method=cfg.search_method,
-                period_min=cfg.period_min,
-                period_max=cfg.period_max,
+                period_min=search_min,
+                period_max=search_max,
                 stellar=None,
             )
             detection["note"] = "diagnostic only; archive period used"

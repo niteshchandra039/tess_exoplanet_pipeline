@@ -75,16 +75,54 @@ def run_phoebe_fit(
 
     log.info("Building PHOEBE 2 bundle for period=%.6f d", period)
 
-    b = phoebe.Bundle.default_star()
+    b = phoebe.default_binary()
+
+    # Check if TESS:T is available, otherwise fallback to Johnson:V or Bolometric
+    installed_passbands = phoebe.list_installed_passbands()
+    passband = "TESS:T"
+    if passband not in installed_passbands:
+        if "Johnson:V" in installed_passbands:
+            log.warning("TESS:T passband is not installed in PHOEBE; falling back to Johnson:V")
+            passband = "Johnson:V"
+        elif "Bolometric:900-40000" in installed_passbands:
+            log.warning("TESS:T passband is not installed in PHOEBE; falling back to Bolometric")
+            passband = "Bolometric:900-40000"
+        elif installed_passbands:
+            passband = installed_passbands[0]
+            log.warning("TESS:T passband is not installed in PHOEBE; falling back to %s", passband)
+        else:
+            raise ValueError("No passbands are installed in PHOEBE.")
 
     # Set stellar parameters
-    r_star = stellar.get("r_star", 1.0)
-    m_star = stellar.get("m_star", 1.0)
-    teff = stellar.get("teff", 5778)
+    r_star = stellar.get("r_star", 1.0) if stellar.get("r_star") is not None else 1.0
+    m_star = stellar.get("m_star", 1.0) if stellar.get("m_star") is not None else 1.0
+    teff = stellar.get("teff", 5778) if stellar.get("teff") is not None else 5778
+
+    # Run quick batman map fit to get initial guesses for planet parameters
+    from tess_pipeline.transit.batman_model import quick_batman_fit
+    fit = quick_batman_fit(lc, period, stellar)
+    planet_params = fit.get("planet_params", {})
+
+    rp_r_star = planet_params.get("rp_r_star", 0.05)
+    a_r_star = planet_params.get("a_r_star", 10.0)
+    t0 = planet_params.get("t0", 0.0)
+    incl = planet_params.get("incl", 90.0)
+
+    # Convert planet parameters to PHOEBE units
+    r_planet_sol = rp_r_star * r_star
+    sma_sol = a_r_star * r_star
 
     b.set_value("requiv", r_star, component="primary", unit="solRad")
     b.set_value("teff", teff, component="primary", unit="K")
     b.set_value("period", period, component="binary", unit="d")
+
+    # Configure secondary star as a planet (cool, small, low mass ratio)
+    b.set_value("requiv", r_planet_sol, component="secondary", unit="solRad")
+    b.set_value("teff", 300.0, component="secondary", unit="K")
+    b.set_value("q", 1e-4, component="binary") # low mass ratio
+    b.set_value("sma", sma_sol, component="binary", unit="solRad")
+    b.set_value("incl", incl, component="binary", unit="deg")
+    b.set_value("ld_mode_bol", "manual", component="secondary")
 
     # Add TESS dataset
     time = np.asarray(lc.time.value, dtype=float)
@@ -93,12 +131,15 @@ def run_phoebe_fit(
         "lc",
         times=time,
         fluxes=flux,
-        passband="TESS:T",
+        passband=passband,
         dataset="lc01",
     )
+    b.set_value("ld_mode", "manual", component="secondary", dataset="lc01")
 
     # Configure compute options
     b.add_compute("phoebe", compute="phoebe_compute")
+    b.set_value("atm", "blackbody", component="secondary", compute="phoebe_compute")
+    b.set_value("ntriangles", 15000, component="primary", compute="phoebe_compute")
 
     log.info("PHOEBE bundle built; running solver (this may take several minutes)")
 
@@ -117,6 +158,11 @@ def run_phoebe_fit(
         "flux_model": model_flux,
         "planet_params": {
             "period": period,
+            "t0": t0,
+            "rp_r_star": rp_r_star,
+            "a_r_star": a_r_star,
+            "rp_earth": planet_params.get("rp_earth", 1.0),
+            "incl": incl,
             "method": "phoebe2",
         },
     }

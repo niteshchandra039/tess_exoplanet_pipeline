@@ -27,6 +27,9 @@ log = get_logger(__name__)
 def preprocess(
     lc_collection: Any,
     *,
+    period: float | None = None,
+    epoch: float | None = None,
+    transit_mask_width: float = 0.15,
     sigma_clip_lower: float = 20.0,
     sigma_clip_upper: float = 5.0,
     flatten_window_length: int = 401,
@@ -35,11 +38,17 @@ def preprocess(
 ) -> Any:
     """
     Preprocess a ``lightkurve.LightCurveCollection`` into a single
-    clean, stitched, and lightly flattened light curve.
+    clean, stitched, and flattened light curve.
 
     Parameters
     ----------
     lc_collection : lightkurve.LightCurveCollection
+    period : float | None
+        Orbital period of the planet in days (optional, to construct a transit mask).
+    epoch : float | None
+        Transit mid-time (optional, to construct a transit mask).
+    transit_mask_width : float
+        Width (in days) around the transit center to mask out (default: 0.15 days).
     sigma_clip_lower, sigma_clip_upper : float
         Sigma thresholds for outlier removal.
     flatten_window_length : int
@@ -62,14 +71,41 @@ def preprocess(
     if lc_collection is None or len(lc_collection) == 0:
         raise PreprocessingError("Empty light curve collection; nothing to preprocess.")
 
-    # ── Per-sector: remove NaNs and clip outliers ─────────────────────────────
+    # ── Per-sector: remove NaNs and clip outliers (ignoring transit window if mask is active) ──
     cleaned = []
     for lc in lc_collection:
         lc = lc.remove_nans()
-        lc = lc.remove_outliers(
-            sigma_lower=sigma_clip_lower,
-            sigma_upper=sigma_clip_upper,
-        )
+
+        # Construct a transit mask to protect transit points from clipping
+        transit_mask = np.zeros(len(lc), dtype=bool)
+        if period is not None and epoch is not None:
+            t0 = epoch
+            if t0 > 2400000 and np.median(lc.time.value) < 100000:
+                t0 -= 2457000.0  # Convert BJD to BTJD if needed
+            phase = ((lc.time.value - t0) / period) % 1.0
+            phase[phase > 0.5] -= 1.0
+            transit_mask = np.abs(phase) < (transit_mask_width / period)
+
+        try:
+            if np.any(transit_mask):
+                non_transit_indices = np.where(~transit_mask)[0]
+                sub_lc = lc[non_transit_indices]
+                _, outlier_mask = sub_lc.remove_outliers(
+                    sigma_lower=sigma_clip_lower,
+                    sigma_upper=sigma_clip_upper,
+                    return_mask=True,
+                )
+                full_outlier_mask = np.zeros(len(lc), dtype=bool)
+                full_outlier_mask[non_transit_indices] = outlier_mask
+                lc = lc[~full_outlier_mask]
+            else:
+                lc = lc.remove_outliers(
+                    sigma_lower=sigma_clip_lower,
+                    sigma_upper=sigma_clip_upper,
+                )
+        except Exception as exc:
+            log.warning("Outlier removal failed on sector: %s", exc)
+
         cleaned.append(lc)
 
     if not cleaned:
@@ -89,14 +125,23 @@ def preprocess(
         flatten_window_length += 1
         log.debug("Adjusted flatten_window_length to %d (must be odd)", flatten_window_length)
 
-    # ── Initial flatten (first-pass detrend) ─────────────────────────────────
-    # NOTE: Do NOT over-detrend here; the GP noise model in bayesian.py
-    # will handle residual correlated stellar variability.
+    # Re-calculate transit mask on stitched light curve for flattening
+    transit_mask_stitched = np.zeros(len(stitched), dtype=bool)
+    if period is not None and epoch is not None:
+        t0 = epoch
+        if t0 > 2400000 and np.median(stitched.time.value) < 100000:
+            t0 -= 2457000.0
+        phase = ((stitched.time.value - t0) / period) % 1.0
+        phase[phase > 0.5] -= 1.0
+        transit_mask_stitched = np.abs(phase) < (transit_mask_width / period)
+
+    # ── Initial flatten (first-pass detrend) with transit mask ─────────────────
     try:
         flat, trend = stitched.flatten(
             window_length=flatten_window_length,
             polyorder=flatten_polyorder,
             break_tolerance=flatten_break_tolerance,
+            mask=transit_mask_stitched if np.any(transit_mask_stitched) else None,
             return_trend=True,
         )
     except Exception as exc:
@@ -106,10 +151,22 @@ def preprocess(
     # Final NaN pass and outlier removal after flattening
     flat = flat.remove_nans()
     try:
-        flat = flat.remove_outliers(
-            sigma_lower=sigma_clip_lower,
-            sigma_upper=sigma_clip_upper,
-        )
+        if np.any(transit_mask_stitched):
+            non_transit_indices = np.where(~transit_mask_stitched)[0]
+            sub_flat = flat[non_transit_indices]
+            _, outlier_mask = sub_flat.remove_outliers(
+                sigma_lower=sigma_clip_lower,
+                sigma_upper=sigma_clip_upper,
+                return_mask=True,
+            )
+            full_outlier_mask = np.zeros(len(flat), dtype=bool)
+            full_outlier_mask[non_transit_indices] = outlier_mask
+            flat = flat[~full_outlier_mask]
+        else:
+            flat = flat.remove_outliers(
+                sigma_lower=sigma_clip_lower,
+                sigma_upper=sigma_clip_upper,
+            )
     except Exception as exc:
         log.warning("Final outlier removal failed: %s", exc)
 

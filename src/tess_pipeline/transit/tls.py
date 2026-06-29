@@ -64,6 +64,16 @@ def run_tls(
         "period_max": period_max,
     }
 
+    # If searching a narrow period range (e.g. for archive period refinement),
+    # dynamically compute a larger oversampling_factor to guarantee a dense grid
+    # of ~100-200 points in that narrow window, avoiding sparse grid mismatches.
+    if (period_max - period_min) < 0.5:
+        time_span = float(np.max(time) - np.min(time))
+        p_mid = 0.5 * (period_min + period_max)
+        half_w = 0.5 * (period_max - period_min)
+        required_osf = int(1.5 * (p_mid ** 2) / (half_w * max(1.0, time_span)))
+        tls_kwargs["oversampling_factor"] = max(3, min(300, required_osf))
+
     if stellar is not None:
         r_star = stellar.get("r_star")
         m_star = stellar.get("m_star")
@@ -81,6 +91,12 @@ def run_tls(
     log.debug("TLS kwargs: %s", {k: v for k, v in tls_kwargs.items() if "_raw" not in k})
 
     try:
+        # Override the transitleastsquares default behavior which silently ignores 
+        # narrow period ranges and falls back to a full search grid when the number of 
+        # period points is small (< 100).
+        import transitleastsquares.tls_constants as tls_constants
+        tls_constants.MINIMUM_PERIOD_GRID_SIZE = 0
+
         model = transitleastsquares(time, flux, flux_err)
         results = model.power(**tls_kwargs)
     except Exception as exc:

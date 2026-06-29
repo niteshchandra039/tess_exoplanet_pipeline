@@ -54,8 +54,22 @@ class LightCurveStage:
         log.info("Preprocessing light curves")
         from tess_pipeline.data.preprocess import preprocess
 
+        # Extract period and epoch if they were found during archive lookup, override, or search
+        period = None
+        epoch = None
+        if self.results.period:
+            period = self.results.period.get("value")
+            epoch = self.results.period.get("epoch")
+        if self.results.detection:
+            if period is None:
+                period = self.results.detection.get("period")
+            if epoch is None:
+                epoch = self.results.detection.get("epoch")
+
         lc = preprocess(
             self.raw_collection,
+            period=period,
+            epoch=epoch,
             sigma_clip_lower=cfg.sigma_clip_lower,
             sigma_clip_upper=cfg.sigma_clip_upper,
             flatten_window_length=cfg.flatten_window_length,
