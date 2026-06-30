@@ -66,7 +66,7 @@ the PyMC model.
 |------|------|
 | batman | Fast analytic light curves; TLS templates; MAP initialization; diagnostic plots |
 | exoplanet + PyMC + starry | Primary Bayesian inference: NUTS/HMC, GP, Kipping LD |
-| PHOEBE 2 | Optional: phase curves, reflected light, multi-body systems |
+| PHOEBE 2 | Advanced modeling: phase curves, reflected light, multi-body systems |
 
 ## Parameter Conventions
 

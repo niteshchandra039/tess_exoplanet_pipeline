@@ -25,6 +25,8 @@ def run_tls(
     period_min: float = 0.5,
     period_max: float = 100.0,
     stellar: dict[str, Any] | None = None,
+    oversampling_factor: int | None = None,
+    duration_grid_step: float = 1.1,
 ) -> dict[str, Any]:
     """
     Run Transit Least Squares on *lc*.
@@ -62,17 +64,25 @@ def run_tls(
     tls_kwargs: dict[str, Any] = {
         "period_min": period_min,
         "period_max": period_max,
+        "duration_grid_step": duration_grid_step,
     }
 
-    # If searching a narrow period range (e.g. for archive period refinement),
-    # dynamically compute a larger oversampling_factor to guarantee a dense grid
-    # of ~100-200 points in that narrow window, avoiding sparse grid mismatches.
-    if (period_max - period_min) < 0.5:
+    is_narrow = (period_max - period_min) < 0.5
+    if is_narrow:
+        # Narrow search (archive period refinement): compute dense grid
         time_span = float(np.max(time) - np.min(time))
         p_mid = 0.5 * (period_min + period_max)
         half_w = 0.5 * (period_max - period_min)
         required_osf = int(1.5 * (p_mid ** 2) / (half_w * max(1.0, time_span)))
         tls_kwargs["oversampling_factor"] = max(3, min(300, required_osf))
+    else:
+        # Broad search: use coarse grid for speed (oversampling_factor=3 is sufficient
+        # for finding candidate periods; refine afterward if needed)
+        tls_kwargs["oversampling_factor"] = oversampling_factor if oversampling_factor is not None else 3
+
+    log.debug("TLS search mode: %s (osf=%s, dur_step=%.2f)",
+              "narrow" if is_narrow else "broad",
+              tls_kwargs.get("oversampling_factor"), duration_grid_step)
 
     if stellar is not None:
         r_star = stellar.get("r_star")
@@ -106,6 +116,8 @@ def run_tls(
     epoch = float(results.T0)
     duration_hr = float(results.duration) * 24.0   # days → hours
     depth = float(results.depth)
+    if depth > 0.5:
+        depth = 1.0 - depth
     sde = float(results.SDE)
     snr = float(results.snr)
 

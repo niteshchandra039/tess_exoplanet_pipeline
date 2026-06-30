@@ -68,10 +68,23 @@ def plot_corner(
         "u2": "u₂",
         "rho_star": "Density ρ★ [g/cm³]",
     }
-    labels = [labels_dict.get(v, v) for v in var_names]
-
     flat_samps = ds.stack(sample=("chain", "draw"))
-    samples = np.column_stack([flat_samps[v].values for v in var_names])
+
+    samples_list = []
+    labels = []
+    for v in var_names:
+        vals = flat_samps[v].values
+        # vals shape could be (n_planets, n_samples) or (n_samples,)
+        if vals.ndim == 2:
+            n_pl = vals.shape[0]
+            for i in range(n_pl):
+                samples_list.append(vals[i, :])
+                labels.append(labels_dict.get(v, v) + f" p{i+1}")
+        else:
+            samples_list.append(vals)
+            labels.append(labels_dict.get(v, v))
+
+    samples = np.column_stack(samples_list)
 
     if samples.shape[0] < samples.shape[1]:
         fig, ax = plt.subplots(figsize=(6, 6))

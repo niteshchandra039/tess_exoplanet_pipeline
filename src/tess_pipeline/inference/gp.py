@@ -53,7 +53,7 @@ def build_gp(
     except ImportError as exc:
         raise ImportError(
             "celerite2 and pymc are required for the GP noise model. "
-            "Install with: pip install 'tess-pipeline[inference]'"
+            "Reinstall the package with: pip install -e ."
         ) from exc
 
     with model:

@@ -46,7 +46,12 @@ def check_convergence(posterior: Any) -> dict[str, Any]:
         log.warning("arviz is not installed; skipping convergence diagnostics")
         return {"converged": None, "note": "arviz not installed"}
 
-    summary = az.summary(posterior, round_to=6)
+    # Exclude large deterministic vectors to prevent massive CPU/memory bottleneck
+    all_vars = list(posterior.posterior.data_vars.keys())
+    exclude_vars = {"transit_model", "gp_pred", "flux_model", "lc_pred"}
+    var_names = [v for v in all_vars if v not in exclude_vars and not v.startswith("light_curve_p")]
+    
+    summary = az.summary(posterior, var_names=var_names, round_to=6)
 
     # ── R-hat ─────────────────────────────────────────────────────────────────
     rhat_col = "r_hat" if "r_hat" in summary.columns else None

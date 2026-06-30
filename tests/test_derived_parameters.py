@@ -29,7 +29,10 @@ def test_derive_planet_parameters_mock() -> None:
     }
     
     # 3. Call parameter derivation
-    result = derive_planet_parameters(posterior, stellar)
+    planets = derive_planet_parameters(posterior, stellar)
+    assert isinstance(planets, list)
+    assert len(planets) == 1
+    result = planets[0]
     
     # 4. Assert key output variables exist
     keys = [

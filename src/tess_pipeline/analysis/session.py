@@ -261,7 +261,22 @@ class TESSAnalysis:
         plots_dir = target_dir / "plots"
         plots_dir.mkdir(parents=True, exist_ok=True)
         try:
-            path = plots_dir / f"{name}.png"
+            prefix_map = {
+                "raw": "01_raw",
+                "flat": "02_flat",
+                "tls_periodogram": "03_tls_periodogram",
+                "bls_periodogram": "03_bls_periodogram",
+                "phase": "04_phase",
+                "residuals": "05_residuals",
+                "bayesian_fit": "06_bayesian_fit",
+                "corner": "07_corner",
+                "trace": "08_trace",
+                "posterior_predictive": "09_posterior_predictive",
+            }
+            filename = prefix_map.get(name, name)
+            if filename.startswith("phase_p"):
+                filename = filename.replace("phase_p", "04_phase_p")
+            path = plots_dir / f"{filename}.png"
             fig.savefig(str(path), dpi=150, bbox_inches="tight")
             log.info("Saved step plot: %s", path)
         except Exception as exc:  # noqa: BLE001

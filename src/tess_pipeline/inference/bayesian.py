@@ -34,17 +34,18 @@ def run_bayesian_fit(
     tune: int = 2000,
     target_accept: float = 0.9,
     gp_kernel: str = "SHO",
+    detections: list[dict[str, Any]] | None = None,
 ) -> tuple[Any, dict[str, Any]]:
     """
-    Build and sample a PyMC transit model.
+    Build and sample a PyMC transit model (supports multiple planets).
 
     Parameters
     ----------
     lc : lightkurve.LightCurve
     period : float
-        Best-fit or archived orbital period (days).
+        Best-fit or archived orbital period (days) for Planet 1.
     epoch : float | None
-        Transit mid-time (BTJD); used as t0 prior mean.
+        Transit mid-time (BTJD) for Planet 1.
     stellar : dict
         Output of ``catalogs.stellar.characterize_star()``.
     chains, draws, tune : int
@@ -53,12 +54,14 @@ def run_bayesian_fit(
         NUTS target acceptance rate.
     gp_kernel : str
         "SHO" or "Matern32".
+    detections : list of dicts, optional
+        A list of detection dictionaries, one for each planet to fit.
 
     Returns
     -------
     (arviz.InferenceData, dict)
         posterior InferenceData and model_outputs dict
-        {'time', 'flux_model', 'gp_model', 'residuals'}
+        {'time', 'flux_model', 'gp_model', 'residuals', 'light_curve_p0', ...}
     """
     from tess_pipeline.inference.deps import check_inference_installed
 
@@ -72,7 +75,7 @@ def run_bayesian_fit(
     except ImportError as exc:
         raise InferenceNotInstalledError(
             "Bayesian inference packages failed to import after installation check. "
-            "Reinstall with: pip install -e \".[inference]\""
+            "Reinstall the package with: pip install -e ."
         ) from exc
 
     # Clean duplicates and sort to satisfy celerite2's strict sorting requirement
@@ -96,9 +99,16 @@ def run_bayesian_fit(
 
     # Estimate transit depth from minimum flux
     depth_estimate = float(1.0 - np.percentile(flux, 1))
-    t0_init = epoch if epoch is not None else float(time[np.argmin(flux)])
 
-    log.info("Building PyMC model (N=%d points, period=%.6f d)", len(time), period)
+    if not detections:
+        detections = [{"period": period, "epoch": epoch, "depth": depth_estimate}]
+
+    periods = np.array([det["period"] for det in detections])
+    epochs = np.array([det["epoch"] if det["epoch"] is not None else float(time[np.argmin(flux)]) for det in detections])
+    depths = np.array([det.get("depth", depth_estimate) for det in detections])
+    n_planets = len(detections)
+
+    log.info("Building PyMC model (N=%d points, %d planets)", len(time), n_planets)
 
     from tess_pipeline.inference.priors import (
         add_stellar_priors,
@@ -112,8 +122,8 @@ def run_bayesian_fit(
 
         # ── Priors ────────────────────────────────────────────────────────────
         stellar_vars = add_stellar_priors(model, stellar)
-        orbital_vars = add_orbital_priors(model, period=period, epoch=epoch, period_fixed=False)
-        shape_vars = add_transit_shape_priors(model, depth_estimate=depth_estimate, fit_duration=False)
+        orbital_vars = add_orbital_priors(model, period=periods, epoch=epochs, period_fixed=False)
+        shape_vars = add_transit_shape_priors(model, depth_estimate=depths, fit_duration=False, n_planets=n_planets)
         sys_vars = add_systematic_priors(model, n_sectors=1)
 
         rho_star_var = stellar_vars["rho_star"]
@@ -126,7 +136,6 @@ def run_bayesian_fit(
         mean_flux = sys_vars["mean_flux"]
 
         # ── Keplerian orbit ───────────────────────────────────────────────────
-        # Sourced from Winn (2010) and Seager & Mallen-Ornelas (2003). Orbit is constrained physically by stellar density.
         orbit = xo.orbits.KeplerianOrbit(
             period=period_var,
             t0=t0,
@@ -142,7 +151,12 @@ def run_bayesian_fit(
             r=rp_r_star,
             t=time,
         )
-        transit_model = pm.Deterministic("transit_model", pm.math.sum(light_curves, axis=-1) + mean_flux[0])
+
+        # Save individual planet light curves
+        for idx in range(n_planets):
+            pm.Deterministic(f"light_curve_p{idx}", light_curves[:, idx])
+
+        transit_model = pm.Deterministic("transit_model", pm.math.sum(light_curves, axis=-1) + mean_flux[0] + 1.0)
 
         # ── GP noise model ────────────────────────────────────────────────────
         gp = build_gp(
@@ -157,33 +171,43 @@ def run_bayesian_fit(
         gp.marginal("obs", observed=flux)
 
         # ── GP prediction ─────────────────────────────────────────────────────
-        gp_pred = pm.Deterministic("gp_pred", gp.predict(flux - transit_model))
+        gp_pred = pm.Deterministic("gp_pred", gp.predict(flux, include_mean=False))
 
         # ── Full model ────────────────────────────────────────────────────────
         flux_model = pm.Deterministic("flux_model", transit_model + gp_pred)
 
         # ── Dense phase grid model for plotting uncertainty bands ──────────────
         phase_grid = np.linspace(-0.3, 0.3, 200)
-        lc_pred_curves = star.get_light_curve(
-            orbit=orbit,
-            r=rp_r_star,
-            t=t0 + phase_grid,
-        )
-        pm.Deterministic("lc_pred", pm.math.sum(lc_pred_curves, axis=-1) + 1.0)
+
+        for idx in range(n_planets):
+            # Create a single-planet orbit for this planet
+            single_orbit = xo.orbits.KeplerianOrbit(
+                period=period_var[idx],
+                t0=t0[idx],
+                b=b[idx],
+                rho_star=rho_star_var,
+                ror=rp_r_star[idx],
+            )
+            lc_pred_curve = star.get_light_curve(
+                orbit=single_orbit,
+                r=rp_r_star[idx],
+                t=t0[idx] + phase_grid,
+            )
+            pm.Deterministic(f"lc_pred_p{idx}", lc_pred_curve[:, 0] + mean_flux[0] + 1.0)
 
         # ── NUTS initialization and sampling ──────────────────────────────────
-        rp_init = math.sqrt(max(depth_estimate, 1e-5))
+        rp_inits = np.array([math.sqrt(max(d, 1e-5)) for d in depths])
         init_dict = {
-            "period": period,
-            "t0": t0_init,
-            "b": 0.1,
+            "period": periods,
+            "t0": epochs,
+            "b": np.array([0.1] * n_planets),
             "q1": 0.3,
             "q2": 0.3,
             "mean_flux": np.array([0.0]),
             "log_jitter": -6.0,
             "log_sigma_gp": -3.0,
             "log_rho_gp": np.log(10.0),
-            "log_rp": np.log(rp_init),
+            "log_rp": np.log(rp_inits),
         }
         if "rho_star" in stellar and stellar["rho_star"] is not None:
             init_dict["rho_star"] = stellar["rho_star"]
@@ -218,28 +242,35 @@ def _extract_model_outputs(
     time: np.ndarray,
     flux: np.ndarray,
 ) -> dict[str, Any]:
-    """Extract median model curve and residuals from the posterior."""
+    """Extract median model curve and residuals from the posterior (supports multiple planets)."""
     try:
         import numpy as np
 
-        if hasattr(trace, "posterior") and "flux_model" in trace.posterior:
-            flux_model = np.median(trace.posterior["flux_model"].values, axis=(0, 1))
-            gp_model = np.median(trace.posterior["gp_pred"].values, axis=(0, 1)) if "gp_pred" in trace.posterior else None
-            transit_model = np.median(trace.posterior["transit_model"].values, axis=(0, 1)) if "transit_model" in trace.posterior else None
-            residuals = flux - flux_model
-        else:
-            flux_model = None
-            gp_model = None
-            transit_model = None
-            residuals = None
-
-        return {
+        outputs = {
             "time": time,
-            "flux_model": flux_model,
-            "gp_model": gp_model,
-            "transit_model": transit_model,
-            "residuals": residuals,
+            "flux_model": None,
+            "gp_model": None,
+            "transit_model": None,
+            "residuals": None,
         }
+
+        if hasattr(trace, "posterior") and "flux_model" in trace.posterior:
+            outputs["flux_model"] = np.median(trace.posterior["flux_model"].values, axis=(0, 1))
+            outputs["gp_model"] = np.median(trace.posterior["gp_pred"].values, axis=(0, 1)) if "gp_pred" in trace.posterior else None
+            outputs["transit_model"] = np.median(trace.posterior["transit_model"].values, axis=(0, 1)) if "transit_model" in trace.posterior else None
+            outputs["residuals"] = flux - outputs["flux_model"]
+
+            # Extract individual planet models
+            i = 0
+            while True:
+                key = f"light_curve_p{i}"
+                if key in trace.posterior:
+                    outputs[key] = np.median(trace.posterior[key].values, axis=(0, 1))
+                    i += 1
+                else:
+                    break
+
+        return outputs
     except Exception as exc:  # noqa: BLE001
         log.warning("Could not extract model outputs: %s", exc)
         return {

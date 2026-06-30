@@ -43,6 +43,7 @@ class PipelineResults:
     rv: dict[str, Any] | None = None
     posterior: Any = None
     planet: dict[str, Any] = field(default_factory=dict)
+    planets: list[dict[str, Any]] = field(default_factory=list)  # list of dicts for multiple planets
     model: dict[str, Any] = field(default_factory=dict)
     diagnostics: dict[str, Any] = field(default_factory=dict)
     figures: dict[str, Any] = field(default_factory=dict)
@@ -83,8 +84,18 @@ class PipelineResults:
             lines.append(f"  ρ★             : {st.get('rho_star', '?')} g/cm³")
 
         # Planet (Bayesian)
-        pl = self.planet
-        if pl:
+        if self.planets:
+            for idx, pl in enumerate(self.planets):
+                lines.append("-" * 60)
+                lines.append(f"  Bayesian planet {idx + 1} parameters:")
+                for key in ("rp_earth", "a_au", "a_r_star", "t_eq", "rp_r_star", "b", "t14_hr"):
+                    val = pl.get(key)
+                    err = pl.get(f"{key}_err")
+                    if val is not None:
+                        err_str = f" ± {err:.4g}" if err is not None else ""
+                        lines.append(f"    {key:<15}: {val:.4g}{err_str}")
+        elif self.planet:
+            pl = self.planet
             lines.append("-" * 60)
             lines.append("  Bayesian planet parameters:")
             for key in ("rp_earth", "a_au", "a_r_star", "t_eq", "rp_r_star", "b", "t14_hr"):
@@ -152,23 +163,58 @@ class PipelineResults:
 
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serializable summary dict (no heavy objects)."""
+        meta_clean = {}
+        for k, v in self.metadata.items():
+            if k == "detections" and isinstance(v, list):
+                clean_dets = []
+                for det in v:
+                    if not isinstance(det, dict):
+                        continue
+                    clean_det = {}
+                    for det_k, det_v in det.items():
+                        if isinstance(det_v, (int, float, str, bool, type(None))):
+                            clean_det[det_k] = det_v
+                        elif hasattr(det_v, "item"):  # numpy scalar
+                            clean_det[det_k] = det_v.item()
+                        elif isinstance(det_v, dict):
+                            # Skip large sub-dicts like tls_result
+                            continue
+                        else:
+                            clean_det[det_k] = str(det_v)
+                    clean_dets.append(clean_det)
+                meta_clean[k] = clean_dets
+            elif isinstance(v, (int, float, str, bool, type(None))):
+                meta_clean[k] = v
+            elif isinstance(v, list):
+                meta_clean[k] = [x.item() if hasattr(x, "item") else x for x in v]
+            else:
+                meta_clean[k] = str(v)
+
+        # Clean diagnostics as well (exclude large arrays and nan values if possible)
+        diag_clean = {}
+        if isinstance(self.diagnostics, dict):
+            for k, v in self.diagnostics.items():
+                if k == "rhat_dict" and isinstance(v, dict):
+                    # Filter out the massive deterministic arrays from old diagnostics
+                    diag_clean[k] = {rk: rv for rk, rv in v.items() if not rk.startswith("light_curve_p")}
+                else:
+                    diag_clean[k] = v
+
         return {
             "target": self.target,
             "period": self.period,
             "detection": {
-                k: v
+                k: v.item() if hasattr(v, "item") else v
                 for k, v in self.detection.items()
-                if isinstance(v, (int, float, str, bool, type(None)))
+                if isinstance(v, (int, float, str, bool, type(None))) or hasattr(v, "item")
             },
             "stellar": {
-                k: v
+                k: v.item() if hasattr(v, "item") else v
                 for k, v in self.stellar.items()
-                if isinstance(v, (int, float, str, bool, type(None)))
+                if isinstance(v, (int, float, str, bool, type(None))) or hasattr(v, "item")
             },
             "planet": self.planet,
-            "diagnostics": self.diagnostics,
-            "metadata": {
-                k: str(v)
-                for k, v in self.metadata.items()
-            },
+            "planets": self.planets,
+            "diagnostics": diag_clean,
+            "metadata": meta_clean,
         }

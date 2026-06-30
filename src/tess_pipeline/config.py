@@ -144,6 +144,19 @@ def _parse_fits_paths(value: Any) -> tuple[Path, ...]:
     )
 
 
+def _parse_float_array(value: Any) -> tuple[float, ...]:
+    """Parse optional float array/list/tuple/numpy array."""
+    if value is None:
+        return ()
+    if isinstance(value, (int, float)):
+        return (float(value),)
+    try:
+        import numpy as np
+        return tuple(float(x) for x in np.asarray(value).flatten())
+    except (TypeError, ValueError) as exc:
+        raise ConfigurationError(f"Could not parse array/list of floats: {value!r}") from exc
+
+
 @dataclass
 class PipelineConfig:
     """Resolved, validated pipeline configuration."""
@@ -172,6 +185,7 @@ class PipelineConfig:
     period_min: float = constants.DEFAULT_PERIOD_MIN
     period_max: float = constants.DEFAULT_PERIOD_MAX
     period_override: float | None = None
+    max_planets: int = constants.DEFAULT_MAX_PLANETS
 
     # Stellar characterization
     stellar_method: str = constants.DEFAULT_STELLAR_METHOD
@@ -185,6 +199,15 @@ class PipelineConfig:
     target_accept: float = constants.DEFAULT_TARGET_ACCEPT
     gp_kernel: str = constants.DEFAULT_GP_KERNEL
 
+    # Radial velocity data
+    rv_times: tuple[float, ...] = field(default_factory=tuple)
+    rv_vals: tuple[float, ...] = field(default_factory=tuple)
+    rv_errs: tuple[float, ...] = field(default_factory=tuple)
+    rv_file: str | None = None
+
+    # Photometry configuration
+    input_is_magnitude: bool = False
+
     # Output
     output_dir: Path = field(default_factory=lambda: Path(constants.DEFAULT_OUTPUT_DIR))
     plots: bool = True
@@ -194,7 +217,39 @@ class PipelineConfig:
     def __post_init__(self) -> None:
         self.output_dir = Path(self.output_dir)
         self.lightcurve_fits = tuple(Path(p) for p in self.lightcurve_fits)
+        self._load_rv_file()
         self._validate()
+
+    def _load_rv_file(self) -> None:
+        if self.rv_file:
+            path = Path(self.rv_file)
+            if path.exists():
+                times, vals, errs = [], [], []
+                import csv
+                with open(path, "r", encoding="utf-8") as f:
+                    content = f.read(1024)
+                    f.seek(0)
+                    delimiter = "," if "," in content else None
+                    reader = csv.reader(f, delimiter=delimiter) if delimiter else csv.reader(f)
+                    
+                    for row in reader:
+                        row = [x.strip() for x in row if x.strip()]
+                        if not row or row[0].startswith("#"):
+                            continue
+                        try:
+                            t = float(row[0])
+                            v = float(row[1])
+                            e = float(row[2]) if len(row) > 2 else 0.0
+                            times.append(t)
+                            vals.append(v)
+                            errs.append(e)
+                        except ValueError:
+                            continue
+                self.rv_times = tuple(times)
+                self.rv_vals = tuple(vals)
+                self.rv_errs = tuple(errs)
+            else:
+                raise ConfigurationError(f"Radial velocity file {self.rv_file} does not exist.")
 
     def _validate(self) -> None:
         if self.cadence not in (20, 120, 600, 1800):
@@ -230,6 +285,8 @@ class PipelineConfig:
             raise ConfigurationError(
                 "target is required when lightcurve_source='download'"
             )
+        if self.max_planets < 1:
+            raise ConfigurationError(f"max_planets must be ≥ 1; got {self.max_planets}")
 
 
 def build_config(
@@ -246,6 +303,7 @@ def build_config(
     period_min: float | None = None,
     period_max: float | None = None,
     period_override: float | None = None,
+    max_planets: int | None = None,
     stellar_method: str | None = None,
     inference: bool | None = None,
     inference_backend: str | None = None,
@@ -258,6 +316,11 @@ def build_config(
     plots: bool | None = None,
     save_report: bool = False,
     verbose: bool | None = None,
+    rv_times: Any = None,
+    rv_vals: Any = None,
+    rv_errs: Any = None,
+    rv_file: str | Path | None = None,
+    input_is_magnitude: bool | None = None,
 ) -> PipelineConfig:
     """Build a resolved PipelineConfig from all priority layers."""
     file_cfg = _load_user_config()
@@ -317,6 +380,11 @@ def build_config(
 
     resolved_target = "" if target is None else str(target).strip()
 
+    resolved_rv_times = _parse_float_array(rv_times)
+    resolved_rv_vals = _parse_float_array(rv_vals)
+    resolved_rv_errs = _parse_float_array(rv_errs)
+    resolved_rv_file = str(rv_file) if rv_file is not None else None
+
     return PipelineConfig(
         target=resolved_target,
         author=resolve("author", author, str, constants.DEFAULT_AUTHOR),
@@ -329,6 +397,7 @@ def build_config(
         period_min=resolve("period_min", period_min, float, constants.DEFAULT_PERIOD_MIN),
         period_max=resolve("period_max", period_max, float, constants.DEFAULT_PERIOD_MAX),
         period_override=period_override,
+        max_planets=resolve("max_planets", max_planets, int, constants.DEFAULT_MAX_PLANETS),
         stellar_method=resolve(
             "stellar_method", stellar_method, str, constants.DEFAULT_STELLAR_METHOD
         ),
@@ -341,6 +410,11 @@ def build_config(
         tune=resolve("tune", tune, int, constants.DEFAULT_TUNE),
         target_accept=resolve("target_accept", target_accept, float, constants.DEFAULT_TARGET_ACCEPT),
         gp_kernel=resolve("gp_kernel", gp_kernel, str, constants.DEFAULT_GP_KERNEL),
+        rv_times=resolved_rv_times,
+        rv_vals=resolved_rv_vals,
+        rv_errs=resolved_rv_errs,
+        rv_file=resolved_rv_file,
+        input_is_magnitude=resolve("input_is_magnitude", input_is_magnitude, bool, False),
         output_dir=resolve("output_dir", output_dir, Path, constants.DEFAULT_OUTPUT_DIR),
         plots=resolve("plots", plots, bool, True),
         save_report=save_report,

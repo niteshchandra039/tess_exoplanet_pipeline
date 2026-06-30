@@ -14,7 +14,7 @@ A Python library for step-by-step TESS light curve analysis: exoplanet detection
 ## Installation
 
 ```bash
-pip install -e ".[inference,stellar]"
+pip install -e .
 ```
 
 ## Quick Start (Notebook)

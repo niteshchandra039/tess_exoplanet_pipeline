@@ -21,10 +21,11 @@ def main() -> None:
         
     print("PHOEBE 2 is available! Setting up analysis for TIC 261136679...")
     
-    # Initialize analysis to load lightcurve and star info
+    # Initialize analysis with PHOEBE backend
     analysis = TESSAnalysis(
         target="TIC 261136679",
-        inference=False, # We will invoke phoebe manually here
+        inference=True,
+        inference_backend="phoebe",
         search_method="tls",
         output_dir="output_phoebe",
         verbose=True
@@ -45,36 +46,24 @@ def main() -> None:
     print("5. Characterizing host star properties...")
     analysis.characterize_star()
     
-    # Run period search to obtain period
     print("6. Searching for transit signals...")
     analysis.search_period()
     
-    period_dict = analysis.results.period
-    if period_dict is not None and isinstance(period_dict, dict):
-        period = period_dict.get("value", 5.0)
-    else:
-        period = 5.0
-        
-    # Get stellar and light curve object
-    stellar = analysis.results.stellar
-
-    # Preprocessed lightcurve 
-    lc_merged = analysis.results.lightcurve
-    if lc_merged is None:
+    # Downsample lightcurve for the test run to speed up PHOEBE fitting
+    if analysis.results.lightcurve is None:
         print("No light curves loaded; cannot proceed.")
         sys.exit(1)
-    
+        
     print("Downsampling light curve (every 150th point) for fast PHOEBE fit test...")
-    lc_merged = lc_merged[::150]
+    analysis.results.lightcurve = analysis.results.lightcurve[::150]
     
-    print(f"7. Running PHOEBE 2 fit for period={period:.6f} d...")
-    phoebe_results = run_phoebe_fit(
-        lc=lc_merged,
-        period=period,
-        stellar=stellar,
-        include_reflected_light=False,
-        include_ellipsoidal=False
-    )
+    print("7. Running integrated PHOEBE 2 fit via fit_transit()...")
+    analysis.fit_transit()
+    phoebe_results = analysis.results.model
+    
+    if phoebe_results is None:
+        print("PHOEBE fit did not return results.")
+        sys.exit(1)
     
     print("\n" + "="*50)
     print("PHOEBE 2 FIT RESULTS SUMMARY")
@@ -97,8 +86,8 @@ def main() -> None:
     plots_dir = os.path.join(analysis.config.output_dir, f"TIC {analysis.results.target['tic_id']}", "plots")
     os.makedirs(plots_dir, exist_ok=True)
 
-    times = lc_merged.time.value
-    fluxes = lc_merged.flux.value
+    times = analysis.results.lightcurve.time.value
+    fluxes = analysis.results.lightcurve.flux.value
     model_fluxes = phoebe_results["flux_model"]
     residuals = phoebe_results["residuals"]
 
@@ -124,6 +113,7 @@ def main() -> None:
     print(f"Saved PHOEBE fit plot to: {plot_path}")
 
     # 2. Phase Folded Plot
+    period = params.get("period", 5.0)
     t0_fit = params.get("t0", times[np.argmin(fluxes)])
     phase = ((times - t0_fit) % period) / period
     phase = np.where(phase > 0.5, phase - 1.0, phase)

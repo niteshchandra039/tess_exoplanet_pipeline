@@ -111,11 +111,29 @@ def _save_lightcurve_fits(results: "PipelineResults", prefix: Path) -> None:
 
 def _save_figures(results: "PipelineResults", output_dir: Path) -> None:
     """Save all figures as PNG files."""
+    prefix_map = {
+        "raw": "01_raw",
+        "flat": "02_flat",
+        "tls_periodogram": "03_tls_periodogram",
+        "bls_periodogram": "03_bls_periodogram",
+        "phase": "04_phase",
+        "mcmc_phase": "04_mcmc_phase",
+        "residuals": "05_residuals",
+        "bayesian_fit": "06_bayesian_fit",
+        "corner": "07_corner",
+        "trace": "08_trace",
+        "posterior_predictive": "09_posterior_predictive",
+    }
     for name, fig in results.figures.items():
         if fig is None:
             continue
         try:
-            path = output_dir / f"{name}.png"
+            filename = prefix_map.get(name, name)
+            if filename.startswith("phase_p"):
+                filename = filename.replace("phase_p", "04_phase_p")
+            elif filename.startswith("mcmc_phase_p"):
+                filename = filename.replace("mcmc_phase_p", "04_mcmc_phase_p")
+            path = output_dir / f"{filename}.png"
             fig.savefig(str(path), dpi=150, bbox_inches="tight")
             log.debug("Saved figure: %s", path)
         except Exception as exc:  # noqa: BLE001
@@ -146,94 +164,267 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
     ra = data.get("target", {}).get("ra", 0)
     dec = data.get("target", {}).get("dec", 0)
 
-    # Determine tags and values
-    period_val = get_val("period", "value", 6, " d")
-    period_source = data.get("period", {}).get("source", "tls")
-    period_badge = "badge-derived" if period_source == "tls" else "badge-literature"
-    period_label = "Derived (TLS)" if period_source == "tls" else "Adopted from Lit"
+    # ── Dyn Planet Cards ──────────────────────────────────────────────────
+    planets_cards_html = ""
+    planets_data = data.get("planets") or []
+    detections = data.get("metadata", {}).get("detections") or []
+    if isinstance(detections, str):
+        try:
+            detections = json.loads(detections)
+        except Exception:
+            detections = []
 
-    # Planet values
-    t0_val = data.get("planet", {}).get("t0")
-    if t0_val is not None:
-        t0_str = f"{float(t0_val):.4f} BTJD"
-        t0_badge = "badge-derived"
-        t0_label = "Derived (MCMC)"
-    else:
-        epoch_val = data.get("detection", {}).get("epoch")
-        t0_str = f"{float(epoch_val):.4f} BTJD" if epoch_val is not None else "N/A"
-        t0_badge = "badge-derived"
-        t0_label = "Derived (TLS)"
+    if planets_data:
+        for idx, pl in enumerate(planets_data):
+            p_val = pl.get("period", 0.0)
+            p_err = pl.get("period_err", 0.0)
+            t0_val = pl.get("t0", 0.0)
+            t0_err = pl.get("t0_err", 0.0)
+            rp_r_star = pl.get("rp_r_star", 0.0)
+            rp_r_star_err = pl.get("rp_r_star_err", 0.0)
+            rp_earth = pl.get("rp_earth", 0.0)
+            rp_earth_err = pl.get("rp_earth_err", 0.0)
+            t14_hr = pl.get("t14_hr", 0.0)
+            t14_hr_err = pl.get("t14_hr_err", 0.0)
+            b_val = pl.get("b", 0.0)
+            b_err = pl.get("b_err", 0.0)
+            a_au = pl.get("a_au", 0.0)
+            a_au_err = pl.get("a_au_err", 0.0)
+            t_eq = pl.get("t_eq", 0.0)
+            t_eq_err = pl.get("t_eq_err", 0.0)
 
-    rp_r_star = data.get("planet", {}).get("rp_r_star")
-    rp_r_star_err = data.get("planet", {}).get("rp_r_star_err")
-    if rp_r_star is not None:
-        rp_r_star_str = f"{float(rp_r_star):.5f}"
-        if rp_r_star_err is not None:
-            rp_r_star_str += f" &plusmn; {float(rp_r_star_err):.5f}"
-        rp_r_star_badge = "badge-derived"
-        rp_r_star_label = "Derived (MCMC)"
-    else:
-        rp_r_star_str = "N/A"
-        rp_r_star_badge = "badge-derived"
-        rp_r_star_label = "Derived (TLS)"
+            planets_cards_html += f"""
+            <div class="card">
+                <h2>Planet {idx + 1} Parameters</h2>
+                
+                <div class="param-row">
+                    <span class="param-label">Period (P)</span>
+                    <span class="param-value">
+                        {p_val:.6f} &plusmn; {p_err:.6f} d
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+                
+                <div class="param-row">
+                    <span class="param-label">Transit Epoch (t₀)</span>
+                    <span class="param-value">
+                        {t0_val:.4f} &plusmn; {t0_err:.4f} BTJD
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
 
-    rp_earth = data.get("planet", {}).get("rp_earth")
-    rp_earth_err = data.get("planet", {}).get("rp_earth_err")
-    if rp_earth is not None:
-        rp_earth_str = f"{float(rp_earth):.2f}"
-        if rp_earth_err is not None:
-            rp_earth_str += f" &plusmn; {float(rp_earth_err):.2f}"
-        rp_earth_str += " R<sub>&oplus;</sub>"
-        rp_earth_badge = "badge-derived"
-        rp_earth_label = "Derived (MCMC)"
-    else:
-        rp_earth_str = "N/A"
-        rp_earth_badge = "badge-derived"
-        rp_earth_label = "Derived (MCMC)"
+                <div class="param-row">
+                    <span class="param-label">Radius Ratio (Rₚ/Rₛ)</span>
+                    <span class="param-value">
+                        {rp_r_star:.5f} &plusmn; {rp_r_star_err:.5f}
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
 
-    t14 = data.get("planet", {}).get("t14_hr")
-    if t14 is not None:
-        t14_str = f"{float(t14):.3f} hr"
-        t14_badge = "badge-derived"
-        t14_label = "Derived (MCMC)"
-    else:
-        dur = data.get("detection", {}).get("duration_hr")
-        t14_str = f"{float(dur):.3f} hr" if dur is not None else "N/A"
-        t14_badge = "badge-derived"
-        t14_label = "Derived (TLS)"
+                <div class="param-row">
+                    <span class="param-label">Planet Radius (Rₚ)</span>
+                    <span class="param-value">
+                        {rp_earth:.2f} &plusmn; {rp_earth_err:.2f} R<sub>&oplus;</sub>
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
 
-    b = data.get("planet", {}).get("b")
-    b_err = data.get("planet", {}).get("b_err")
-    if b is not None:
-        b_str = f"{float(b):.3f}"
-        if b_err is not None:
-            b_str += f" &plusmn; {float(b_err):.3f}"
-        b_badge = "badge-derived"
-        b_label = "Derived (MCMC)"
-    else:
-        b_str = "N/A"
-        b_badge = "badge-derived"
-        b_label = "Derived (MCMC)"
+                <div class="param-row">
+                    <span class="param-label">Transit Duration (T₁₄)</span>
+                    <span class="param-value">
+                        {t14_hr:.3f} &plusmn; {t14_hr_err:.3f} hr
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
 
-    a_au = data.get("planet", {}).get("a_au")
-    if a_au is not None:
-        a_au_str = f"{float(a_au):.4f} AU"
-        a_au_badge = "badge-derived"
-        a_au_label = "Derived (MCMC)"
-    else:
-        a_au_str = "N/A"
-        a_au_badge = "badge-derived"
-        a_au_label = "Derived (MCMC)"
+                <div class="param-row">
+                    <span class="param-label">Impact Parameter (b)</span>
+                    <span class="param-value">
+                        {b_val:.3f} &plusmn; {b_err:.3f}
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
 
-    t_eq = data.get("planet", {}).get("t_eq")
-    if t_eq is not None:
-        t_eq_str = f"{float(t_eq):.0f} K"
-        t_eq_badge = "badge-derived"
-        t_eq_label = "Derived (MCMC)"
+                <div class="param-row">
+                    <span class="param-label">Semi-major Axis (a)</span>
+                    <span class="param-value">
+                        {a_au:.4f} &plusmn; {a_au_err:.4f} AU
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Equilibrium Temp (T<sub>eq</sub>)</span>
+                    <span class="param-value">
+                        {t_eq:.0f} &plusmn; {t_eq_err:.0f} K
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+            </div>
+            """
     else:
-        t_eq_str = "N/A"
-        t_eq_badge = "badge-derived"
-        t_eq_label = "Derived (MCMC)"
+        # Fallback to single planet if no list, or use detection details
+        single_pl = data.get("planet") or {}
+        if single_pl:
+            p_val = single_pl.get("period", 0.0)
+            t0_val = single_pl.get("t0", 0.0)
+            rp_r_star = single_pl.get("rp_r_star", 0.0)
+            rp_earth = single_pl.get("rp_earth", 0.0)
+            t14_hr = single_pl.get("t14_hr", 0.0)
+            b_val = single_pl.get("b", 0.0)
+            a_au = single_pl.get("a_au", 0.0)
+            t_eq = single_pl.get("t_eq", 0.0)
+
+            planets_cards_html += f"""
+            <div class="card">
+                <h2>Planet Parameters</h2>
+                
+                <div class="param-row">
+                    <span class="param-label">Period (P)</span>
+                    <span class="param-value">
+                        {p_val:.6f} d
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+                
+                <div class="param-row">
+                    <span class="param-label">Transit Epoch (t₀)</span>
+                    <span class="param-value">
+                        {t0_val:.4f} BTJD
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Radius Ratio (Rₚ/Rₛ)</span>
+                    <span class="param-value">
+                        {rp_r_star:.5f}
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Planet Radius (Rₚ)</span>
+                    <span class="param-value">
+                        {rp_earth:.2f} R<sub>&oplus;</sub>
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Transit Duration (T₁₄)</span>
+                    <span class="param-value">
+                        {t14_hr:.3f} hr
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Impact Parameter (b)</span>
+                    <span class="param-value">
+                        {b_val:.3f}
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Semi-major Axis (a)</span>
+                    <span class="param-value">
+                        {a_au:.4f} AU
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Equilibrium Temp (T<sub>eq</sub>)</span>
+                    <span class="param-value">
+                        {t_eq:.0f} K
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+            </div>
+            """
+        else:
+            # TLS/BLS detections only
+            for idx, det in enumerate(detections):
+                p_val = det.get("period", 0.0)
+                t0_val = det.get("epoch", 0.0)
+                duration_hr = det.get("duration_hr", 0.0)
+                depth = det.get("depth", 0.0)
+                method = det.get("method", "tls")
+                
+                planets_cards_html += f"""
+                <div class="card">
+                    <h2>Planet {idx + 1} Candidate (Search)</h2>
+                    
+                    <div class="param-row">
+                        <span class="param-label">Period (P)</span>
+                        <span class="param-value">
+                            {p_val:.6f} d
+                            <span class="badge badge-derived">Derived ({method.upper()})</span>
+                        </span>
+                    </div>
+                    
+                    <div class="param-row">
+                        <span class="param-label">Transit Epoch (t₀)</span>
+                        <span class="param-value">
+                            {t0_val:.4f} BTJD
+                            <span class="badge badge-derived">Derived ({method.upper()})</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Transit Duration (T₁₄)</span>
+                        <span class="param-value">
+                            {duration_hr:.3f} hr
+                            <span class="badge badge-derived">Derived ({method.upper()})</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Transit Depth</span>
+                        <span class="param-value">
+                            {depth:.5f}
+                            <span class="badge badge-derived">Derived ({method.upper()})</span>
+                        </span>
+                    </div>
+                </div>
+                """
+
+    # ── Dyn Phase Plots ───────────────────────────────────────────────────
+    search_phase_images_html = ""
+    if len(detections) > 1:
+        for idx in range(len(detections)):
+            search_phase_images_html += f"""
+                <div class="image-card">
+                    <img src="plots/04_phase_p{idx}.png" alt="Phase-Folded Light Curve Planet {idx + 1}" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Phase-Folded Light Curve Planet {idx + 1}: data folded at the search period of {detections[idx]['period']:.5f} d.</div>
+                </div>
+            """
+    else:
+        search_phase_images_html = """
+                <div class="image-card">
+                    <img src="plots/04_phase.png" alt="Phase-Folded Light Curve" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Phase-Folded Light Curve: data folded at the detected period, showing the characteristic transit dip.</div>
+                </div>
+        """
+
+    mcmc_phase_images_html = ""
+    if len(planets_data) > 1:
+        for idx in range(len(planets_data)):
+            mcmc_phase_images_html += f"""
+                <div class="image-card">
+                    <img src="plots/04_mcmc_phase_p{idx}.png" alt="MCMC Phase-Folded Light Curve Planet {idx + 1}" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Planet {idx + 1} MCMC Phase-Folded Transit: data folded at posterior period of {planets_data[idx].get('period', 0.0):.5f} d. Other planet transit signals and GP model have been subtracted.</div>
+                </div>
+            """
+    else:
+        mcmc_phase_images_html = """
+                <div class="image-card">
+                    <img src="plots/04_mcmc_phase.png" alt="MCMC Phase-Folded Light Curve" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">MCMC Phase-Folded Light Curve: data folded at the MCMC period. GP model has been subtracted.</div>
+                </div>
+        """
 
     # Stellar sources
     stellar_method = data.get("stellar", {}).get("method", "gaia_only")
@@ -469,73 +660,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
     <main>
         <div class="grid">
             <!-- Planet Parameters Card -->
-            <div class="card">
-                <h2>Planet Parameters</h2>
-                
-                <div class="param-row">
-                    <span class="param-label">Period (P)</span>
-                    <span class="param-value">
-                        {period_val}
-                        <span class="badge {period_badge}">{period_label}</span>
-                    </span>
-                </div>
-                
-                <div class="param-row">
-                    <span class="param-label">Transit Epoch (t₀)</span>
-                    <span class="param-value">
-                        {t0_str}
-                        <span class="badge {t0_badge}">{t0_label}</span>
-                    </span>
-                </div>
-
-                <div class="param-row">
-                    <span class="param-label">Radius Ratio (Rₚ/Rₛ)</span>
-                    <span class="param-value">
-                        {rp_r_star_str}
-                        <span class="badge {rp_r_star_badge}">{rp_r_star_label}</span>
-                    </span>
-                </div>
-
-                <div class="param-row">
-                    <span class="param-label">Planet Radius (Rₚ)</span>
-                    <span class="param-value">
-                        {rp_earth_str}
-                        <span class="badge {rp_earth_badge}">{rp_earth_label}</span>
-                    </span>
-                </div>
-
-                <div class="param-row">
-                    <span class="param-label">Transit Duration (T₁₄)</span>
-                    <span class="param-value">
-                        {t14_str}
-                        <span class="badge {t14_badge}">{t14_label}</span>
-                    </span>
-                </div>
-
-                <div class="param-row">
-                    <span class="param-label">Impact Parameter (b)</span>
-                    <span class="param-value">
-                        {b_str}
-                        <span class="badge {b_badge}">{b_label}</span>
-                    </span>
-                </div>
-
-                <div class="param-row">
-                    <span class="param-label">Semi-major Axis (a)</span>
-                    <span class="param-value">
-                        {a_au_str}
-                        <span class="badge {a_au_badge}">{a_au_label}</span>
-                    </span>
-                </div>
-
-                <div class="param-row">
-                    <span class="param-label">Equilibrium Temp (T<sub>eq</sub>)</span>
-                    <span class="param-value">
-                        {t_eq_str}
-                        <span class="badge {t_eq_badge}">{t_eq_label}</span>
-                    </span>
-                </div>
-            </div>
+            {planets_cards_html}
 
             <!-- Stellar Parameters Card -->
             <div class="card">
@@ -640,11 +765,11 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
         <div id="tab-lcs" class="tab-content active">
             <div class="image-gallery">
                 <div class="image-card">
-                    <img src="plots/raw.png" alt="Raw Light Curve" onerror="this.parentNode.style.display='none';">
+                    <img src="plots/01_raw.png" alt="Raw Light Curve" onerror="this.parentNode.style.display='none';">
                     <div class="image-caption">Raw TESS SAP/PDCSAP Light Curve before flat-fielding and outlier rejection.</div>
                 </div>
                 <div class="image-card">
-                    <img src="plots/flat.png" alt="Flattened Light Curve" onerror="this.parentNode.style.display='none';">
+                    <img src="plots/02_flat.png" alt="Flattened Light Curve" onerror="this.parentNode.style.display='none';">
                     <div class="image-caption">Flattened Light Curve: detrended using a spline or high-pass filter, ready for transit search.</div>
                 </div>
             </div>
@@ -654,13 +779,10 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
         <div id="tab-search" class="tab-content">
             <div class="image-gallery">
                 <div class="image-card">
-                    <img src="plots/tls_periodogram.png" alt="TLS Periodogram" onerror="this.src='plots/bls_periodogram.png'; this.onerror=function(){{this.parentNode.style.display='none';}}">
+                    <img src="plots/03_tls_periodogram.png" alt="TLS Periodogram" onerror="this.src='plots/03_bls_periodogram.png'; this.onerror=function(){{this.parentNode.style.display='none';}}">
                     <div class="image-caption">TLS / BLS Periodogram: power vs trial period (days). The peak indicates the best-fit orbital period.</div>
                 </div>
-                <div class="image-card">
-                    <img src="plots/phase.png" alt="Phase-Folded Light Curve" onerror="this.parentNode.style.display='none';">
-                    <div class="image-caption">Phase-Folded Light Curve: data folded at the detected period, showing the characteristic transit dip.</div>
-                </div>
+                {search_phase_images_html}
             </div>
         </div>
 
@@ -668,23 +790,24 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
         <div id="tab-mcmc" class="tab-content">
             <div class="image-gallery">
                 <div class="image-card">
-                    <img src="plots/bayesian_fit.png" alt="Bayesian Transit Fit" onerror="this.parentNode.style.display='none';">
+                    <img src="plots/06_bayesian_fit.png" alt="Bayesian Transit Fit" onerror="this.parentNode.style.display='none';">
                     <div class="image-caption">Bayesian Transit Fit: Best-fit Keplerian transit model with GP systematics overlaid on the raw data (top) and residuals (bottom).</div>
                 </div>
                 <div class="image-card">
-                    <img src="plots/posterior_predictive.png" alt="Posterior Predictive Check" onerror="this.parentNode.style.display='none';">
+                    <img src="plots/09_posterior_predictive.png" alt="Posterior Predictive Check" onerror="this.parentNode.style.display='none';">
                     <div class="image-caption">Posterior Predictive Check: Draws from the posterior overlaid on the transit data.</div>
                 </div>
+                {mcmc_phase_images_html}
                 <div class="image-card">
-                    <img src="plots/residuals.png" alt="Residuals" onerror="this.parentNode.style.display='none';">
+                    <img src="plots/05_residuals.png" alt="Residuals" onerror="this.parentNode.style.display='none';">
                     <div class="image-caption">Residuals vs Time (top) and vs Phase (bottom) showing the goodness of the fit.</div>
                 </div>
                 <div class="image-card">
-                    <img src="plots/corner.png" alt="Corner Plot" onerror="this.parentNode.style.display='none';">
+                    <img src="plots/07_corner.png" alt="Corner Plot" onerror="this.parentNode.style.display='none';">
                     <div class="image-caption">Corner Plot showing covariance and 1D/2D posterior probability distributions for the key transit parameters.</div>
                 </div>
                 <div class="image-card">
-                    <img src="plots/trace.png" alt="MCMC Trace Plots" onerror="this.parentNode.style.display='none';">
+                    <img src="plots/08_trace.png" alt="MCMC Trace Plots" onerror="this.parentNode.style.display='none';">
                     <div class="image-caption">MCMC Trace Plots: Parameter values over chain steps to verify proper mixing and convergence.</div>
                 </div>
             </div>

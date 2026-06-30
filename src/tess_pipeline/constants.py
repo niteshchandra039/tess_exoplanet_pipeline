@@ -29,6 +29,7 @@ DEFAULT_SEARCH_METHOD: str = "tls"  # "tls", "bls", or "both"
 DEFAULT_PERIOD_MIN: float = 0.5     # days
 DEFAULT_PERIOD_MAX: float = 100.0   # days
 DEFAULT_DURATION_GRID_STEP: float = 1.05
+DEFAULT_MAX_PLANETS: int = 1
 
 # ─── Stellar characterization ────────────────────────────────────────────────
 

@@ -18,6 +18,8 @@ def main() -> None:
         inference=True,
         inference_backend="exoplanet",  # uses exoplanet/PyMC/celerite2
         search_method="tls",
+        sectors="all",
+        max_planets=2,
         chains=2,
         draws=10,
         tune=10,

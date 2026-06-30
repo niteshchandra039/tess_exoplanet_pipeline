@@ -52,63 +52,91 @@ class PeriodStage:
         return self.archive_period
 
     def search(self) -> dict[str, Any]:
-        """Run TLS/BLS when no archive period is available (diagnostic if archive exists)."""
+        """Run TLS/BLS period search (support multiple planets)."""
         cfg = self.config
         lc = self.results.lightcurve
         if lc is None:
             raise RuntimeError("Call load_lightcurves() and preprocess() before search_period()")
 
-        if self.archive_period is None:
-            log.info("No archive period; running %s search", cfg.search_method.upper())
-            from tess_pipeline.transit.detection import search_period
+        from tess_pipeline.transit.detection import search_multiple_planets, search_period
+        import numpy as np
 
-            detection = search_period(
+        detections = []
+
+        if self.archive_period is not None:
+            log.info("Archive period found: %.6f d; refining Planet 1", self.archive_period)
+            try:
+                half_width = min(0.01, self.archive_period * 0.002)
+                search_min = max(cfg.period_min, self.archive_period - half_width)
+                search_max = min(cfg.period_max, self.archive_period + half_width)
+
+                det1 = search_period(
+                    lc,
+                    method=cfg.search_method,
+                    period_min=search_min,
+                    period_max=search_max,
+                    stellar=None,
+                )
+                det1["note"] = "refined archive period"
+            except Exception as exc:
+                log.warning("Refinement of archive period failed: %s", exc)
+                det1 = {
+                    "period": self.archive_period,
+                    "epoch": float(lc.time.value[np.argmin(lc.flux.value)]),
+                    "duration_hr": 3.0,
+                    "depth": float(1.0 - np.percentile(lc.flux.value, 1)),
+                    "method": "archive",
+                    "sde": 10.0,
+                    "snr": 10.0,
+                    "note": "archive fallback",
+                }
+            detections.append(det1)
+
+            # If max_planets > 1, search for more planets on the masked lightcurve
+            if cfg.max_planets > 1:
+                period = det1["period"]
+                t0 = det1["epoch"]
+                duration_days = (det1["duration_hr"] or 3.0) / 24.0
+                times = lc.time.value
+                phase = (times - t0 + 0.5 * period) % period - 0.5 * period
+                in_transit = np.abs(phase) < (0.75 * duration_days)
+                
+                masked_lc = lc[~in_transit]
+                
+                extra_dets = search_multiple_planets(
+                    masked_lc,
+                    method=cfg.search_method,
+                    period_min=cfg.period_min,
+                    period_max=cfg.period_max,
+                    stellar=None,
+                    max_planets=cfg.max_planets - 1,
+                )
+                detections.extend(extra_dets)
+        else:
+            # No archive period, search all planets from scratch
+            detections = search_multiple_planets(
                 lc,
                 method=cfg.search_method,
                 period_min=cfg.period_min,
                 period_max=cfg.period_max,
                 stellar=None,
+                max_planets=cfg.max_planets,
             )
-            self.results.detection = detection
+
+        # Store detections in results
+        self.results.metadata["detections"] = detections
+        if detections:
+            self.results.detection = detections[0]
             self.results.period = {
-                "value": detection["period"],
-                "source": detection["method"],
+                "value": detections[0]["period"],
+                "source": detections[0]["method"],
             }
-            log.info(
-                "Best period: %.6f d (SDE/SNR = %.2f)",
-                detection["period"],
-                detection.get("sde", detection.get("snr", float("nan"))),
-            )
-            return detection
+            if self.archive_period is not None:
+                self.results.period["source"] = "archive"
+            log.info("Detections completed. Found %d planet candidate(s).", len(detections))
+        else:
+            raise RuntimeError("No period search detections were found.")
 
-        try:
-            from tess_pipeline.transit.detection import search_period
-
-            # Optimize the search by restricting the range to a narrow window around
-            # the known archive period. This avoids scanning the full period range (e.g., 0.5–100d)
-            # and reduces computation time of the TLS/BLS grid by orders of magnitude.
-            half_width = min(0.01, self.archive_period * 0.002)
-            search_min = max(cfg.period_min, self.archive_period - half_width)
-            search_max = min(cfg.period_max, self.archive_period + half_width)
-
-            detection = search_period(
-                lc,
-                method=cfg.search_method,
-                period_min=search_min,
-                period_max=search_max,
-                stellar=None,
-            )
-            detection["note"] = "diagnostic only; archive period used"
-            self.results.detection = detection
-        except Exception as exc:  # noqa: BLE001
-            log.warning("Period search for diagnostics failed: %s", exc)
-            self.results.detection = {
-                "period": self.archive_period,
-                "epoch": None,
-                "duration_hr": None,
-                "depth": None,
-                "note": "archive period; no TLS/BLS run",
-            }
         return self.results.detection
 
     @property

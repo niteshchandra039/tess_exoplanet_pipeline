@@ -33,7 +33,7 @@ def check_inference_installed() -> None:
         packages = ", ".join(missing)
         raise InferenceNotInstalledError(
             "Bayesian inference packages are missing or incomplete: "
-            f"{packages}. Install the full stack with:\n"
-            "  pip install -e \".[inference]\"\n"
+            f"{packages}. Reinstall the package with:\n"
+            "  pip install -e .\n"
             "from the tess_exoplanet_pipeline project root."
         )

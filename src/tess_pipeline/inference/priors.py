@@ -57,52 +57,44 @@ def add_stellar_priors(
 def add_orbital_priors(
     model: Any,
     *,
-    period: float,
-    epoch: float | None,
+    period: float | list[float] | np.ndarray,
+    epoch: float | None | list[float | None] | np.ndarray,
     period_fixed: bool = True,
 ) -> dict[str, Any]:
     """
-    Add orbital parameter priors to a PyMC model.
-
-    Parameters
-    ----------
-    period : float
-        Best period from detection (days). Used as Gaussian mean.
-    epoch : float | None
-        Best epoch from detection (BTJD). Used as Gaussian mean.
-    period_fixed : bool
-        If True, fix period to the detection value (faster convergence).
-
-    Returns dict of PyMC variables.
+    Add orbital parameter priors to a PyMC model (supports multiple planets).
     """
     import pymc as pm
     import numpy as np
 
+    periods = np.atleast_1d(period)
+    epochs = np.atleast_1d(epoch) if epoch is not None else np.array([None] * len(periods))
+    n_planets = len(periods)
+
     with model:
         if period_fixed:
-            period_var = pm.Data("period", period)
+            period_var = pm.Data("period", periods)
         else:
             period_var = pm.Normal(
                 "period",
-                mu=period,
-                sigma=period * 0.01,   # 1% width
-                initval=period,
+                mu=periods,
+                sigma=periods * 0.01,   # 1% width
+                shape=n_planets,
+                initval=periods,
             )
 
-        if epoch is not None:
-            t0_var = pm.Normal(
-                "t0",
-                mu=epoch,
-                sigma=0.1,   # 0.1 day width on transit midtime
-                initval=epoch,
-            )
-        else:
-            t0_var = pm.Uniform(
-                "t0",
-                lower=epoch - period if epoch else 0.0,
-                upper=epoch + period if epoch else period,
-                initval=epoch,
-            )
+        t0_mu = []
+        for ep in epochs:
+            t0_mu.append(ep if ep is not None else 0.0)
+        t0_mu = np.array(t0_mu)
+
+        t0_var = pm.Normal(
+            "t0",
+            mu=t0_mu,
+            sigma=0.1,   # 0.1 day width on transit midtime
+            shape=n_planets,
+            initval=t0_mu,
+        )
 
     return {"period": period_var, "t0": t0_var}
 
@@ -110,19 +102,24 @@ def add_orbital_priors(
 def add_transit_shape_priors(
     model: Any,
     *,
-    depth_estimate: float | None = None,
+    depth_estimate: float | None | list[float | None] | np.ndarray = None,
     fit_duration: bool = False,
+    n_planets: int = 1,
 ) -> dict[str, Any]:
     """
-    Add transit shape priors (Rp/R★, b, limb darkening, and optionally T14).
-
-    Uses Kipping (2013) q1/q2 parameterization for quadratic limb darkening.
-    Reference: Kipping (2013, MNRAS 435, 2152) for the efficient limb darkening parameterization.
+    Add transit shape priors (Rp/R★, b, limb darkening, and optionally T14) (supports multiple planets).
     """
     import pymc as pm
     import numpy as np
 
-    rp_init = math.sqrt(depth_estimate) if depth_estimate else 0.1
+    if depth_estimate is None:
+        depths = np.array([0.01] * n_planets)
+    else:
+        depths = np.atleast_1d(depth_estimate)
+        if len(depths) < n_planets:
+            depths = np.pad(depths, (0, n_planets - len(depths)), constant_values=0.01)
+
+    rp_inits = np.array([math.sqrt(d) if d and d > 0 else 0.1 for d in depths])
 
     with model:
         # ── Planet-to-star radius ratio ────────────────────────────────────────
@@ -130,12 +127,13 @@ def add_transit_shape_priors(
             "log_rp",
             lower=np.log(0.001),
             upper=np.log(0.5),
-            initval=np.log(rp_init),
+            shape=n_planets,
+            initval=np.log(rp_inits),
         )
         rp_r_star = pm.Deterministic("rp_r_star", pm.math.exp(log_rp))
 
         # ── Impact parameter ──────────────────────────────────────────────────
-        b = pm.Uniform("b", lower=0.0, upper=1.0 + rp_r_star, initval=0.1)
+        b = pm.Uniform("b", lower=0.0, upper=1.0 + rp_r_star, shape=n_planets, initval=np.array([0.1] * n_planets))
 
         # ── Transit duration T14 (days) ────────────────────────────────────────
         t14 = None
@@ -144,11 +142,12 @@ def add_transit_shape_priors(
                 "log_t14",
                 lower=np.log(0.01),
                 upper=np.log(0.5),
-                initval=np.log(0.1),
+                shape=n_planets,
+                initval=np.array([0.1] * n_planets),
             )
             t14 = pm.Deterministic("t14", pm.math.exp(log_t14))
 
-        # ── Kipping (2013) limb darkening ──────────────────────────────────────
+        # ── Kipping (2013) limb darkening (Shared stellar property) ────────────
         q1 = pm.Uniform("q1", lower=0.0, upper=1.0, initval=0.3)
         q2 = pm.Uniform("q2", lower=0.0, upper=1.0, initval=0.3)
 

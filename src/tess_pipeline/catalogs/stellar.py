@@ -76,7 +76,7 @@ def _run_isoclassify(gaia_params: dict[str, Any]) -> dict[str, Any] | None:
     except ImportError:
         log.warning(
             "isoclassify is not installed. "
-            "Install with: pip install 'tess-pipeline[stellar]'. "
+            "Reinstall the package with: pip install -e . "
             "Falling back to Gaia-only parameters."
         )
         return None

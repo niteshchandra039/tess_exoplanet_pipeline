@@ -51,12 +51,22 @@ class VisualizationStage:
                 )
 
         if results.lightcurve is not None and results.period:
-            figures["phase"] = vtr.plot_phase_curve(
-                results.lightcurve,
-                period=results.period["value"],
-                epoch=results.detection.get("epoch"),
-                model=results.model or None,
-            )
+            detections = results.metadata.get("detections", [])
+            if len(detections) > 1:
+                for idx, det in enumerate(detections):
+                    figures[f"phase_p{idx}"] = vtr.plot_phase_curve(
+                        results.lightcurve,
+                        period=det["period"],
+                        epoch=det["epoch"],
+                        model=None,
+                    )
+            else:
+                figures["phase"] = vtr.plot_phase_curve(
+                    results.lightcurve,
+                    period=results.period["value"],
+                    epoch=results.detection.get("epoch"),
+                    model=results.model or None,
+                )
             figures["residuals"] = vdiag.plot_residuals(
                 results.lightcurve,
                 results.model or {},
@@ -68,12 +78,22 @@ class VisualizationStage:
             figures["bayesian_fit"] = vtr.plot_bayesian_fit(
                 results.lightcurve, results.posterior, results.model
             )
-            figures["phase"] = vtr.plot_mcmc_phase_curve(
-                results.lightcurve,
-                results.posterior,
-                period=results.period["value"],
-                epoch=results.detection.get("epoch"),
-            )
+            if results.planets:
+                for idx, pl in enumerate(results.planets):
+                    figures[f"mcmc_phase_p{idx}"] = vtr.plot_mcmc_phase_curve(
+                        results.lightcurve,
+                        results.posterior,
+                        period=pl["period"],
+                        epoch=pl["t0"],
+                        planet_idx=idx,
+                    )
+            else:
+                figures["mcmc_phase"] = vtr.plot_mcmc_phase_curve(
+                    results.lightcurve,
+                    results.posterior,
+                    period=results.period["value"],
+                    epoch=results.detection.get("epoch"),
+                )
             figures["corner"] = vpost.plot_corner(results.posterior)
             figures["trace"] = vpost.plot_trace(results.posterior)
             figures["posterior_predictive"] = vpost.plot_posterior_predictive(

@@ -46,7 +46,7 @@ with pm.Model() as model:
     
     star_lc = xo.LimbDarkLightCurve(u1, u2)
     light_curves = star_lc.get_light_curve(orbit=orbit, r=rp_r_star, t=time_arr)
-    transit_model = pm.Deterministic("transit_model", pm.math.sum(light_curves, axis=-1) + mean_flux[0])
+    transit_model = pm.Deterministic("transit_model", pm.math.sum(light_curves, axis=-1) + mean_flux[0] + 1.0)
     
     log_sigma_gp = pm.Normal("log_sigma_gp", mu=-3.0, sigma=2.0, initval=-3.0)
     log_rho_gp = pm.Normal("log_rho_gp", mu=np.log(5.0), sigma=2.0, initval=np.log(5.0))

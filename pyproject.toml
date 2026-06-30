@@ -35,26 +35,25 @@ dependencies = [
     "transitleastsquares>=1.0.31",
     "tqdm>=4.66",
     "tomllib; python_version < '3.11'",
-]
-
-[project.optional-dependencies]
-inference = [
+    # Bayesian inference
     "exoplanet>=0.5.4",
     "exoplanet-core>=0.3.0",
     "pymc>=5.0",
     "celerite2>=0.2.1",
     "arviz>=0.16",
-]
-stellar = ["isoclassify"]
-phoebe = ["phoebe>=2.4"]
-dev = [
+    # Stellar characterization
+    "isoclassify",
+    # Advanced modeling (PHOEBE)
+    "phoebe>=2.4",
+    # Development tools
     "pytest>=7.4",
     "pytest-cov>=4.1",
     "ruff>=0.1",
     "mypy>=1.5",
+    # Documentation
+    "sphinx>=7",
+    "myst-parser>=2",
 ]
-docs = ["sphinx>=7", "myst-parser>=2"]
-all = ["tess-pipeline[inference,stellar,phoebe,dev]"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -65,7 +65,7 @@ class InferenceError(TessPipelineError):
 
 
 class InferenceNotInstalledError(InferenceError):
-    """Raised when the [inference] extras are not installed."""
+    """Raised when required inference libraries fail to import."""
 
 
 class ConvergenceWarning(UserWarning):

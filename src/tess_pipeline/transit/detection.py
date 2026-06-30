@@ -94,3 +94,93 @@ def _pack(result: dict[str, Any], method: str) -> dict[str, Any]:
         "sde": result.get("sde"),
         "snr": result.get("snr"),
     }
+
+
+def search_multiple_planets(
+    lc: Any,
+    *,
+    method: str = "tls",
+    period_min: float = 0.5,
+    period_max: float = 100.0,
+    stellar: dict[str, Any] | None = None,
+    max_planets: int = 1,
+) -> list[dict[str, Any]]:
+    """
+    Iteratively search for multiple transiting planets by masking found signals.
+    """
+    import numpy as np
+
+    current_lc = lc.copy()
+    detections = []
+
+    for i in range(max_planets):
+        if len(current_lc) < 100:
+            log.info("Too few data points remaining to search for Planet %d", i + 1)
+            break
+
+        is_broad = (period_max - period_min) >= 0.5
+        lc_for_search = current_lc
+
+        if is_broad and len(current_lc) > 50_000:
+            # Bin to 10-min cadence for broad search: reduces points ~5x
+            # Original cadence is typically 2-min (SPOC), so bin_factor=5
+            try:
+                import numpy as np
+                time_arr = current_lc.time.value
+                time_span_days = float(np.max(time_arr) - np.min(time_arr))
+                n_bins = max(1000, int(time_span_days * 24 * 6))  # 10-min bins
+                lc_for_search = current_lc.bin(n_bins=n_bins)
+                log.info(
+                    "Binned LC from %d → %d points (10-min cadence) for broad TLS search",
+                    len(current_lc), len(lc_for_search),
+                )
+            except Exception as bin_exc:
+                log.warning("Binning failed (%s); using full-resolution LC", bin_exc)
+                lc_for_search = current_lc
+
+        log.info("Searching for Planet %d candidate...", i + 1)
+        try:
+            det = search_period(
+                lc_for_search,
+                method=method,
+                period_min=period_min,
+                period_max=period_max,
+                stellar=stellar,
+            )
+        except Exception as exc:
+            log.warning("Planet %d search failed: %s", i + 1, exc)
+            break
+
+        sde = det.get("sde", 0.0)
+        snr = det.get("snr", 0.0)
+        sig = max(sde, snr)
+
+        # For planet 2+, enforce SDE/SNR threshold of 6.0
+        if len(detections) > 0 and sig < 6.0:
+            log.info("Signal significance (%.2f) below threshold of 6.0. Stopping search.", sig)
+            break
+
+        detections.append(det)
+        log.info(
+            "Planet %d found: Period = %.6f d, epoch = %.4f, SDE/SNR = %.2f",
+            i + 1,
+            det["period"],
+            det["epoch"],
+            sig,
+        )
+
+        if i == max_planets - 1:
+            break
+
+        # Mask the found transit in current_lc
+        period = det["period"]
+        t0 = det["epoch"]
+        duration_days = (det["duration_hr"] or 3.0) / 24.0
+
+        times = current_lc.time.value
+        phase = (times - t0 + 0.5 * period) % period - 0.5 * period
+        in_transit = np.abs(phase) < (0.75 * duration_days)
+
+        current_lc = current_lc[~in_transit]
+
+    return detections

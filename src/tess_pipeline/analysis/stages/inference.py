@@ -46,6 +46,7 @@ class InferenceStage:
                 tune=cfg.tune,
                 target_accept=cfg.target_accept,
                 gp_kernel=cfg.gp_kernel,
+                detections=self.results.metadata.get("detections"),
             )
             self.results.posterior = posterior
             self.results.model = model_outputs
@@ -60,6 +61,28 @@ class InferenceStage:
             self.results.planet = batman_result.get("planet_params", {})
             return batman_result
 
+        if cfg.inference and cfg.inference_backend == "phoebe":
+            log.info("Using PHOEBE 2 modeling backend")
+            from tess_pipeline.transit.phoebe_model import run_phoebe_fit
+            import numpy as np
+
+            rv_times = np.asarray(cfg.rv_times) if cfg.rv_times else None
+            rv_vals = np.asarray(cfg.rv_vals) if cfg.rv_vals else None
+            rv_errs = np.asarray(cfg.rv_errs) if cfg.rv_errs else None
+
+            phoebe_result = run_phoebe_fit(
+                lc,
+                period=period,
+                stellar=stellar,
+                rv_times=rv_times,
+                rv_vals=rv_vals,
+                rv_errs=rv_errs,
+                input_is_magnitude=cfg.input_is_magnitude,
+            )
+            self.results.model = phoebe_result
+            self.results.planet = phoebe_result.get("planet_params", {})
+            return phoebe_result
+
         log.info("Inference disabled; skipping transit fit")
         return None
 
@@ -70,9 +93,17 @@ class InferenceStage:
 
         from tess_pipeline.transit.parameters import derive_planet_parameters
 
-        planet = derive_planet_parameters(self.results.posterior, self.results.stellar)
-        self.results.planet = planet
-        return planet
+        planets = derive_planet_parameters(self.results.posterior, self.results.stellar)
+        if isinstance(planets, list):
+            self.results.planets = planets
+            if planets:
+                self.results.planet = planets[0]
+            else:
+                self.results.planet = {}
+        else:
+            self.results.planet = planets
+            self.results.planets = [planets]
+        return self.results.planet
 
     def check_convergence(self) -> dict[str, Any]:
         """Run MCMC convergence diagnostics."""

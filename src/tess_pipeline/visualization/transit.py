@@ -146,10 +146,11 @@ def plot_mcmc_phase_curve(
     period: float,
     epoch: float | None = None,
     n_bins: int = 50,
+    planet_idx: int = 0,
 ) -> plt.Figure:
     """
-    Plot the phase-folded light curve using MCMC posterior samples.
-    Shows the de-trended data (data - GP), binned data, and the posterior median
+    Plot the phase-folded light curve using MCMC posterior samples (supports multiple planets).
+    Shows the de-trended data (data - GP - other transits), binned data, and the posterior median
     transit model with its 68% credible interval (shaded region).
     """
     import lightkurve as lk
@@ -175,32 +176,60 @@ def plot_mcmc_phase_curve(
     else:
         gp_mod = 0.0
 
+    # Extract and subtract other planets' transit models (pre-whitening)
+    other_transit_mod = np.zeros_like(flux)
+    j = 0
+    while True:
+        key = f"light_curve_p{j}"
+        if key in flat_samps.data_vars:
+            if j != planet_idx:
+                other_transit_mod += np.median(flat_samps[key].values, axis=-1)
+            j += 1
+        else:
+            break
+
     # De-trend the data
-    detrended_flux = flux - gp_mod
+    detrended_flux = flux - gp_mod - other_transit_mod
+
+    # Extract MCMC derived period and epoch for this planet
+    if "period" in flat_samps.data_vars:
+        if flat_samps["period"].values.ndim == 2:
+            period_med = np.median(flat_samps["period"].values[planet_idx, :])
+            period_std = np.std(flat_samps["period"].values[planet_idx, :])
+            epoch_med = np.median(flat_samps["t0"].values[planet_idx, :])
+        else:
+            period_med = np.median(flat_samps["period"].values)
+            period_std = np.std(flat_samps["period"].values)
+            epoch_med = np.median(flat_samps["t0"].values)
+    else:
+        period_med = period
+        period_std = 0.0
+        epoch_med = epoch or time[0]
 
     # Phase-fold the de-trended data using a temporary lightkurve LightCurve
     detrended_lc = lk.LightCurve(time=lc.time, flux=detrended_flux, flux_err=lc.flux_err)
     phase, y_fold, y_fold_err = phase_fold(
         detrended_lc,
-        period=period,
-        epoch=epoch,
+        period=period_med,
+        epoch=epoch_med,
     )
 
     # Plot raw scatter
-    ax.scatter(phase, y_fold, s=1.0, color="black", alpha=0.25, label="Data", rasterized=True, zorder=-1000)
+    ax.scatter(phase * period_med, y_fold, s=1.0, color="black", alpha=0.25, label="Data", rasterized=True, zorder=-1000)
 
     # Plot binned data
     bin_phase, bin_flux, bin_err = bin_phase_curve(phase, y_fold, y_fold_err, n_bins=n_bins)
     valid = np.isfinite(bin_flux)
     ax.errorbar(
-        bin_phase[valid], bin_flux[valid], yerr=bin_err[valid],
+        bin_phase[valid] * period_med, bin_flux[valid], yerr=bin_err[valid],
         fmt="o", ms=4, color="#16a34a", elinewidth=0.8, capsize=2, label="Binned", zorder=100
     )
 
     # Plot the posterior median model with 68% credible interval (16th to 84th percentile)
-    if "lc_pred" in flat_samps.data_vars:
+    lc_pred_key = f"lc_pred_p{planet_idx}"
+    if lc_pred_key in flat_samps.data_vars:
         phase_grid = np.linspace(-0.3, 0.3, 200)
-        pred = np.percentile(flat_samps["lc_pred"].values, [16, 50, 84], axis=-1)
+        pred = np.percentile(flat_samps[lc_pred_key].values, [16, 50, 84], axis=-1)
 
         # Plot median model
         ax.plot(phase_grid, pred[1], color="#ea580c", linewidth=2.0, label="Transit Model", zorder=1000)
@@ -210,20 +239,18 @@ def plot_mcmc_phase_curve(
             color="#ea580c", alpha=0.35, zorder=500, label="68% Credible Band"
         )
         art.set_edgecolor("none")
-    elif "transit_model" in flat_samps.data_vars:
-        transit_med = np.median(flat_samps["transit_model"].values, axis=-1)
-        transit_lc = lk.LightCurve(time=lc.time, flux=transit_med, flux_err=lc.flux_err)
+    elif f"light_curve_p{planet_idx}" in flat_samps.data_vars:
+        transit_med = np.median(flat_samps[f"light_curve_p{planet_idx}"].values, axis=-1)
+        transit_lc = lk.LightCurve(time=lc.time, flux=transit_med + 1.0, flux_err=lc.flux_err)
         _, t_fold, _ = phase_fold(
             transit_lc,
-            period=period,
-            epoch=epoch,
+            period=period_med,
+            epoch=epoch_med,
         )
         sort_idx = np.argsort(phase)
-        ax.plot(phase[sort_idx], t_fold[sort_idx], color="#ea580c", linewidth=2.0, label="Transit Model", zorder=1000)
+        ax.plot(phase[sort_idx] * period_med, t_fold[sort_idx], color="#ea580c", linewidth=2.0, label="Transit Model", zorder=1000)
 
     # Annotate the period
-    period_med = np.median(flat_samps["period"].values) if "period" in flat_samps.data_vars else period
-    period_std = np.std(flat_samps["period"].values) if "period" in flat_samps.data_vars else 0.0
     txt = f"P = {period_med:.5f} ± {period_std:.5f} d"
     ax.annotate(
         txt, (0.02, 0.05), xycoords="axes fraction",
@@ -236,6 +263,7 @@ def plot_mcmc_phase_curve(
     ax.set_ylim(np.percentile(y_fold, 1) - 0.002, np.percentile(y_fold, 99) + 0.002)
     ax.set_xlabel("Time since transit [days]")
     ax.set_ylabel("De-trended Relative Flux")
+    ax.set_title(f"Phase-Folded MCMC Transit - Planet {planet_idx + 1}")
     ax.legend(fontsize=9, loc="upper right")
     fig.tight_layout()
     return fig
