@@ -222,13 +222,14 @@ def run_bayesian_fit(
             draws=draws,
             tune=tune,
             chains=chains,
+            cores=min(chains, 8),
             target_accept=target_accept,
             initvals=init_dict,
             init="adapt_diag",
             return_inferencedata=True,
             progressbar=True,
-            idata_kwargs={"log_likelihood": True},
         )
+        pm.compute_log_likelihood(trace)
 
     log.info("Sampling complete")
 

@@ -58,8 +58,8 @@ def build_gp(
 
     with model:
         # ── GP hyperparameters ────────────────────────────────────────────────
-        log_sigma_gp = pm.Normal("log_sigma_gp", mu=-3.0, sigma=2.0, initval=-3.0)
-        log_rho_gp = pm.Normal("log_rho_gp", mu=np.log(10.0), sigma=2.0, initval=np.log(10.0))
+        log_sigma_gp = pm.Normal("log_sigma_gp", mu=-3.0, sigma=2.0)
+        log_rho_gp = pm.Normal("log_rho_gp", mu=np.log(10.0), sigma=2.0)
 
         sigma_gp = pm.Deterministic("sigma_gp", pm.math.exp(log_sigma_gp))
         rho_gp = pm.Deterministic("rho_gp", pm.math.exp(log_rho_gp))

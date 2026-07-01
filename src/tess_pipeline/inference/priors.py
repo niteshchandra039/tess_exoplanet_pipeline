@@ -40,7 +40,6 @@ def add_stellar_priors(
                 mu=rho_star,
                 sigma=rho_err,
                 lower=0.0,
-                initval=rho_star,
             )
         else:
             # Broad log-normal when stellar density is unknown
@@ -48,7 +47,6 @@ def add_stellar_priors(
                 "rho_star",
                 mu=np.log(1.4),   # solar density in g/cm³
                 sigma=1.0,
-                initval=1.4,
             )
 
     return {"rho_star": rho_star_var}
@@ -80,7 +78,6 @@ def add_orbital_priors(
                 mu=periods,
                 sigma=periods * 0.01,   # 1% width
                 shape=n_planets,
-                initval=periods,
             )
 
         t0_mu = []
@@ -93,7 +90,6 @@ def add_orbital_priors(
             mu=t0_mu,
             sigma=0.1,   # 0.1 day width on transit midtime
             shape=n_planets,
-            initval=t0_mu,
         )
 
     return {"period": period_var, "t0": t0_var}
@@ -128,12 +124,11 @@ def add_transit_shape_priors(
             lower=np.log(0.001),
             upper=np.log(0.5),
             shape=n_planets,
-            initval=np.log(rp_inits),
         )
         rp_r_star = pm.Deterministic("rp_r_star", pm.math.exp(log_rp))
 
         # ── Impact parameter ──────────────────────────────────────────────────
-        b = pm.Uniform("b", lower=0.0, upper=1.0 + rp_r_star, shape=n_planets, initval=np.array([0.1] * n_planets))
+        b = pm.Uniform("b", lower=0.0, upper=1.0 + rp_r_star, shape=n_planets)
 
         # ── Transit duration T14 (days) ────────────────────────────────────────
         t14 = None
@@ -143,13 +138,12 @@ def add_transit_shape_priors(
                 lower=np.log(0.01),
                 upper=np.log(0.5),
                 shape=n_planets,
-                initval=np.array([0.1] * n_planets),
             )
             t14 = pm.Deterministic("t14", pm.math.exp(log_t14))
 
         # ── Kipping (2013) limb darkening (Shared stellar property) ────────────
-        q1 = pm.Uniform("q1", lower=0.0, upper=1.0, initval=0.3)
-        q2 = pm.Uniform("q2", lower=0.0, upper=1.0, initval=0.3)
+        q1 = pm.Uniform("q1", lower=0.0, upper=1.0)
+        q2 = pm.Uniform("q2", lower=0.0, upper=1.0)
 
         # Transform to physical (u1, u2):  u1 = 2√q1·q2, u2 = √q1(1 - 2q2)
         sqrt_q1 = pm.math.sqrt(q1)
@@ -185,13 +179,11 @@ def add_systematic_priors(
             mu=0.0,
             sigma=0.01,
             shape=n_sectors,
-            initval=[0.0] * n_sectors,
         )
         log_jitter = pm.Normal(
             "log_jitter",
             mu=-6.0,
             sigma=2.0,
-            initval=-6.0,
         )
         jitter = pm.Deterministic("jitter", pm.math.exp(log_jitter))
 
