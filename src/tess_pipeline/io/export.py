@@ -174,6 +174,78 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
         except Exception:
             detections = []
 
+    # ── Model Comparison Table ────────────────────────────────────────────
+    model_comparison_html = ""
+    if len(detections) >= 2 or "model_comparison" in data.get("metadata", {}):
+        comp = data.get("metadata", {}).get("model_comparison") or {}
+        delta_bic = comp.get("delta_bic")
+        prob_multi = comp.get("probability_multiplanet")
+        
+        comparison_info = ""
+        if delta_bic is not None and prob_multi is not None:
+            comparison_info = f"""
+            <div class="param-row" style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem;">
+                <span class="param-label">BIC Model Comparison (ΔBIC)</span>
+                <span class="param-value">
+                    {delta_bic:.2f}
+                    <span class="badge badge-derived">BIC(2p) - BIC(1p)</span>
+                </span>
+            </div>
+            <div class="param-row">
+                <span class="param-label">Relative Model Probability</span>
+                <span class="param-value">
+                    {prob_multi * 100.0:.2f}%
+                    <span class="badge badge-fits">Jeffreys Probability</span>
+                </span>
+            </div>
+            """
+
+        rows = ""
+        for idx, det in enumerate(detections):
+            p_val = det.get("period", 0.0)
+            sde = det.get("sde") or det.get("snr", 0.0)
+            fap = det.get("fap")
+            fap_str = f"{fap*100.0:.4f}%" if fap is not None else "N/A"
+            conf = det.get("confidence", "N/A")
+            
+            # Bayesian confidence/probability
+            bayes_prob = det.get("existence_probability_bayesian")
+            bayes_prob_str = f"{bayes_prob*100.0:.1f}%" if bayes_prob is not None else "N/A"
+            bayes_conf = det.get("bayesian_confidence", "N/A")
+            
+            rows += f"""
+            <tr>
+                <td><strong>Planet {idx + 1}</strong></td>
+                <td>{p_val:.5f} d</td>
+                <td>{sde:.2f}</td>
+                <td>{fap_str}</td>
+                <td><span class="badge badge-derived">{conf}</span></td>
+                <td><strong>{bayes_prob_str}</strong> ({bayes_conf})</td>
+            </tr>
+            """
+            
+        model_comparison_html = f"""
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>Planet Candidate Confidence & Verdict Comparison</h2>
+            <table class="confidence-table">
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Period</th>
+                        <th>Search SDE/SNR</th>
+                        <th>False Alarm Prob (FAP)</th>
+                        <th>Search Confidence</th>
+                        <th>Bayesian Probability & Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+            {comparison_info}
+        </div>
+        """
+
     if planets_data:
         for idx, pl in enumerate(planets_data):
             p_val = pl.get("period", 0.0)
@@ -486,6 +558,27 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             line-height: 1.5;
             padding: 2rem;
         }}
+        .confidence-table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }}
+        .confidence-table th, .confidence-table td {{
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }}
+        .confidence-table th {{
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+        }}
+        .confidence-table tr:last-child td {{
+            border-bottom: none;
+        }}
         header {{
             margin-bottom: 2rem;
             border-bottom: 1px solid var(--card-border);
@@ -659,6 +752,9 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
 
     <main>
         <div class="grid">
+            <!-- Confidence and Integrity Comparison -->
+            {model_comparison_html}
+
             <!-- Planet Parameters Card -->
             {planets_cards_html}
 

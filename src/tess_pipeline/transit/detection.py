@@ -22,6 +22,8 @@ def search_period(
     period_min: float = 0.5,
     period_max: float = 100.0,
     stellar: dict[str, Any] | None = None,
+    is_archive: bool = False,
+    coarse_search: bool = False,
 ) -> dict[str, Any]:
     """
     Run period search on a preprocessed light curve.
@@ -37,12 +39,17 @@ def search_period(
     stellar : dict | None
         Stellar parameters from ``catalogs.stellar``; used to inform
         TLS priors (stellar radius, mass).
+    is_archive : bool
+        Whether this is a refinement of a known archive planet.
+    coarse_search : bool
+        If True, search exactly 500 periods (highly optimized broad pass).
 
     Returns
     -------
     dict with keys:
         period (float), epoch (float), duration_hr (float), depth (float),
-        method (str), sde or snr (float),
+        method (str), sde or snr (float), fap (float), confidence (str),
+        existence_probability_search (float),
         tls_result (if TLS run), bls_result (if BLS run)
     """
     tls_result: dict[str, Any] | None = None
@@ -52,7 +59,13 @@ def search_period(
         log.info("Running TLS (period %.1f–%.1f d)", period_min, period_max)
         from tess_pipeline.transit.tls import run_tls
 
-        tls_result = run_tls(lc, period_min=period_min, period_max=period_max, stellar=stellar)
+        tls_result = run_tls(
+            lc,
+            period_min=period_min,
+            period_max=period_max,
+            stellar=stellar,
+            coarse_search=coarse_search,
+        )
 
     if method in ("bls", "both"):
         log.info("Running BLS (period %.1f–%.1f d)", period_min, period_max)
@@ -62,30 +75,43 @@ def search_period(
 
     # ── Select best result ──────────────────────────────────────────────────
     if method == "tls" and tls_result is not None:
-        best = _pack(tls_result, "tls")
+        best = _pack(tls_result, "tls", is_archive=is_archive)
     elif method == "bls" and bls_result is not None:
-        best = _pack(bls_result, "bls")
+        best = _pack(bls_result, "bls", is_archive=is_archive)
     elif method == "both":
         if tls_result is None and bls_result is None:
             raise PeriodSearchError("Both TLS and BLS failed to return a result.")
         # Prefer TLS (higher sensitivity) when both succeed
         best = _pack(tls_result if tls_result is not None else bls_result,
-                     "tls" if tls_result is not None else "bls")
+                     "tls" if tls_result is not None else "bls",
+                     is_archive=is_archive)
     else:
         raise PeriodSearchError(f"No period search result available (method={method!r}).")
 
     # Attach raw result objects for downstream diagnostics / plotting
     if tls_result is not None:
-        best["tls_result"] = tls_result.get("_raw")
+        raw_tls = tls_result.get("_raw")
+        best["tls_result"] = raw_tls
+        if raw_tls is not None:
+            if hasattr(raw_tls, "periods"):
+                best["tls_periods"] = list(raw_tls.periods)
+            if hasattr(raw_tls, "power"):
+                best["tls_power"] = list(raw_tls.power)
     if bls_result is not None:
-        best["bls_result"] = bls_result.get("_raw")
+        raw_bls = bls_result.get("_raw")
+        best["bls_result"] = raw_bls
+        if raw_bls is not None:
+            if hasattr(raw_bls, "period"):
+                best["bls_periods"] = list(raw_bls.period)
+            if hasattr(raw_bls, "power"):
+                best["bls_power"] = list(raw_bls.power)
 
     return best
 
 
-def _pack(result: dict[str, Any], method: str) -> dict[str, Any]:
-    """Map a TLS/BLS result dict to the canonical detection dict."""
-    return {
+def _pack(result: dict[str, Any], method: str, is_archive: bool = False) -> dict[str, Any]:
+    """Map a TLS/BLS result dict to the canonical detection dict with FAP and confidence."""
+    d = {
         "period": result["period"],
         "epoch": result.get("epoch"),
         "duration_hr": result.get("duration_hr"),
@@ -94,6 +120,47 @@ def _pack(result: dict[str, Any], method: str) -> dict[str, Any]:
         "sde": result.get("sde"),
         "snr": result.get("snr"),
     }
+
+    if is_archive:
+        d["fap"] = 0.0
+        d["confidence"] = "Confirmed"
+        d["existence_probability_search"] = 1.0
+        return d
+
+    # Calculate FAP and confidence label if it's TLS
+    if method == "tls" and result.get("sde") is not None:
+        import numpy as np
+        sde = float(result["sde"])
+        raw = result.get("_raw")
+        n_trials = len(raw.periods) if (raw is not None and hasattr(raw, "periods")) else 1000
+
+        # SDE-to-FAP conversion
+        if sde > 100:
+            fap = 0.0
+        else:
+            fap = float(1.0 - (1.0 - np.exp(-sde))**n_trials)
+            fap = max(0.0, min(1.0, fap))
+
+        d["fap"] = fap
+
+        # Assign confidence category
+        if sde < 5.0:
+            d["confidence"] = "Low"
+            d["existence_probability_search"] = float(max(0.01, 1.0 - fap))
+        elif sde < 6.0:
+            d["confidence"] = "Moderate"
+            d["existence_probability_search"] = float(0.5 + 0.4 * (sde - 5.0))
+        else:
+            # SDE >= 6.0
+            d["confidence"] = "High"
+            d["existence_probability_search"] = float(1.0 - 0.1 * np.exp(-(sde - 6.0)))
+    else:
+        d["fap"] = None
+        d["confidence"] = "Low"
+        d["existence_probability_search"] = 0.5
+
+    return d
+
 
 
 def search_multiple_planets(
@@ -122,42 +189,101 @@ def search_multiple_planets(
         lc_for_search = current_lc
 
         if is_broad and len(current_lc) > 50_000:
-            # Bin to 10-min cadence for broad search: reduces points ~5x
-            # Original cadence is typically 2-min (SPOC), so bin_factor=5
-            try:
-                import numpy as np
-                time_arr = current_lc.time.value
-                time_span_days = float(np.max(time_arr) - np.min(time_arr))
-                n_bins = max(1000, int(time_span_days * 24 * 6))  # 10-min bins
-                lc_for_search = current_lc.bin(n_bins=n_bins)
-                log.info(
-                    "Binned LC from %d → %d points (10-min cadence) for broad TLS search",
-                    len(current_lc), len(lc_for_search),
-                )
-            except Exception as bin_exc:
-                log.warning("Binning failed (%s); using full-resolution LC", bin_exc)
-                lc_for_search = current_lc
+            # Downsample to 10-min cadence for broad search (reduces points ~5x)
+            # This is extremely fast, preserves signal, and avoids NaN empty-bin bugs in gaps.
+            lc_for_search = current_lc[::5]
+            log.info(
+                "Downsampled LC from %d → %d points (10-min cadence) for broad TLS search",
+                len(current_lc), len(lc_for_search),
+            )
 
-        log.info("Searching for Planet %d candidate...", i + 1)
+
+        # Cap period_max: require at least 3 complete transits in the baseline
+        import numpy as np
+        time_arr = lc_for_search.time.value
+        t_baseline = float(np.max(time_arr) - np.min(time_arr))
+        effective_period_max = min(period_max, t_baseline / 3.0)
+        if effective_period_max < period_min:
+            effective_period_max = period_max  # fallback if baseline too short
+        if effective_period_max < period_max:
+            log.info(
+                "Capping period_max %.1f → %.1f d (3-transit requirement over %.0f d baseline)",
+                period_max, effective_period_max, t_baseline,
+            )
+
+        log.info("Searching for Planet %d candidate (coarse search)...", i + 1)
         try:
             det = search_period(
                 lc_for_search,
                 method=method,
                 period_min=period_min,
-                period_max=period_max,
+                period_max=effective_period_max,
                 stellar=stellar,
+                coarse_search=True,
             )
         except Exception as exc:
-            log.warning("Planet %d search failed: %s", i + 1, exc)
+            log.warning("Planet %d coarse search failed: %s", i + 1, exc)
             break
 
-        sde = det.get("sde", 0.0)
-        snr = det.get("snr", 0.0)
-        sig = max(sde, snr)
+        coarse_sde = det.get("sde", 0.0)
+        coarse_snr = det.get("snr", 0.0)
+        coarse_sig = max(coarse_sde, coarse_snr)
 
-        # For planet 2+, enforce SDE/SNR threshold of 6.0
-        if len(detections) > 0 and sig < 6.0:
-            log.info("Signal significance (%.2f) below threshold of 6.0. Stopping search.", sig)
+        # Stop early if coarse search finds nothing of interest (threshold of 4.0)
+        if coarse_sig < 4.0:
+            log.info("Planet %d coarse SDE/SNR (%.2f) below threshold of 4.0. Stopping search.", i + 1, coarse_sig)
+            break
+
+        # Zoom in and run high-resolution narrow search on full-resolution data
+        coarse_period = det["period"]
+        delta_p = max(0.01, 0.02 * coarse_period)
+        narrow_min = max(period_min, coarse_period - delta_p)
+        narrow_max = min(effective_period_max, coarse_period + delta_p)
+
+        log.info(
+            "Significant peak found (coarse SDE/SNR = %.2f at %.4f d). Refining on full resolution in range %.4f–%.4f d...",
+            coarse_sig, coarse_period, narrow_min, narrow_max,
+        )
+
+        try:
+            refined_det = search_period(
+                current_lc,
+                method=method,
+                period_min=narrow_min,
+                period_max=narrow_max,
+                stellar=stellar,
+                coarse_search=False,
+            )
+            # Save the broad/coarse search raw and list results so they can be plotted
+            broad_tls = det.get("tls_result")
+            broad_bls = det.get("bls_result")
+            broad_tls_periods = det.get("tls_periods")
+            broad_tls_power = det.get("tls_power")
+            broad_bls_periods = det.get("bls_periods")
+            broad_bls_power = det.get("bls_power")
+
+            det = refined_det
+
+            if broad_tls is not None:
+                det["tls_result_broad"] = broad_tls
+            if broad_bls is not None:
+                det["bls_result_broad"] = broad_bls
+            if broad_tls_periods is not None:
+                det["tls_periods_broad"] = broad_tls_periods
+            if broad_tls_power is not None:
+                det["tls_power_broad"] = broad_tls_power
+            if broad_bls_periods is not None:
+                det["bls_periods_broad"] = broad_bls_periods
+            if broad_bls_power is not None:
+                det["bls_power_broad"] = broad_bls_power
+        except Exception as exc:
+            log.warning("Planet %d refinement failed: %s; keeping coarse candidate", i + 1, exc)
+
+        refined_sig = max(det.get("sde", 0.0), det.get("snr", 0.0))
+
+        # For subsequent planets (Planet 2+), enforce SDE/SNR threshold of 6.0
+        if len(detections) > 0 and refined_sig < 6.0:
+            log.info("Planet %d refined SDE/SNR (%.2f) below threshold of 6.0. Stopping search.", i + 1, refined_sig)
             break
 
         detections.append(det)
@@ -166,8 +292,9 @@ def search_multiple_planets(
             i + 1,
             det["period"],
             det["epoch"],
-            sig,
+            refined_sig,
         )
+
 
         if i == max_planets - 1:
             break

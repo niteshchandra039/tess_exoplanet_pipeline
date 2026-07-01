@@ -41,13 +41,13 @@ class VisualizationStage:
             figures["flat"] = vlc.plot_flattened_lightcurve(results.lightcurve)
 
         if results.detection:
-            if "tls_result" in results.detection:
+            if any(k in results.detection for k in ("tls_result", "tls_result_broad", "tls_periods", "tls_periods_broad")):
                 figures["tls_periodogram"] = vper.plot_tls_periodogram(
-                    results.detection["tls_result"]
+                    results.detection
                 )
-            if "bls_result" in results.detection:
+            if any(k in results.detection for k in ("bls_result", "bls_result_broad", "bls_periods", "bls_periods_broad")):
                 figures["bls_periodogram"] = vper.plot_bls_periodogram(
-                    results.detection["bls_result"]
+                    results.detection
                 )
 
         if results.lightcurve is not None and results.period:

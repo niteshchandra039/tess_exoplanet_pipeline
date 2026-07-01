@@ -36,6 +36,33 @@ class InferenceStage:
             log.info("Running Bayesian transit fit (exoplanet + PyMC)")
             from tess_pipeline.inference.bayesian import run_bayesian_fit
 
+            detections = self.results.metadata.get("detections", [])
+            
+            # If we have multiple planets, first fit the 1-planet model to compute BIC comparison
+            bic1 = None
+            if len(detections) >= 2:
+                log.info("Multiple planets detected (%d). Running 1-planet model fit for comparison...", len(detections))
+                try:
+                    trace1, _ = run_bayesian_fit(
+                        lc,
+                        period=period,
+                        epoch=self.results.detection.get("epoch"),
+                        stellar=stellar,
+                        chains=cfg.chains,
+                        draws=cfg.draws,
+                        tune=cfg.tune,
+                        target_accept=cfg.target_accept,
+                        gp_kernel=cfg.gp_kernel,
+                        detections=detections[:1],  # fit only first planet
+                    )
+                    from tess_pipeline.inference.bayesian import calculate_bic
+                    bic1 = calculate_bic(trace1, n_planets=1)
+                    log.info("1-planet model BIC: %.2f", bic1)
+                except Exception as exc:
+                    log.warning("Could not fit 1-planet model for BIC comparison: %s", exc)
+                    bic1 = None
+
+            # Fit the full multi-planet model
             posterior, model_outputs = run_bayesian_fit(
                 lc,
                 period=period,
@@ -46,10 +73,60 @@ class InferenceStage:
                 tune=cfg.tune,
                 target_accept=cfg.target_accept,
                 gp_kernel=cfg.gp_kernel,
-                detections=self.results.metadata.get("detections"),
+                detections=detections,
             )
             self.results.posterior = posterior
             self.results.model = model_outputs
+
+            # Compute model comparison statistics if we have multiple planets
+            if len(detections) >= 2:
+                if bic1 is not None:
+                    try:
+                        from tess_pipeline.inference.bayesian import calculate_bic
+                        import numpy as np
+
+                        bic_multi = calculate_bic(posterior, n_planets=len(detections))
+                        delta_bic = bic_multi - bic1
+                        prob_multi = float(1.0 / (1.0 + np.exp(delta_bic / 2.0)))
+                        
+                        bic_comp = {
+                            "bic_1planet": bic1,
+                            "bic_multiplanet": bic_multi,
+                            "delta_bic": delta_bic,
+                            "probability_multiplanet": prob_multi,
+                        }
+                        self.results.metadata["model_comparison"] = bic_comp
+                        log.info(
+                            "Model comparison: BIC(1p)=%.2f, BIC(%dp)=%.2f, delta=%.2f, prob=%.2f%%",
+                            bic1, len(detections), bic_multi, delta_bic, prob_multi * 100.0
+                        )
+                        
+                        # Update detections metadata with probabilities
+                        for idx, det in enumerate(self.results.metadata["detections"]):
+                            if idx == 0:
+                                det["existence_probability_bayesian"] = 1.0
+                                det["bayesian_confidence"] = "Confirmed"
+                            else:
+                                det["existence_probability_bayesian"] = prob_multi
+                                if delta_bic < -10:
+                                    det["bayesian_confidence"] = "Very Strong"
+                                elif delta_bic < -6:
+                                    det["bayesian_confidence"] = "Strong"
+                                elif delta_bic < -2:
+                                    det["bayesian_confidence"] = "Positive"
+                                elif delta_bic < 0:
+                                    det["bayesian_confidence"] = "Weak"
+                                else:
+                                    det["bayesian_confidence"] = "Not Justified"
+                    except Exception as exc:
+                        log.warning("Could not calculate model comparison: %s", exc)
+            else:
+                # 1 planet defaults
+                if len(self.results.metadata.get("detections", [])) == 1:
+                    det = self.results.metadata["detections"][0]
+                    det["existence_probability_bayesian"] = 1.0
+                    det["bayesian_confidence"] = "Confirmed"
+
             return posterior
 
         if cfg.inference and cfg.inference_backend == "batman_only":

@@ -76,6 +76,7 @@ class PeriodStage:
                     period_min=search_min,
                     period_max=search_max,
                     stellar=None,
+                    is_archive=True,
                 )
                 det1["note"] = "refined archive period"
             except Exception as exc:

@@ -204,9 +204,9 @@ class PipelineResults:
             "target": self.target,
             "period": self.period,
             "detection": {
-                k: v.item() if hasattr(v, "item") else v
+                k: (v.tolist() if hasattr(v, "tolist") else (list(v) if isinstance(v, (list, tuple)) else (v.item() if hasattr(v, "item") else v)))
                 for k, v in self.detection.items()
-                if isinstance(v, (int, float, str, bool, type(None))) or hasattr(v, "item")
+                if isinstance(v, (int, float, str, bool, list, tuple, type(None))) or hasattr(v, "item") or hasattr(v, "tolist")
             },
             "stellar": {
                 k: v.item() if hasattr(v, "item") else v

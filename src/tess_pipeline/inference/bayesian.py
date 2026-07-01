@@ -227,6 +227,7 @@ def run_bayesian_fit(
             init="adapt_diag",
             return_inferencedata=True,
             progressbar=True,
+            idata_kwargs={"log_likelihood": True},
         )
 
     log.info("Sampling complete")
@@ -280,4 +281,36 @@ def _extract_model_outputs(
             "transit_model": None,
             "residuals": None,
         }
+
+
+def calculate_bic(trace: Any, n_planets: int) -> float:
+    """
+    Calculate the Bayesian Information Criterion (BIC) from a PyMC trace.
+    
+    BIC = k * ln(N) - 2 * ln(L_max)
+    """
+    import numpy as np
+
+    if not hasattr(trace, "log_likelihood") or "obs" not in trace.log_likelihood:
+        raise ValueError("Trace does not contain log-likelihood group 'obs'")
+
+    # Extract log-likelihood array of shape (chains, draws, N_points)
+    log_lik_array = trace.log_likelihood["obs"].values
+    
+    # Sum log-likelihood over all data points for each draw
+    sum_log_lik = np.sum(log_lik_array, axis=-1)  # shape: (chains, draws)
+    
+    # Find the maximum log-likelihood across all MCMC samples
+    max_log_lik = float(np.max(sum_log_lik))
+    
+    # Number of data points
+    n_points = int(log_lik_array.shape[-1])
+    
+    # Number of free parameters:
+    # 7 base stellar/GP/mean parameters + 4 parameters per planet (period, t0, b, rp)
+    k = 7 + 4 * n_planets
+    
+    bic = k * np.log(n_points) - 2.0 * max_log_lik
+    return bic
+
 
