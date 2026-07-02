@@ -99,6 +99,7 @@ class TESSAnalysis:
         self.results.metadata = {
             "tess_pipeline_version": _PACKAGE_VERSION,
             "run_start": datetime.datetime.utcnow().isoformat(),
+            "sectors_used": [],
             "config": {
                 "target": cfg.target,
                 "author": cfg.author,
@@ -137,11 +138,12 @@ class TESSAnalysis:
         if self.config.plots:
             from tess_pipeline.visualization import lightcurve as vlc
             if self.results.lightcurve is not None:
-                fig_raw = vlc.plot_raw_lightcurve(self.results.lightcurve)
+                tic_id, sectors_str = self._get_plot_metadata()
+                fig_raw = vlc.plot_raw_lightcurve(self.results.lightcurve, tic_id=tic_id, sectors_str=sectors_str)
                 self.results.figures["raw"] = fig_raw
                 self._save_step_plot("raw", fig_raw)
 
-                fig_flat = vlc.plot_flattened_lightcurve(self.results.lightcurve)
+                fig_flat = vlc.plot_flattened_lightcurve(self.results.lightcurve, tic_id=tic_id, sectors_str=sectors_str)
                 self.results.figures["flat"] = fig_flat
                 self._save_step_plot("flat", fig_flat)
         return self
@@ -159,22 +161,45 @@ class TESSAnalysis:
         if self.config.plots:
             from tess_pipeline.visualization import periodogram as vper
             from tess_pipeline.visualization import transit as vtr
+            tic_id, sectors_str = self._get_plot_metadata()
             det = self.results.detection
             if det:
-                if "tls_result" in det:
-                    fig_per = vper.plot_tls_periodogram(det["tls_result"])
+                detections = self.results.metadata.get("detections", [det])
+                if "tls_result" in det or "tls_periods" in det:
+                    fig_per = vper.plot_tls_periodogram(detections, tic_id=tic_id, sectors_str=sectors_str, mode="auto")
                     self.results.figures["tls_periodogram"] = fig_per
                     self._save_step_plot("tls_periodogram", fig_per)
-                if "bls_result" in det:
-                    fig_per = vper.plot_bls_periodogram(det["bls_result"])
+                    
+                    for idx, d in enumerate(detections):
+                        fig_coarse = vper.plot_tls_periodogram(d, tic_id=tic_id, sectors_str=sectors_str, mode="coarse")
+                        self.results.figures[f"tls_periodogram_coarse_p{idx}"] = fig_coarse
+                        self._save_step_plot(f"tls_periodogram_coarse_p{idx}", fig_coarse)
+                        
+                        fig_fine = vper.plot_tls_periodogram(d, tic_id=tic_id, sectors_str=sectors_str, mode="fine")
+                        self.results.figures[f"tls_periodogram_fine_p{idx}"] = fig_fine
+                        self._save_step_plot(f"tls_periodogram_fine_p{idx}", fig_fine)
+                        
+                if "bls_result" in det or "bls_periods" in det:
+                    fig_per = vper.plot_bls_periodogram(detections, tic_id=tic_id, sectors_str=sectors_str, mode="auto")
                     self.results.figures["bls_periodogram"] = fig_per
                     self._save_step_plot("bls_periodogram", fig_per)
+                    
+                    for idx, d in enumerate(detections):
+                        fig_coarse = vper.plot_bls_periodogram(d, tic_id=tic_id, sectors_str=sectors_str, mode="coarse")
+                        self.results.figures[f"bls_periodogram_coarse_p{idx}"] = fig_coarse
+                        self._save_step_plot(f"bls_periodogram_coarse_p{idx}", fig_coarse)
+                        
+                        fig_fine = vper.plot_bls_periodogram(d, tic_id=tic_id, sectors_str=sectors_str, mode="fine")
+                        self.results.figures[f"bls_periodogram_fine_p{idx}"] = fig_fine
+                        self._save_step_plot(f"bls_periodogram_fine_p{idx}", fig_fine)
             
             if self.results.lightcurve is not None and self.results.period:
                 fig_phase = vtr.plot_phase_curve(
                     self.results.lightcurve,
                     period=self.results.period["value"],
                     epoch=self.results.detection.get("epoch"),
+                    tic_id=tic_id,
+                    sectors_str=sectors_str
                 )
                 self.results.figures["phase"] = fig_phase
                 self._save_step_plot("phase", fig_phase)
@@ -208,22 +233,28 @@ class TESSAnalysis:
             from tess_pipeline.visualization import posterior as vpost
             from tess_pipeline.visualization import diagnostics as vdiag
 
+            tic_id = self.results.target.get("tic_id", "")
+            secs = self.results.metadata.get("sectors_used", [])
+            sectors_str = ", ".join(map(str, secs)) if secs else "all"
+
             fig_fit = vtr.plot_bayesian_fit(
-                self.results.lightcurve, self.results.posterior, self.results.model
+                self.results.lightcurve, self.results.posterior, self.results.model,
+                tic_id=tic_id, sectors_str=sectors_str
             )
             self.results.figures["bayesian_fit"] = fig_fit
             self._save_step_plot("bayesian_fit", fig_fit)
 
-            fig_corner = vpost.plot_corner(self.results.posterior)
+            fig_corner = vpost.plot_corner(self.results.posterior, tic_id=tic_id, sectors_str=sectors_str)
             self.results.figures["corner"] = fig_corner
             self._save_step_plot("corner", fig_corner)
 
-            fig_trace = vpost.plot_trace(self.results.posterior)
+            fig_trace = vpost.plot_trace(self.results.posterior, tic_id=tic_id, sectors_str=sectors_str)
             self.results.figures["trace"] = fig_trace
             self._save_step_plot("trace", fig_trace)
 
             fig_pred = vpost.plot_posterior_predictive(
-                self.results.lightcurve, self.results.posterior, self.results.model
+                self.results.lightcurve, self.results.posterior, self.results.model,
+                tic_id=tic_id, sectors_str=sectors_str
             )
             self.results.figures["posterior_predictive"] = fig_pred
             self._save_step_plot("posterior_predictive", fig_pred)
@@ -234,6 +265,8 @@ class TESSAnalysis:
                     self.results.model or {},
                     period=self.results.period["value"],
                     epoch=self.results.detection.get("epoch"),
+                    tic_id=tic_id,
+                    sectors_str=sectors_str
                 )
                 self.results.figures["residuals"] = fig_res
                 self._save_step_plot("residuals", fig_res)
@@ -281,6 +314,17 @@ class TESSAnalysis:
             log.info("Saved step plot: %s", path)
         except Exception as exc:  # noqa: BLE001
             log.warning("Could not save step plot %r: %s", name, exc)
+
+    def _get_plot_metadata(self) -> tuple[str, str]:
+        tic_id = str(self.results.target.get("tic_id", "unknown"))
+        secs = self.results.metadata.get("sectors_used", [])
+        if not secs and hasattr(self.config, "sectors"):
+            secs = self.config.sectors
+        if isinstance(secs, str):
+            sectors_str = secs
+        else:
+            sectors_str = ", ".join(map(str, secs)) if secs else "all"
+        return tic_id, sectors_str
 
     def generate_figures(self) -> TESSAnalysis:
         """Build diagnostic matplotlib figures."""

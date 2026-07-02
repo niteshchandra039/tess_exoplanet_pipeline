@@ -5,10 +5,8 @@ visualization/transit.py — Phase-fold and transit model overlay plots.
 from __future__ import annotations
 
 from typing import Any
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 from tess_pipeline.transit.phasefold import bin_phase_curve, phase_fold
 
 
@@ -18,19 +16,11 @@ def plot_phase_curve(
     epoch: float | None = None,
     model: dict[str, Any] | None = None,
     n_bins: int = 200,
+    tic_id: str = "",
+    sectors_str: str = ""
 ) -> plt.Figure:
     """
     Plot a phase-folded light curve with an optional analytic model overlay.
-
-    Parameters
-    ----------
-    lc : lightkurve.LightCurve
-    period : float
-    epoch : float | None
-    model : dict | None
-        Dict with 'time', 'flux_model' arrays for model overlay.
-    n_bins : int
-        Number of phase bins.
     """
     phase, flux, flux_err = phase_fold(lc, period, epoch)
     bin_phase, bin_flux, bin_err = bin_phase_curve(phase, flux, flux_err, n_bins=n_bins)
@@ -38,33 +28,52 @@ def plot_phase_curve(
     fig, ax = plt.subplots(figsize=(10, 5))
 
     # Raw scatter
-    ax.scatter(phase, flux, s=1.0, color="steelblue", alpha=0.3, rasterized=True, label="Data")
+    ax.scatter(phase * period, flux, s=1.0, color="gray", alpha=0.2, rasterized=True, label="Data")
 
     # Binned
     valid = np.isfinite(bin_flux)
     ax.errorbar(
-        bin_phase[valid], bin_flux[valid], yerr=bin_err[valid],
-        fmt="o", ms=3, color="navy", elinewidth=0.8, capsize=2, label="Binned",
+        bin_phase[valid] * period, bin_flux[valid], yerr=bin_err[valid],
+        fmt="o", ms=4, color="#16a34a", elinewidth=0.8, capsize=2, label="Binned",
     )
 
     # Model overlay
+    depth = 0.005
     if model is not None and model.get("time") is not None:
         model_flux = model.get("transit_model") if model.get("transit_model") is not None else model.get("flux_model")
         if model_flux is not None:
-            m_phase = (
-                (np.asarray(model["time"]) - (epoch or lc.time.value[0])) / period
-            ) % 1.0
-            m_phase[m_phase >= 0.5] -= 1.0
-            sort_idx = np.argsort(m_phase)
+            import lightkurve as lk
+            m_lc = lk.LightCurve(time=model["time"], flux=model_flux)
+            _, t_fold, _ = phase_fold(m_lc, period, epoch)
+            sort_idx = np.argsort(phase)
+            x_sorted = phase[sort_idx] * period
+            y_sorted = t_fold[sort_idx]
+            
+            # Interpolate onto a dense uniform grid to avoid gap-induced line segment artifacts
+            grid_x = np.linspace(-0.3, 0.3, 1000)
+            grid_y = np.interp(grid_x, x_sorted, y_sorted, left=1.0, right=1.0)
+            
             ax.plot(
-                m_phase[sort_idx], np.asarray(model_flux)[sort_idx],
-                color="red", linewidth=1.5, zorder=5, label="Model",
+                grid_x, grid_y,
+                color="#dc2626", linewidth=2.0, zorder=5, label="Model",
             )
+            depth = max(1.0 - np.min(grid_y), 1e-4)
+    else:
+        # Estimate depth from the binned data around the center phase ([-0.1, 0.1] days)
+        near_center = (bin_phase * period >= -0.1) & (bin_phase * period <= 0.1)
+        if np.any(near_center) and np.any(valid):
+            bin_min = np.nanmin(bin_flux[near_center & valid])
+            depth = max(1.0 - bin_min, 1e-4)
+            if depth > 0.05 or depth < 1e-5:
+                depth = 0.005
 
-    ax.set_xlabel(f"Phase (P = {period:.5f} d)")
+    # Zoom y limits to focus on transit
+    ax.set_ylim(1.0 - 2.5 * depth, 1.0 + 1.5 * depth)
+    ax.set_xlim(-0.3, 0.3)
+    ax.set_xlabel("Time since transit (days)")
     ax.set_ylabel("Normalized Flux")
-    ax.set_title("Phase-Folded Transit")
-    ax.legend(fontsize=9)
+    ax.set_title(f"TIC {tic_id} | Sectors: {sectors_str} | Phase-Folded Transit (P = {period:.5f} d)", fontsize=10, fontweight="bold")
+    ax.legend(fontsize=9, loc="upper right")
     fig.tight_layout()
     return fig
 
@@ -74,67 +83,62 @@ def plot_batman_overlay(
     period: float,
     epoch: float | None,
     batman_result: dict[str, Any],
+    tic_id: str = "",
+    sectors_str: str = ""
 ) -> plt.Figure:
     """Plot batman analytic model overlay on phase-folded data."""
-    return plot_phase_curve(lc, period, epoch, model=batman_result)
+    return plot_phase_curve(lc, period, epoch, model=batman_result, tic_id=tic_id, sectors_str=sectors_str)
 
 
 def plot_bayesian_fit(
     lc: Any,
     posterior: Any,
     model_outputs: dict[str, Any] | None,
+    tic_id: str = "",
+    sectors_str: str = ""
 ) -> plt.Figure:
     """
     Plot the Bayesian posterior median transit fit.
 
-    Generates a 3-panel diagnostic plot:
-      1. Normalized flux with GP systematics model overlaid.
-      2. De-trended flux with Keplerian transit model overlaid.
-      3. Residuals after subtracting the full model.
+    Generates a 2-panel time-series (BJD on x-axis) diagnostic plot:
+      1. Normalized flux with GP systematics model trend overlaid.
+      2. De-trended flux with Keplerian MCMC transit model overlaid.
     """
-    fig, axes = plt.subplots(3, 1, figsize=(10, 8), sharex=True)
+    fig, axes = plt.subplots(2, 1, figsize=(11, 7.0), sharex=True)
 
     time = np.asarray(lc.time.value)
     flux = np.asarray(lc.flux.value)
 
-    # Defaults in case keys are missing
     gp_model = model_outputs.get("gp_model") if model_outputs else None
     transit_model = model_outputs.get("transit_model") if model_outputs else None
     flux_model = model_outputs.get("flux_model") if model_outputs else None
 
-    # ── Panel 1: Data & GP Systematics ──────────────────────────────────────
-    axes[0].scatter(time, flux, s=0.5, color="black", alpha=0.3, label="Data", rasterized=True)
+    # ── Panel 1: Data & GP Systematics (BJD/BTJD on x-axis) ──
+    axes[0].scatter(time, flux, s=0.4, color="black", alpha=0.25, label="Data", rasterized=True)
     if gp_model is not None:
         if transit_model is not None:
             trend = flux_model - (transit_model - 1.0)
         else:
             trend = gp_model + np.median(flux)
-        axes[0].plot(time, trend, color="#22c55e", linewidth=1.2, label="GP + Trend")
+        axes[0].plot(time, trend, color="#22c55e", linewidth=1.2, label="GP Activity Model")
     axes[0].set_ylabel("Relative Flux")
     axes[0].legend(fontsize=9, loc="upper right")
-    axes[0].set_title("Bayesian GP Detrending & Transit Fit", fontsize=11, fontweight="bold")
+    axes[0].set_title(f"TIC {tic_id} | Sectors: {sectors_str} | Bayesian GP Detrending (Time Domain)", fontsize=10, fontweight="bold")
 
-    # ── Panel 2: De-trended Data & Transit Model ────────────────────────────
+    # ── Panel 2: De-trended Light Curve & MCMC Transit Fit (BJD/BTJD on x-axis) ──
     if gp_model is not None:
-        detrended_flux = flux - gp_model
+        detrended = flux - gp_model
     else:
-        detrended_flux = flux
-    axes[1].scatter(time, detrended_flux, s=0.5, color="black", alpha=0.3, label="De-trended Data", rasterized=True)
+        detrended = flux
+        
+    axes[1].scatter(time, detrended, s=0.4, color="black", alpha=0.25, label="Detrended Data", rasterized=True)
     if transit_model is not None:
-        axes[1].plot(time, transit_model, color="#2563eb", linewidth=1.2, label="Transit Model")
-    axes[1].set_ylabel("De-trended Flux")
+        axes[1].plot(time, transit_model, color="#dc2626", linewidth=1.2, label="Keplerian Fit")
+        
+    axes[1].set_ylabel("Relative Flux")
+    axes[1].set_xlabel("Time (BTJD)")
     axes[1].legend(fontsize=9, loc="upper right")
-
-    # ── Panel 3: Residuals ──────────────────────────────────────────────────
-    if flux_model is not None:
-        residuals = flux - flux_model
-    else:
-        residuals = np.zeros_like(time)
-    axes[2].scatter(time, residuals, s=0.5, color="gray", alpha=0.3, label="Residuals", rasterized=True)
-    axes[2].axhline(0, color="red", linestyle="--", linewidth=0.8)
-    axes[2].set_ylabel("Residuals")
-    axes[2].set_xlabel("Time (BTJD)")
-    axes[2].legend(fontsize=9, loc="upper right")
+    axes[1].set_title("Detrended Light Curve & Best-Fit Transit Model", fontsize=10, fontweight="bold")
 
     fig.tight_layout()
     return fig
@@ -145,22 +149,25 @@ def plot_mcmc_phase_curve(
     posterior: Any,
     period: float,
     epoch: float | None = None,
-    n_bins: int = 50,
+    n_bins: int = 80,
     planet_idx: int = 0,
+    tic_id: str = "",
+    sectors_str: str = ""
 ) -> plt.Figure:
     """
-    Plot the phase-folded light curve using MCMC posterior samples (supports multiple planets).
-    Shows the de-trended data (data - GP - other transits), binned data, and the posterior median
-    transit model with its 68% credible interval (shaded region).
+    Plot the phase-folded light curve and residuals using MCMC posterior samples.
+    
+    Generates a 2-panel plot:
+      1. Phase-folded de-trended data with the MCMC transit model overlaid.
+      2. Phase-folded residual scatter directly underneath.
     """
     import lightkurve as lk
-    from tess_pipeline.transit.phasefold import phase_fold, bin_phase_curve
 
-    fig, ax = plt.subplots(figsize=(10, 5))
+    fig, axes = plt.subplots(2, 1, figsize=(10, 7.0), sharex=True,
+                             gridspec_kw={"height_ratios": [2, 1]})
 
     time = np.asarray(lc.time.value)
     flux = np.asarray(lc.flux.value)
-    flux_err = np.asarray(lc.flux_err.value) if lc.flux_err is not None else np.ones_like(flux) * 1e-3
 
     # Stack the posterior to get flat samples
     post_group = posterior.posterior
@@ -206,7 +213,7 @@ def plot_mcmc_phase_curve(
         period_std = 0.0
         epoch_med = epoch or time[0]
 
-    # Phase-fold the de-trended data using a temporary lightkurve LightCurve
+    # Phase-fold the de-trended data
     detrended_lc = lk.LightCurve(time=lc.time, flux=detrended_flux, flux_err=lc.flux_err)
     phase, y_fold, y_fold_err = phase_fold(
         detrended_lc,
@@ -214,56 +221,97 @@ def plot_mcmc_phase_curve(
         epoch=epoch_med,
     )
 
-    # Plot raw scatter
-    ax.scatter(phase * period_med, y_fold, s=1.0, color="black", alpha=0.25, label="Data", rasterized=True, zorder=-1000)
+    # Plot raw scatter in Top Panel
+    axes[0].scatter(phase * period_med, y_fold, s=0.8, color="black", alpha=0.2, label="Data", rasterized=True, zorder=-1000)
 
-    # Plot binned data
+    # Plot binned data in Top Panel
     bin_phase, bin_flux, bin_err = bin_phase_curve(phase, y_fold, y_fold_err, n_bins=n_bins)
     valid = np.isfinite(bin_flux)
-    ax.errorbar(
+    axes[0].errorbar(
         bin_phase[valid] * period_med, bin_flux[valid], yerr=bin_err[valid],
         fmt="o", ms=4, color="#16a34a", elinewidth=0.8, capsize=2, label="Binned", zorder=100
     )
 
-    # Plot the posterior median model with 68% credible interval (16th to 84th percentile)
-    lc_pred_key = f"lc_pred_p{planet_idx}"
-    if lc_pred_key in flat_samps.data_vars:
-        phase_grid = np.linspace(-0.3, 0.3, 200)
-        pred = np.percentile(flat_samps[lc_pred_key].values, [16, 50, 84], axis=-1)
-
-        # Plot median model
-        ax.plot(phase_grid, pred[1], color="#ea580c", linewidth=2.0, label="Transit Model", zorder=1000)
-        # Plot shaded region
-        art = ax.fill_between(
-            phase_grid, pred[0], pred[2],
-            color="#ea580c", alpha=0.35, zorder=500, label="68% Credible Band"
-        )
-        art.set_edgecolor("none")
-    elif f"light_curve_p{planet_idx}" in flat_samps.data_vars:
+    # Get transit model fit
+    transit_med = None
+    if f"light_curve_p{planet_idx}" in flat_samps.data_vars:
         transit_med = np.median(flat_samps[f"light_curve_p{planet_idx}"].values, axis=-1)
-        transit_lc = lk.LightCurve(time=lc.time, flux=transit_med + 1.0, flux_err=lc.flux_err)
-        _, t_fold, _ = phase_fold(
-            transit_lc,
-            period=period_med,
-            epoch=epoch_med,
-        )
-        sort_idx = np.argsort(phase)
-        ax.plot(phase[sort_idx] * period_med, t_fold[sort_idx], color="#ea580c", linewidth=2.0, label="Transit Model", zorder=1000)
+        
+        # Check if the dense phase prediction is available to plot a smooth, gap-free model
+        lc_pred_key = f"lc_pred_p{planet_idx}"
+        if lc_pred_key in flat_samps.data_vars:
+            pred_vals = np.median(flat_samps[lc_pred_key].values, axis=-1)
+            # The phase grid used during Bayesian model prediction is -0.3 to 0.3 days
+            phase_grid = np.linspace(-0.3, 0.3, len(pred_vals))
+            axes[0].plot(phase_grid, pred_vals, color="#dc2626", linewidth=2.0, label="Transit Model", zorder=1000)
+            depth = max(1.0 - np.min(pred_vals), 1e-4)
+        else:
+            # Fallback to folding and interpolating the discrete time-series model to avoid gaps
+            transit_lc = lk.LightCurve(time=lc.time, flux=transit_med + 1.0, flux_err=lc.flux_err)
+            _, t_fold, _ = phase_fold(
+                transit_lc,
+                period=period_med,
+                epoch=epoch_med,
+            )
+            sort_idx = np.argsort(phase)
+            x_sorted = phase[sort_idx] * period_med
+            y_sorted = t_fold[sort_idx]
+            
+            grid_x = np.linspace(-0.3, 0.3, 1000)
+            grid_y = np.interp(grid_x, x_sorted, y_sorted, left=1.0, right=1.0)
+            
+            axes[0].plot(grid_x, grid_y, color="#dc2626", linewidth=2.0, label="Transit Model", zorder=1000)
+            depth = max(1.0 - np.min(grid_y), 1e-4)
+    else:
+        depth = max(1.0 - np.percentile(y_fold, 1), 1e-4)
 
     # Annotate the period
     txt = f"P = {period_med:.5f} ± {period_std:.5f} d"
-    ax.annotate(
+    axes[0].annotate(
         txt, (0.02, 0.05), xycoords="axes fraction",
         bbox=dict(boxstyle="round,pad=0.3", fc="white", alpha=0.8, ec="gray"),
         fontsize=10, fontweight="medium"
     )
 
-    ax.set_xlim(-0.2, 0.2)
-    # Autoscale y to focus on transit
-    ax.set_ylim(np.percentile(y_fold, 1) - 0.002, np.percentile(y_fold, 99) + 0.002)
-    ax.set_xlabel("Time since transit [days]")
-    ax.set_ylabel("De-trended Relative Flux")
-    ax.set_title(f"Phase-Folded MCMC Transit - Planet {planet_idx + 1}")
-    ax.legend(fontsize=9, loc="upper right")
+    # Zoom x axis to transit duration
+    if "t14" in flat_samps.data_vars:
+        if flat_samps["t14"].values.ndim == 2:
+            t14_med = np.median(flat_samps["t14"].values[planet_idx, :])
+        else:
+            t14_med = np.median(flat_samps["t14"].values)
+    else:
+        t14_med = 0.15
+
+    axes[0].set_xlim(-2.5 * t14_med, 2.5 * t14_med)
+    axes[0].set_ylim(1.0 - 2.5 * depth, 1.0 + 1.5 * depth)
+    axes[0].set_ylabel("De-trended Relative Flux")
+    axes[0].set_title(f"TIC {tic_id} | Sectors: {sectors_str} | Phased MCMC Fit - Planet {planet_idx + 1}", fontsize=10, fontweight="bold")
+    axes[0].legend(fontsize=9, loc="upper right")
+
+    # ── Panel 2: Residuals in Phase Domain ──
+    if transit_med is not None:
+        residuals = detrended_flux - (transit_med + 1.0)
+    else:
+        residuals = np.zeros_like(flux)
+
+    res_lc = lk.LightCurve(time=lc.time, flux=residuals + 1.0, flux_err=lc.flux_err)
+    _, r_fold, r_fold_err = phase_fold(res_lc, period=period_med, epoch=epoch_med)
+
+    axes[1].scatter(phase * period_med, r_fold - 1.0, s=0.8, color="gray", alpha=0.3, label="Residuals", rasterized=True)
+
+    # Binned residuals
+    bin_r_phase, bin_r_flux, bin_r_err = bin_phase_curve(phase, r_fold - 1.0, r_fold_err, n_bins=n_bins)
+    valid_r = np.isfinite(bin_r_flux)
+    axes[1].errorbar(
+        bin_r_phase[valid_r] * period_med, bin_r_flux[valid_r], yerr=bin_r_err[valid_r],
+        fmt="o", ms=4, color="#dc2626", elinewidth=0.8, capsize=2, label="Binned Residuals", zorder=10
+    )
+
+    axes[1].axhline(0, color="black", linestyle="--", linewidth=0.8)
+    axes[1].set_ylabel("Residuals")
+    axes[1].set_xlabel("Time since transit (days)")
+    axes[1].legend(fontsize=9, loc="upper right")
+    axes[1].set_ylim(-1.5 * depth, 1.5 * depth)
+
     fig.tight_layout()
     return fig

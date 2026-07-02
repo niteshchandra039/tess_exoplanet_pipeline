@@ -30,7 +30,10 @@ class LightCurveStage:
             log.info("Loading TESS light curves from local FITS files")
             from tess_pipeline.data.download import load_lightcurves_from_fits
 
-            self.raw_collection = load_lightcurves_from_fits(cfg.lightcurve_fits)
+            self.raw_collection = load_lightcurves_from_fits(
+                cfg.lightcurve_fits,
+                sectors=cfg.sectors,
+            )
         else:
             log.info("Downloading TESS data for TIC %s", tic_id)
             from tess_pipeline.data.download import download_lightcurves
@@ -42,6 +45,32 @@ class LightCurveStage:
                 sectors=cfg.sectors,
                 force_download=cfg.force_download,
             )
+
+        # Record the actual sector numbers loaded in results metadata!
+        def get_sector_from_lc(lc: Any) -> int | None:
+            if hasattr(lc, "meta") and lc.meta is not None:
+                for k in ("SECTOR", "sector"):
+                    if k in lc.meta and lc.meta[k] is not None:
+                        try:
+                            return int(lc.meta[k])
+                        except (ValueError, TypeError):
+                            pass
+            if hasattr(lc, "sector") and lc.sector is not None:
+                try:
+                    return int(lc.sector)
+                except (ValueError, TypeError):
+                    pass
+            return None
+
+        actual_sectors = []
+        for lc in self.raw_collection:
+            sec = get_sector_from_lc(lc)
+            if sec is not None:
+                actual_sectors.append(sec)
+        
+        actual_sectors = sorted(list(set(actual_sectors)))
+        self.results.metadata["sectors_used"] = actual_sectors
+        log.info("Loaded light curves for sector(s): %s", actual_sectors)
 
         return self.raw_collection
 

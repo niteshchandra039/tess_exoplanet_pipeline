@@ -59,7 +59,9 @@ def build_gp(
     with model:
         # ── GP hyperparameters ────────────────────────────────────────────────
         log_sigma_gp = pm.Normal("log_sigma_gp", mu=-3.0, sigma=2.0)
-        log_rho_gp = pm.Normal("log_rho_gp", mu=np.log(10.0), sigma=2.0)
+        # Constrain the GP timescale prior (sigma=0.75 instead of 2.0) to prevent the GP 
+        # from becoming flexible enough (~0.1-0.2 days) to absorb the short-duration transit signal.
+        log_rho_gp = pm.Normal("log_rho_gp", mu=np.log(10.0), sigma=0.75)
 
         sigma_gp = pm.Deterministic("sigma_gp", pm.math.exp(log_sigma_gp))
         rho_gp = pm.Deterministic("rho_gp", pm.math.exp(log_rho_gp))

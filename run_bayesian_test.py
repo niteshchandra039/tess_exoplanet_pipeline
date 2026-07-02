@@ -9,6 +9,8 @@ import os
 import sys
 from tess_pipeline import TESSAnalysis
 
+sectors = 'longest'
+
 def main() -> None:
     print("Initializing TESS Analysis for TIC 261136679 using Bayesian MCMC...")
     
@@ -18,13 +20,13 @@ def main() -> None:
         inference=True,
         inference_backend="exoplanet",  # uses exoplanet/PyMC/celerite2
         search_method="tls",
-        sectors="all",
-        max_planets=2,
+        sectors=sectors,
+        max_planets=1,
         chains=2,
-        draws=10,
-        tune=10,
+        draws=1,
+        tune=1,
         plots=True,
-        output_dir="output_bayesian",
+        output_dir=f"output_bayesian_sector_{sectors}",
         verbose=True
     )
     
@@ -71,6 +73,7 @@ def main() -> None:
     print("BAYESIAN FIT RESULTS SUMMARY")
     print("="*50)
     analysis.results.summary()
+
     
     print("\nSaving results and diagnostic plots...")
     analysis.save()

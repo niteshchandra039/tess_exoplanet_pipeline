@@ -163,6 +163,19 @@ class PipelineResults:
 
     def to_dict(self) -> dict[str, Any]:
         """Return a JSON-serializable summary dict (no heavy objects)."""
+        def _clean_val(val):
+            if hasattr(val, "tolist"):
+                return val.tolist()
+            if hasattr(val, "item"):
+                return val.item()
+            if isinstance(val, dict):
+                return {dk: _clean_val(dv) for dk, dv in val.items()}
+            if isinstance(val, (list, tuple)):
+                return [_clean_val(x) for x in val]
+            if isinstance(val, (int, float, str, bool, type(None))):
+                return val
+            return str(val)
+
         meta_clean = {}
         for k, v in self.metadata.items():
             if k == "detections" and isinstance(v, list):
@@ -172,23 +185,14 @@ class PipelineResults:
                         continue
                     clean_det = {}
                     for det_k, det_v in det.items():
-                        if isinstance(det_v, (int, float, str, bool, type(None))):
-                            clean_det[det_k] = det_v
-                        elif hasattr(det_v, "item"):  # numpy scalar
-                            clean_det[det_k] = det_v.item()
-                        elif isinstance(det_v, dict):
+                        if isinstance(det_v, dict):
                             # Skip large sub-dicts like tls_result
                             continue
-                        else:
-                            clean_det[det_k] = str(det_v)
+                        clean_det[det_k] = _clean_val(det_v)
                     clean_dets.append(clean_det)
                 meta_clean[k] = clean_dets
-            elif isinstance(v, (int, float, str, bool, type(None))):
-                meta_clean[k] = v
-            elif isinstance(v, list):
-                meta_clean[k] = [x.item() if hasattr(x, "item") else x for x in v]
             else:
-                meta_clean[k] = str(v)
+                meta_clean[k] = _clean_val(v)
 
         # Clean diagnostics as well (exclude large arrays and nan values if possible)
         diag_clean = {}

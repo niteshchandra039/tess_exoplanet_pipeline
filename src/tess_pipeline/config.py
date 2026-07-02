@@ -79,24 +79,47 @@ def _env(key: str, default: Any, cast: type = str) -> Any:
         ) from exc
 
 
-def _parse_sectors(value: Any) -> int | str:
-    """Parse sectors value; accepts 1, 2, 3, or 'all'."""
+def _parse_sectors(value: Any) -> Any:
+    """Parse sectors value; accepts integer, list/tuple of integers, 'all', or range slice/list strings."""
+    if isinstance(value, (int, float)):
+        return int(value)
+    
+    if isinstance(value, (list, tuple)):
+        return [int(x) for x in value]
+
     if isinstance(value, str):
-        v = value.strip().lower()
-        if v == "all":
+        v = value.strip()
+        if v.lower() == "all":
             return "all"
+        if v.lower() == "longest":
+            return "longest"
+        
+        # Strip outer brackets if present
+        if v.startswith("[") and v.endswith("]"):
+            v = v[1:-1].strip()
+            
+        if ":" in v:
+            parts = v.split(":")
+            if len(parts) == 2:
+                return f"slice:{v}"
+            else:
+                raise ConfigurationError(f"Invalid sector slice format: {value!r}")
+        
+        if "," in v:
+            try:
+                return [int(x.strip()) for x in v.split(",") if x.strip()]
+            except ValueError as exc:
+                raise ConfigurationError(f"Invalid comma-separated sectors: {value!r}") from exc
+                
         try:
-            value = int(v)
+            return int(v)
         except ValueError as exc:
             raise ConfigurationError(
-                f"sectors must be one of 1, 2, 3, or 'all'; got {value!r}"
+                f"sectors must be an integer, 'all', a list, or a range like '[2:3]'; got {value!r}"
             ) from exc
 
-    if value in (1, 2, 3):
-        return int(value)
-
     raise ConfigurationError(
-        f"sectors must be one of 1, 2, 3, or 'all'; got {value!r}"
+        f"sectors must be an integer, 'all', a list, or a range like '[2:3]'; got {value!r}"
     )
 
 
@@ -167,7 +190,7 @@ class PipelineConfig:
     # TESS data
     author: str = constants.DEFAULT_AUTHOR
     cadence: int = constants.DEFAULT_CADENCE
-    sectors: int | str = 1
+    sectors: Any = 1
     quality_bitmask: str = constants.DEFAULT_QUALITY_BITMASK
     force_download: bool = False
     lightcurve_source: str = "download"
@@ -269,9 +292,19 @@ class PipelineConfig:
             raise ConfigurationError(f"chains must be ≥ 1; got {self.chains}")
         if self.draws < 1:
             raise ConfigurationError(f"draws must be ≥ 1; got {self.draws}")
-        if self.sectors not in (1, 2, 3, "all"):
+        valid = False
+        if self.sectors in ("all", "longest"):
+            valid = True
+        elif isinstance(self.sectors, int) and self.sectors >= 1:
+            valid = True
+        elif isinstance(self.sectors, (list, tuple)) and all(isinstance(x, int) for x in self.sectors):
+            valid = True
+        elif isinstance(self.sectors, str) and self.sectors.startswith("slice:"):
+            valid = True
+
+        if not valid:
             raise ConfigurationError(
-                f"sectors must be one of 1, 2, 3, or 'all'; got {self.sectors!r}"
+                f"sectors must be a positive integer, 'all', 'longest', a list of integers, or a slice like '[2:3]'; got {self.sectors!r}"
             )
         if self.lightcurve_source not in ("download", "fits"):
             raise ConfigurationError(
