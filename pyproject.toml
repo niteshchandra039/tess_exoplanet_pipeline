@@ -35,6 +35,7 @@ dependencies = [
     "transitleastsquares>=1.0.31",
     "tqdm>=4.66",
     "tomllib; python_version < '3.11'",
+    "setuptools<82",
     # Bayesian inference
     "exoplanet>=0.5.4",
     "exoplanet-core>=0.3.0",
