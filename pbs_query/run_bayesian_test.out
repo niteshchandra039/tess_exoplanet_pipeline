@@ -1,0 +1,283 @@
+============================================================
+                PBS JOB INFORMATION
+============================================================
+Job ID          : 22839.hn1
+Job Name        : run_bayesian_test
+Queue           : regular
+Host            : hpc061
+Working Dir     : /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline
+Start Time      : Thu Jul  2 03:55:04 IST 2026
+Allocated CPUs  : Unknown
+============================================================
+
+Python executable:
+/mnt/home/project/cnitesh/.conda/envs/exo_model/bin/python
+
+Python 3.12.11
+
+Package versions:
+
+============================================================
+Starting Bayesian analysis...
+============================================================
+Initializing TESS Analysis for TIC 261136679 using Bayesian MCMC...
+1. Resolving target coordinates...
+03:55:04  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 261136679
+03:55:04  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 261136679' to TIC 261136679
+03:55:04  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 261136679 (matched 1 row(s))
+03:55:04  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 261136679 from local archive
+03:55:04  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 261136679
+2. Checking archival orbital period...
+03:55:04  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 261136679
+03:55:04  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 261136679 (matched 1 row(s))
+03:55:04  INFO      tess_pipeline.analysis.stages.period  Archive period: 6.267832 d (ref: Local NASA Exoplanet Archive TOI export: /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv)
+3. Downloading TESS light curves from MAST...
+03:55:04  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 261136679
+03:55:07  INFO      tess_pipeline.data.download  [download] Starting download for TIC 261136679 (author=SPOC, cadence=120, sectors=all, force_download=False)
+03:55:07  INFO      tess_pipeline.data.download  [download] Step 1/5: validated input arguments
+03:55:07  INFO      tess_pipeline.data.download  [download] Found existing files for TIC 261136679 in data/fits/, loading them:
+03:55:07  INFO      tess_pipeline.data.download    tess2021146024351-s0039-0000000261136679-0210-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2023018032328-s0061-0000000261136679-0250-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2019169103026-s0013-0000000261136679-0146-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2023181235917-s0067-0000000261136679-0261-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2021014023720-s0034-0000000261136679-0204-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2023096110322-s0064-0000000261136679-0257-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2025206162959-s0095-0000000261136679-0292-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2018206045859-s0001-0000000261136679-0120-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2023124020739-s0065-0000000261136679-0259-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2020186164531-s0027-0000000261136679-0189-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2019140104343-s0012-0000000261136679-0144-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2018292075959-s0004-0000000261136679-0124-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2019112060037-s0011-0000000261136679-0143-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2023043185947-s0062-0000000261136679-0254-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2023153011303-s0066-0000000261136679-0260-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2025014115807-s0088-0000000261136679-0285-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2020212050318-s0028-0000000261136679-0190-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2019032160000-s0008-0000000261136679-0136-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2025180145000-s0094-0000000261136679-0291-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2025154050500-s0093-0000000261136679-0290-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2023209231226-s0068-0000000261136679-0262-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2021118034608-s0038-0000000261136679-0209-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2020294194027-s0031-0000000261136679-0198-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download    tess2025042113628-s0089-0000000261136679-0286-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+03:55:07  INFO      tess_pipeline.data.download  [fits] Step 2/4: 24 FITS file(s) queued
+03:55:07  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/24: data/fits/tess2021146024351-s0039-0000000261136679-0210-s_lc.fits
+03:55:07  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/24: data/fits/tess2023018032328-s0061-0000000261136679-0250-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 3/24: data/fits/tess2019169103026-s0013-0000000261136679-0146-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 4/24: data/fits/tess2023181235917-s0067-0000000261136679-0261-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 5/24: data/fits/tess2021014023720-s0034-0000000261136679-0204-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 6/24: data/fits/tess2023096110322-s0064-0000000261136679-0257-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 7/24: data/fits/tess2025206162959-s0095-0000000261136679-0292-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 8/24: data/fits/tess2018206045859-s0001-0000000261136679-0120-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 9/24: data/fits/tess2023124020739-s0065-0000000261136679-0259-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 10/24: data/fits/tess2020186164531-s0027-0000000261136679-0189-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 11/24: data/fits/tess2019140104343-s0012-0000000261136679-0144-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 12/24: data/fits/tess2018292075959-s0004-0000000261136679-0124-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 13/24: data/fits/tess2019112060037-s0011-0000000261136679-0143-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 14/24: data/fits/tess2023043185947-s0062-0000000261136679-0254-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 15/24: data/fits/tess2023153011303-s0066-0000000261136679-0260-s_lc.fits
+03:55:08  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 16/24: data/fits/tess2025014115807-s0088-0000000261136679-0285-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 17/24: data/fits/tess2020212050318-s0028-0000000261136679-0190-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 18/24: data/fits/tess2019032160000-s0008-0000000261136679-0136-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 19/24: data/fits/tess2025180145000-s0094-0000000261136679-0291-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 20/24: data/fits/tess2025154050500-s0093-0000000261136679-0290-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 21/24: data/fits/tess2023209231226-s0068-0000000261136679-0262-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 22/24: data/fits/tess2021118034608-s0038-0000000261136679-0209-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 23/24: data/fits/tess2020294194027-s0031-0000000261136679-0198-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 24/24: data/fits/tess2025042113628-s0089-0000000261136679-0286-s_lc.fits
+03:55:09  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 24 light curve(s) from local FITS in 1.8s
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+03:55:09  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+03:55:11  DEBUG     tess_pipeline.data.preprocess  Stitched 24 sectors → 387271 cadences
+03:55:14  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 386813 cadences remain
+03:55:14  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sec_all/TIC 261136679/plots/01_raw.png
+03:55:14  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sec_all/TIC 261136679/plots/02_flat.png
+5. Searching for transit signals...
+03:55:14  INFO      tess_pipeline.analysis.stages.period  Archive period found: 6.267832 d; refining Planet 1
+03:55:14  INFO      tess_pipeline.transit.detection  Running TLS (period 6.3–6.3 d)
+03:55:15  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+03:55:15  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 6.2578320000000005, 'period_max': 6.277832, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 386813 data points, 178 periods from 6.258 to 6.278 days
+Using all 32 CPU threads
+03:55:32  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+03:55:33  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1325.4869...
+03:55:54  INFO      tess_pipeline.transit.tls  TLS: period=6.267878 d, epoch=1325.4921, duration=0.67 h, depth=0.000309, SDE=5.57
+03:55:55  INFO      tess_pipeline.transit.detection  Downsampled LC from 384098 → 76820 points (10-min cadence) for broad TLS search
+03:55:55  INFO      tess_pipeline.transit.detection  Searching for Planet 1 candidate (coarse search)...
+03:55:55  INFO      tess_pipeline.transit.detection  Running TLS (period 0.5–100.0 d)
+03:55:55  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=None, dur_step=1.10)
+03:55:55  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 0.5, 'period_max': 100.0, 'duration_grid_step': 1.1, 'period_grid': array([  0.5       ,   0.50533722,   0.51073141,   0.51618318,
+         0.52169315,   0.52726193,   0.53289016,   0.53857846,
+         0.54432749,   0.55013788,   0.55601029,   0.56194539,
+         0.56794384,   0.57400632,   0.58013352,   0.58632612,
+         0.59258482,   0.59891034,   0.60530337,   0.61176464,
+         0.61829489,   0.62489484,   0.63156524,   0.63830685,
+         0.64512042,   0.65200671,   0.65896652,   0.66600062,
+         0.6731098 ,   0.68029487,   0.68755664,   0.69489592,
+         0.70231355,   0.70981035,   0.71738718,   0.72504489,
+         0.73278433,   0.7406064 ,   0.74851196,   0.7565019 ,
+         0.76457714,   0.77273857,   0.78098712,   0.78932372,
+         0.79774931,   0.80626484,   0.81487126,   0.82356956,
+         0.8323607 ,   0.84124568,   0.85022551,   0.85930119,
+         0.86847375,   0.87774422,   0.88711365,   0.89658309,
+         0.90615362,   0.9158263 ,   0.92560223,   0.93548252,
+         0.94546827,   0.95556061,   0.96576069,   0.97606964,
+         0.98648864,   0.99701885,   1.00766147,   1.01841769,
+         1.02928873,   1.04027581,   1.05138017,   1.06260307,
+         1.07394576,   1.08540953,   1.09699567,   1.10870548,
+         1.1205403 ,   1.13250144,   1.14459025,   1.15680811,
+         1.16915639,   1.18163648,   1.19424979,   1.20699774,
+         1.21988176,   1.23290332,   1.24606387,   1.25936491,
+         1.27280792,   1.28639443,   1.30012597,   1.31400409,
+         1.32803035,   1.34220633,   1.35653363,   1.37101387,
+         1.38564867,   1.4004397 ,   1.4153886 ,   1.43049709,
+         1.44576684,   1.46119959,   1.47679708,   1.49256106,
+         1.50849332,   1.52459564,   1.54086984,   1.55731777,
+         1.57394126,   1.5907422 ,   1.60772248,   1.62488402,
+         1.64222875,   1.65975862,   1.67747562,   1.69538173,
+         1.71347898,   1.73176941,   1.75025508,   1.76893807,
+         1.78782049,   1.80690448,   1.82619217,   1.84568575,
+         1.86538741,   1.88529938,   1.90542389,   1.92576322,
+         1.94631967,   1.96709554,   1.98809319,   2.00931497,
+         2.03076328,   2.05244054,   2.07434919,   2.09649171,
+         2.11887059,   2.14148834,   2.16434753,   2.18745073,
+         2.21080054,   2.2343996 ,   2.25825056,   2.28235612,
+         2.306719  ,   2.33134193,   2.3562277 ,   2.38137911,
+         2.406799  ,   2.43249023,   2.4584557 ,   2.48469834,
+         2.51122111,   2.53802699,   2.565119  ,   2.59250021,
+         2.6201737 ,   2.64814259,   2.67641003,   2.70497921,
+         2.73385334,   2.7630357 ,   2.79252956,   2.82233825,
+         2.85246513,   2.88291359,   2.91368708,   2.94478906,
+         2.97622304,   3.00799255,   3.04010119,   3.07255256,
+         3.10535034,   3.13849822,   3.17199993,   3.20585925,
+         3.24008001,   3.27466605,   3.30962127,   3.34494963,
+         3.38065509,   3.41674169,   3.4532135 ,   3.49007462,
+         3.52732921,   3.56498147,   3.60303565,   3.64149604,
+         3.68036697,   3.71965283,   3.75935804,   3.79948708,
+         3.84004448,   3.88103481,   3.92246268,   3.96433277,
+         4.00664981,   4.04941855,   4.09264383,   4.13633051,
+         4.18048352,   4.22510784,   4.2702085 ,   4.31579059,
+         4.36185923,   4.40841964,   4.45547705,   4.50303677,
+         4.55110417,   4.59968466,   4.64878372,   4.69840688,
+         4.74855974,   4.79924796,   4.85047724,   4.90225337,
+         4.95458218,   5.00746957,   5.06092151,   5.11494401,
+         5.16954317,   5.22472515,   5.28049617,   5.33686251,
+         5.39383053,   5.45140665,   5.50959736,   5.56840923,
+         5.62784888,   5.68792302,   5.74863841,   5.81000191,
+         5.87202042,   5.93470095,   5.99805056,   6.0620764 ,
+         6.12678567,   6.19218567,   6.25828379,   6.32508746,
+         6.39260423,   6.4608417 ,   6.52980757,   6.59950961,
+         6.66995568,   6.74115372,   6.81311176,   6.88583792,
+         6.95934038,   7.03362744,   7.10870748,   7.18458895,
+         7.26128041,   7.33879052,   7.417128  ,   7.49630169,
+         7.57632051,   7.65719349,   7.73892974,   7.82153848,
+         7.90502903,   7.98941079,   8.07469327,   8.1608861 ,
+         8.24799899,   8.33604176,   8.42502434,   8.51495676,
+         8.60584916,   8.69771178,   8.79055498,   8.88438923,
+         8.97922511,   9.07507331,   9.17194464,   9.26985001,
+         9.36880047,   9.46880717,   9.56988139,   9.67203451,
+         9.77527807,   9.87962369,   9.98508314,  10.09166831,
+        10.19939122,  10.30826401,  10.41829896,  10.52950846,
+        10.64190507,  10.75550145,  10.87031041,  10.98634488,
+        11.10361796,  11.22214287,  11.34193296,  11.46300174,
+        11.58536287,  11.70903013,  11.83401747,  11.96033898,
+        12.08800891,  12.21704163,  12.34745171,  12.47925384,
+        12.61246289,  12.74709387,  12.88316196,  13.0206825 ,
+        13.159671  ,  13.30014312,  13.4421147 ,  13.58560175,
+        13.73062044,  13.87718712,  14.02531833,  14.17503075,
+        14.32634126,  14.47926694,  14.633825  ,  14.79003289,
+        14.94790821,  15.10746876,  15.26873253,  15.4317177 ,
+        15.59644265,  15.76292594,  15.93118635,  16.10124285,
+        16.2731146 ,  16.44682099,  16.62238159,  16.79981621,
+        16.97914484,  17.1603877 ,  17.34356523,  17.52869808,
+        17.71580712,  17.90491344,  18.09603837,  18.28920345,
+        18.48443045,  18.6817414 ,  18.88115853,  19.08270432,
+        19.28640151,  19.49227305,  19.70034215,  19.91063227,
+        20.12316712,  20.33797066,  20.55506711,  20.77448094,
+        20.9962369 ,  21.22035997,  21.44687543,  21.67580882,
+        21.90718594,  22.14103289,  22.37737602,  22.61624198,
+        22.8576577 ,  23.10165039,  23.34824758,  23.59747705,
+        23.8493669 ,  24.10394554,  24.36124166,  24.62128428,
+        24.8841027 ,  25.14972657,  25.41818582,  25.68951072,
+        25.96373186,  26.24088016,  26.52098687,  26.80408355,
+        27.09020214,  27.37937488,  27.67163437,  27.96701358,
+        28.26554579,  28.56726466,  28.87220422,  29.18039883,
+        29.49188325,  29.80669259,  30.12486235,  30.44642839,
+        30.77142696,  31.09989472,  31.43186868,  31.76738628,
+        32.10648534,  32.4492041 ,  32.79558118,  33.14565565,
+        33.49946696,  33.85705502,  34.21846012,  34.58372303,
+        34.95288491,  35.32598738,  35.70307252,  36.08418283,
+        36.46936127,  36.85865129,  37.25209675,  37.64974203,
+        38.05163194,  38.45781181,  38.86832742,  39.28322505,
+        39.70255148,  40.12635399,  40.55468035,  40.98757886,
+        41.42509832,  41.86728805,  42.3141979 ,  42.76587828,
+        43.22238008,  43.68375479,  44.15005441,  44.62133152,
+        45.09763925,  45.5790313 ,  46.06556194,  46.55728602,
+        47.05425898,  47.55653685,  48.06417626,  48.57723443,
+        49.09576921,  49.61983905,  50.14950305,  50.68482092,
+        51.22585301,  51.77266031,  52.32530447,  52.88384779,
+        53.44835326,  54.01888451,  54.59550585,  55.17828231,
+        55.76727958,  56.36256406,  56.96420288,  57.57226385,
+        58.18681553,  58.80792721,  59.4356689 ,  60.07011139,
+        60.7113262 ,  61.35938561,  62.0143627 ,  62.6763313 ,
+        63.34536604,  64.02154236,  64.70493648,  65.39562545,
+        66.09368713,  66.79920024,  67.5122443 ,  68.23289971,
+        68.96124771,  69.69737042,  70.44135082,  71.1932728 ,
+        71.95322113,  72.72128148,  73.49754044,  74.28208553,
+        75.0750052 ,  75.87638885,  76.68632682,  77.50491042,
+        78.33223194,  79.16838466,  80.01346284,  80.86756176,
+        81.7307777 ,  82.60320799,  83.48495099,  84.3761061 ,
+        85.27677379,  86.1870556 ,  87.10705416,  88.0368732 ,
+        88.97661752,  89.9263931 ,  90.886307  ,  91.85646744,
+        92.83698379,  93.82796662,  94.82952763,  95.84177974,
+        96.86483708,  97.89881498,  98.94383001, 100.        ]), 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 52 durations
+Searching 76820 data points, 500 periods from 0.5 to 100.0 days
+Using all 32 CPU threads
+03:56:05  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 219 points...
+03:56:05  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1422.2990...
+03:56:06  INFO      tess_pipeline.transit.tls  TLS: period=97.898815 d, epoch=1422.2885, duration=1.38 h, depth=0.000250, SDE=6.75
+03:56:06  INFO      tess_pipeline.transit.detection  Significant peak found (coarse SDE/SNR = 7.49 at 97.8988 d). Refining on full resolution in range 95.9408–99.8568 d...
+03:56:06  INFO      tess_pipeline.transit.detection  Running TLS (period 95.9–99.9 d)
+03:56:06  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+03:56:06  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 95.94083867742911, 'period_max': 99.85679127650785, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 384098 data points, 296 periods from 95.947 to 99.845 days
+Using all 32 CPU threads
+03:56:25  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 240 points...
+03:56:27  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1422.3810...
+03:56:34  INFO      tess_pipeline.transit.tls  TLS: period=97.903288 d, epoch=1422.2950, duration=1.26 h, depth=0.000280, SDE=4.65
+03:56:34  INFO      tess_pipeline.transit.detection  Planet 1 found: Period = 97.903288 d, epoch = 1422.2950, SDE/SNR = 17.88
+03:56:34  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+03:56:34  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sec_all/TIC 261136679/plots/03_tls_periodogram.png
+03:56:36  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sec_all/TIC 261136679/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+03:56:36  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+INFO: Query finished. [astroquery.utils.tap.core]
+03:56:40  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+03:56:40  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+03:56:40  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 261136679 (matched 1 row(s))
+03:56:40  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 1.1500000 from local NASA archive
+7. Characterizing host star properties...
+03:56:40  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (isoclassify)
+03:56:40  WARNING   tess_pipeline.catalogs.stellar  isoclassify.classify failed: 'module' object is not callable
+03:56:40  WARNING   tess_pipeline.catalogs.stellar  isoclassify failed; falling back to Gaia-only parameters
+8. Skipping SDSS checking (disabled in this version)...
+03:56:40  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+03:56:40  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+03:56:40  INFO      tess_pipeline.analysis.stages.inference  Multiple planets detected (2). Running 1-planet model fit for comparison...
+03:56:40  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=386813 points, 1 planets)
+03:56:40  WARNING   tess_pipeline.analysis.stages.inference  Could not fit 1-planet model for BIC comparison: celerite2 and pymc are required for the GP noise model. Reinstall the package with: pip install -e .
+03:56:40  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=386813 points, 2 planets)
+
+============================================================
+Finished at : Thu Jul  2 03:56:41 IST 2026
+Elapsed     : 0h 1m 37s
+Exit Status : 1
+============================================================

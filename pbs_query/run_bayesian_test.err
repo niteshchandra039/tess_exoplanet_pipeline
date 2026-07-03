@@ -1,0 +1,71 @@
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/lightkurve/prf/__init__.py:7: UserWarning: Warning: the tpfmodel submodule is not available without oktopus installed, which requires a current version of autograd. See #1452 for details.
+  warnings.warn(
+Warning: 24% (4625/19536) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 26% (5027/19373) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 38% (7049/18749) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 24% (4849/20262) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 28% (5458/19550) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 20% (3945/19402) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+  0%|          | 0/178 periods | 00:00<?  1%|          | 1/178 periods | 00:03<10:28  1%|          | 2/178 periods | 00:04<05:20  2%|▏         | 3/178 periods | 00:04<03:35  2%|▏         | 4/178 periods | 00:04<02:27  3%|▎         | 5/178 periods | 00:05<02:01  3%|▎         | 6/178 periods | 00:05<01:29  4%|▍         | 7/178 periods | 00:06<01:31  5%|▌         | 9/178 periods | 00:06<01:14  6%|▌         | 11/178 periods | 00:06<00:48  7%|▋         | 12/178 periods | 00:07<00:42  7%|▋         | 13/178 periods | 00:07<00:37  8%|▊         | 14/178 periods | 00:07<00:37  9%|▉         | 16/178 periods | 00:07<00:25 10%|█         | 18/178 periods | 00:07<00:20 11%|█         | 20/178 periods | 00:07<00:17 13%|█▎        | 23/178 periods | 00:08<00:15 14%|█▍        | 25/178 periods | 00:08<00:13 15%|█▌        | 27/178 periods | 00:08<00:13 17%|█▋        | 30/178 periods | 00:08<00:10 18%|█▊        | 32/178 periods | 00:08<00:09 20%|██        | 36/178 periods | 00:08<00:07 22%|██▏       | 39/178 periods | 00:08<00:06 24%|██▎       | 42/178 periods | 00:09<00:07 25%|██▌       | 45/178 periods | 00:09<00:07 26%|██▋       | 47/178 periods | 00:09<00:08 28%|██▊       | 49/178 periods | 00:09<00:09 29%|██▉       | 52/178 periods | 00:09<00:07 31%|███▏      | 56/178 periods | 00:09<00:05 33%|███▎      | 59/178 periods | 00:10<00:07 35%|███▌      | 63/178 periods | 00:10<00:06 38%|███▊      | 67/178 periods | 00:10<00:04 40%|████      | 72/178 periods | 00:10<00:04 43%|████▎     | 76/178 periods | 00:10<00:03 45%|████▍     | 80/178 periods | 00:10<00:03 47%|████▋     | 84/178 periods | 00:11<00:03 49%|████▉     | 88/178 periods | 00:11<00:03 51%|█████     | 91/178 periods | 00:11<00:04 53%|█████▎    | 94/178 periods | 00:11<00:04 54%|█████▍    | 97/178 periods | 00:11<00:04 57%|█████▋    | 101/178 periods | 00:11<00:03 58%|█████▊    | 104/178 periods | 00:12<00:03 60%|██████    | 107/178 periods | 00:12<00:03 62%|██████▏   | 110/178 periods | 00:12<00:03 63%|██████▎   | 113/178 periods | 00:12<00:03 66%|██████▌   | 117/178 periods | 00:12<00:02 67%|██████▋   | 120/178 periods | 00:12<00:02 69%|██████▉   | 123/178 periods | 00:12<00:02 71%|███████   | 126/178 periods | 00:13<00:02 72%|███████▏  | 129/178 periods | 00:13<00:02 75%|███████▌  | 134/178 periods | 00:13<00:01 77%|███████▋  | 137/178 periods | 00:13<00:01 79%|███████▊  | 140/178 periods | 00:13<00:01 80%|████████  | 143/178 periods | 00:13<00:01 83%|████████▎ | 147/178 periods | 00:14<00:01 84%|████████▍ | 150/178 periods | 00:14<00:01 87%|████████▋ | 155/178 periods | 00:14<00:00 90%|████████▉ | 160/178 periods | 00:14<00:00 94%|█████████▍| 168/178 periods | 00:14<00:00 97%|█████████▋| 173/178 periods | 00:14<00:00100%|██████████| 178/178 periods | 00:14<00:00100%|██████████| 178/178 periods | 00:14<00:00
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/transitleastsquares/main.py:411: UserWarning: 321 of 412 transits without data. The true period may be twice the given period.
+  warnings.warn(text)
+  0%|          | 0/500 periods | 00:00<?  0%|          | 1/500 periods | 00:06<50:34  1%|          | 3/500 periods | 00:06<13:22  2%|▏         | 9/500 periods | 00:06<03:18  4%|▎         | 18/500 periods | 00:06<01:17  8%|▊         | 42/500 periods | 00:06<00:23 12%|█▏        | 61/500 periods | 00:06<00:13 15%|█▌        | 76/500 periods | 00:06<00:09 19%|█▊        | 93/500 periods | 00:06<00:07 22%|██▏       | 108/500 periods | 00:06<00:05 25%|██▍       | 123/500 periods | 00:07<00:04 28%|██▊       | 138/500 periods | 00:07<00:03 31%|███       | 155/500 periods | 00:07<00:03 34%|███▍      | 172/500 periods | 00:07<00:02 37%|███▋      | 187/500 periods | 00:07<00:02 40%|████      | 202/500 periods | 00:07<00:02 43%|████▎     | 217/500 periods | 00:07<00:02 46%|████▋     | 232/500 periods | 00:07<00:02 49%|████▉     | 247/500 periods | 00:07<00:01 52%|█████▏    | 262/500 periods | 00:08<00:01 56%|█████▌    | 278/500 periods | 00:08<00:01 59%|█████▊    | 293/500 periods | 00:08<00:01 62%|██████▏   | 308/500 periods | 00:08<00:01 65%|██████▌   | 325/500 periods | 00:08<00:01 68%|██████▊   | 341/500 periods | 00:08<00:01 71%|███████▏  | 357/500 periods | 00:08<00:00 74%|███████▍  | 372/500 periods | 00:08<00:00 77%|███████▋  | 387/500 periods | 00:08<00:00 81%|████████  | 403/500 periods | 00:09<00:00 84%|████████▎ | 418/500 periods | 00:09<00:00 86%|████████▋ | 432/500 periods | 00:09<00:00 90%|████████▉ | 449/500 periods | 00:09<00:00 93%|█████████▎| 463/500 periods | 00:09<00:00 95%|█████████▌| 477/500 periods | 00:09<00:00 98%|█████████▊| 492/500 periods | 00:09<00:00100%|██████████| 500/500 periods | 00:09<00:00
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/transitleastsquares/stats.py:458: RuntimeWarning: divide by zero encountered in scalar divide
+  snr_pink_per_transit[i] = (1 - mean_flux) / pinknoise
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/transitleastsquares/main.py:411: UserWarning: 22 of 26 transits without data. The true period may be twice the given period.
+  warnings.warn(text)
+  0%|          | 0/296 periods | 00:00<?  0%|          | 1/296 periods | 00:05<26:34  1%|          | 3/296 periods | 00:06<08:03  1%|▏         | 4/296 periods | 00:06<05:35  2%|▏         | 7/296 periods | 00:06<02:35  3%|▎         | 8/296 periods | 00:06<02:11  3%|▎         | 10/296 periods | 00:06<01:26  4%|▍         | 13/296 periods | 00:07<00:56  5%|▌         | 15/296 periods | 00:07<00:51  6%|▌         | 18/296 periods | 00:07<00:35  7%|▋         | 21/296 periods | 00:07<00:26  8%|▊         | 23/296 periods | 00:07<00:24 10%|█         | 30/296 periods | 00:07<00:13 11%|█         | 33/296 periods | 00:08<00:11 13%|█▎        | 39/296 periods | 00:08<00:08 15%|█▍        | 43/296 periods | 00:08<00:14 16%|█▌        | 46/296 periods | 00:08<00:13 17%|█▋        | 50/296 periods | 00:08<00:11 18%|█▊        | 53/296 periods | 00:09<00:11 20%|█▉        | 59/296 periods | 00:09<00:08 21%|██▏       | 63/296 periods | 00:09<00:08 23%|██▎       | 68/296 periods | 00:09<00:06 24%|██▍       | 72/296 periods | 00:09<00:09 26%|██▌       | 76/296 periods | 00:09<00:10 27%|██▋       | 81/296 periods | 00:10<00:08 28%|██▊       | 84/296 periods | 00:10<00:09 31%|███       | 91/296 periods | 00:10<00:07 32%|███▏      | 95/296 periods | 00:10<00:06 35%|███▍      | 103/296 periods | 00:10<00:06 36%|███▌      | 107/296 periods | 00:11<00:07 37%|███▋      | 110/296 periods | 00:11<00:07 38%|███▊      | 113/296 periods | 00:11<00:07 39%|███▉      | 116/296 periods | 00:11<00:08 41%|████      | 120/296 periods | 00:11<00:07 42%|████▏     | 124/296 periods | 00:11<00:06 44%|████▎     | 129/296 periods | 00:11<00:05 46%|████▌     | 135/296 periods | 00:11<00:04 47%|████▋     | 139/296 periods | 00:12<00:05 48%|████▊     | 143/296 periods | 00:12<00:06 49%|████▉     | 146/296 periods | 00:12<00:06 50%|█████     | 149/296 periods | 00:12<00:05 51%|█████▏    | 152/296 periods | 00:12<00:06 52%|█████▏    | 155/296 periods | 00:12<00:05 54%|█████▍    | 160/296 periods | 00:13<00:04 55%|█████▌    | 164/296 periods | 00:13<00:04 56%|█████▋    | 167/296 periods | 00:13<00:05 59%|█████▉    | 174/296 periods | 00:13<00:03 60%|██████    | 178/296 periods | 00:13<00:03 61%|██████▏   | 182/296 periods | 00:13<00:05 63%|██████▎   | 186/296 periods | 00:14<00:04 64%|██████▍   | 190/296 periods | 00:14<00:03 66%|██████▌   | 194/296 periods | 00:14<00:03 67%|██████▋   | 197/296 periods | 00:14<00:03 68%|██████▊   | 201/296 periods | 00:14<00:03 69%|██████▉   | 204/296 periods | 00:14<00:04 71%|███████▏  | 211/296 periods | 00:14<00:02 73%|███████▎  | 215/296 periods | 00:15<00:03 74%|███████▍  | 219/296 periods | 00:15<00:02 75%|███████▌  | 223/296 periods | 00:15<00:02 77%|███████▋  | 228/296 periods | 00:15<00:02 78%|███████▊  | 232/296 periods | 00:15<00:02 79%|███████▉  | 235/296 periods | 00:15<00:02 80%|████████  | 238/296 periods | 00:16<00:02 81%|████████▏ | 241/296 periods | 00:16<00:02 83%|████████▎ | 246/296 periods | 00:16<00:01 85%|████████▌ | 253/296 periods | 00:16<00:01 87%|████████▋ | 258/296 periods | 00:16<00:00 89%|████████▉ | 263/296 periods | 00:16<00:01 90%|█████████ | 267/296 periods | 00:17<00:01 91%|█████████ | 270/296 periods | 00:17<00:01 93%|█████████▎| 276/296 periods | 00:17<00:00 96%|█████████▌| 283/296 periods | 00:17<00:00 99%|█████████▉| 293/296 periods | 00:17<00:00100%|██████████| 296/296 periods | 00:17<00:00
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/inference/gp.py", line 48, in build_gp
+    import celerite2.pymc as celerite2_pm
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/celerite2/pymc/__init__.py", line 24, in <module>
+    from celerite2.pymc import terms  # noqa
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/celerite2/pymc/terms.py", line 22, in <module>
+    from celerite2.pymc import ops
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/celerite2/pymc/ops.py", line 18, in <module>
+    import pkg_resources
+ModuleNotFoundError: No module named 'pkg_resources'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_bayesian_test.py", line 80, in <module>
+    main()
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_bayesian_test.py", line 58, in main
+    analysis.fit_transit()
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/session.py", line 205, in fit_transit
+    self._inference.fit_transit(period=period)
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/stages/inference.py", line 66, in fit_transit
+    posterior, model_outputs = run_bayesian_fit(
+                               ^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/inference/bayesian.py", line 162, in run_bayesian_fit
+    gp = build_gp(
+         ^^^^^^^^^
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/inference/gp.py", line 54, in build_gp
+    raise ImportError(
+ImportError: celerite2 and pymc are required for the GP noise model. Reinstall the package with: pip install -e .
+Command exited with non-zero status 1
+	Command being timed: "python3 -u /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_bayesian_test.py"
+	User time (seconds): 360.49
+	System time (seconds): 20.99
+	Percent of CPU this job got: 392%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:37.26
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1133464
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 9300920
+	Voluntary context switches: 211117
+	Involuntary context switches: 62780
+	Swaps: 0
+	File system inputs: 72
+	File system outputs: 1160
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1
