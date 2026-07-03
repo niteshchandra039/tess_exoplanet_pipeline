@@ -52,7 +52,7 @@ def build_gp(
         import pytensor.tensor as pt
     except ImportError as exc:
         raise ImportError(
-            "celerite2 and pymc are required for the GP noise model. "
+            f"celerite2 and pymc are required for the GP noise model (detailed error: {exc}). "
             "Reinstall the package with: pip install -e ."
         ) from exc
 
