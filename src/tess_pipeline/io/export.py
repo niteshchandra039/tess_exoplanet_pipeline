@@ -390,6 +390,7 @@ for method in ("tls", "bls"):
         ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | {{method.upper()}} Periodogram{{title_suffix}} ({{stat_name}} = {{stat:.2f}})", fontsize=10, fontweight="bold")
     axes[-1, 0].set_xlabel("Period (days)")
     fig.tight_layout()
+    print(f"Generating plot: plots/03_{method}_periodogram.png")
     fig.savefig(f"plots/03_{{method}}_periodogram.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     
@@ -432,7 +433,7 @@ for method in ("tls", "bls"):
             mode_label = " Coarse" if mode == "coarse" else " Fine"
             ax_ind.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | {{method.upper()}}{{mode_label}} Periodogram (Planet {{idx+1}} Search) ({{stat_name}} = {{stat:.2f}})", fontsize=10, fontweight="bold")
             fig_ind.tight_layout()
-            
+            print(f"Generating plot: plots/03_{method}_periodogram_{mode}_p{idx}.png")
             fig_ind.savefig(f"plots/03_{{method}}_periodogram_{{mode}}_p{{idx}}.png", dpi=150, bbox_inches="tight")
             plt.close(fig_ind)
 
@@ -534,6 +535,7 @@ if "time" in lc_data and "flux" in lc_data:
         
         fig.tight_layout()
         filename = f"04_mcmc_phase_p{{idx}}.png" if (idx > 0 or n_planets > 1) else "04_mcmc_phase.png"
+        print(f"Generating plot: plots/{filename}")
         fig.savefig(f"plots/{{filename}}", dpi=150, bbox_inches="tight")
         plt.close(fig)
 
@@ -562,6 +564,7 @@ if "gp_model" in lc_data and "transit_model" in lc_data:
     axes[1].set_title("Detrended Light Curve & Best-Fit Transit Model", fontsize=10, fontweight="bold")
     
     fig.tight_layout()
+    print("Generating plot: plots/06_bayesian_fit.png")
     fig.savefig("plots/06_bayesian_fit.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
 
@@ -569,7 +572,7 @@ if "gp_model" in lc_data and "transit_model" in lc_data:
 if "gp_model" in lc_data:
     fig, ax = plt.subplots(figsize=(10, 4))
     res_before = flux - lc_data.get("transit_model", np.ones_like(flux))
-    res_after = residuals
+    res_after = lc_data.get("residuals", np.zeros_like(flux))
     
     def get_acf(x, max_lag=150):
         x_centered = x - np.mean(x)
@@ -596,6 +599,7 @@ if "gp_model" in lc_data:
     ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | GP Residuals ACF", fontsize=10, fontweight="bold")
     ax.legend(fontsize=9, loc="upper right")
     fig.tight_layout()
+    print("Generating plot: plots/10_gp_acf.png")
     fig.savefig("plots/10_gp_acf.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
 
@@ -605,6 +609,7 @@ if "period_med_p0" in lc_data or "period_p0" in lc_data:
     e_med = float(lc_data.get("epoch_med_p0") or lc_data.get("epoch_p0", time[0]))
     t14_med = float(lc_data.get("t14_med_p0") or 0.15)
     gp_model = lc_data.get("gp_model")
+    transit_model = lc_data.get("transit_model")
     detrended = flux - gp_model if gp_model is not None else flux / np.median(flux)
     
     half_width = max(0.2, t14_med * 3.0)
@@ -634,18 +639,26 @@ if "period_med_p0" in lc_data or "period_p0" in lc_data:
             f_sub = detrended[mask]
             
             if len(t_sub) > 0:
-                ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True)
+                ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True, label="Data" if idx == 0 else None)
                 ax.axvline(0, color="#dc2626", linestyle="--", linewidth=0.8, alpha=0.7)
+                
+                if transit_model is not None:
+                    m_sub = transit_model[mask]
+                    sort_idx = np.argsort(t_sub)
+                    ax.plot(t_sub[sort_idx], m_sub[sort_idx], color="#dc2626", linewidth=1.5, label="Transit Model" if idx == 0 else None)
                 
             ax.set_ylabel(f"Transit {{idx+1}}")
             ax.set_xlim(-half_width, half_width)
             if len(f_sub) > 0:
                 local_std = np.std(f_sub)
-                ax.set_ylim(np.min(f_sub) - 0.002, 1.0 + 3.0 * local_std)
+                ax.set_ylim(np.min(f_sub) - 0.00001 * np.min(f_sub), 1.0 + 3.0 * local_std)
                 
         axes[-1].set_xlabel("Time since transit mid-time (days)")
+        if transit_model is not None:
+            axes[0].legend(fontsize=8, loc="upper right")
         fig.suptitle(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | Stacked Individual Transits", y=0.99, fontsize=11, fontweight="bold")
         plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.2)
+        print("Generating plot: plots/11_transit_stack.png")
         fig.savefig("plots/11_transit_stack.png", dpi=150, bbox_inches="tight")
         plt.close(fig)
 

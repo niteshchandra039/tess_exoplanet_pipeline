@@ -142,7 +142,8 @@ class VisualizationStage:
                         duration_hr=pl.get("t14_hr", 3.0),
                         tic_id=tic_id,
                         sectors_str=sectors_str,
-                        gp_model=results.model.get("gp_model") if results.model else None
+                        gp_model=results.model.get("gp_model") if results.model else None,
+                        transit_model=results.model.get("transit_model") if results.model else None
                     )
                     figures[f"mcmc_phase_p{idx}"] = vtr.plot_mcmc_phase_curve(
                         results.lightcurve,
@@ -164,7 +165,8 @@ class VisualizationStage:
                     duration_hr=dur_val,
                     tic_id=tic_id,
                     sectors_str=sectors_str,
-                    gp_model=results.model.get("gp_model") if results.model else None
+                    gp_model=results.model.get("gp_model") if results.model else None,
+                    transit_model=results.model.get("transit_model") if results.model else None
                 )
                 figures["mcmc_phase"] = vtr.plot_mcmc_phase_curve(
                     results.lightcurve,

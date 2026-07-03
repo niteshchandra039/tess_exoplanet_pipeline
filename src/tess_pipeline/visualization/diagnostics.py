@@ -124,7 +124,8 @@ def plot_transit_stack(
     duration_hr: float = 3.0,
     tic_id: str = "",
     sectors_str: str = "",
-    gp_model: np.ndarray | None = None
+    gp_model: np.ndarray | None = None,
+    transit_model: np.ndarray | None = None
 ) -> plt.Figure:
     """
     Plot individual transit events stacked vertically to visually verify
@@ -173,17 +174,25 @@ def plot_transit_stack(
         f_sub = detrended[mask]
 
         if len(t_sub) > 0:
-            ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True)
+            ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True, label="Data" if idx == 0 else None)
             ax.axvline(0, color="#dc2626", linestyle="--", linewidth=0.8, alpha=0.7)
+            
+            if transit_model is not None:
+                # Slicing the transit model just like the flux, using the same time mask
+                m_sub = transit_model[mask]
+                sort_idx = np.argsort(t_sub)
+                ax.plot(t_sub[sort_idx], m_sub[sort_idx], color="#dc2626", linewidth=1.5, label="Transit Model" if idx == 0 else None)
 
         ax.set_ylabel(f"Transit {idx+1}")
         ax.set_xlim(-half_width, half_width)
 
         if len(f_sub) > 0:
             local_std = np.std(f_sub)
-            ax.set_ylim(np.min(f_sub) - 0.002, 1.0 + 3.0 * local_std)
+            ax.set_ylim(np.min(f_sub) - 0.00001 * np.min(f_sub), 1.0 + 3.0 * local_std)
 
     axes[-1].set_xlabel("Time since transit mid-time (days)")
+    if transit_model is not None:
+        axes[0].legend(fontsize=8, loc="upper right")
     fig.suptitle(f"TIC {tic_id} | Sectors: {sectors_str} | Stacked Individual Transits", y=0.99, fontsize=11, fontweight="bold")
     plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.2)
     return fig
