@@ -1099,10 +1099,40 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
                 </div>
         """
 
-    # Stellar sources
-    stellar_method = data.get("stellar", {}).get("method", "gaia_only")
-    stellar_badge = "badge-literature"
-    stellar_label = "Catalog (VizieR/Gaia/SIMBAD)"
+    # Dynamic badges helper for stellar parameters
+    def get_stellar_badge(param_key: str) -> str:
+        source = data.get("stellar", {}).get(f"{param_key}_source")
+        if param_key == "rho_star":
+            return '<span class="badge badge-derived">Derived</span>'
+        if not source:
+            source = data.get("stellar", {}).get("method") or "Catalog"
+        
+        if "Torres" in str(source):
+            badge_class = "badge-derived"
+            label = "Torres et al. 2010"
+        elif "SIMBAD" in str(source):
+            badge_class = "badge-fits"
+            label = "SIMBAD"
+        elif "VizieR" in str(source) or "TIC8" in str(source):
+            badge_class = "badge-literature"
+            label = "VizieR (TIC v8.2)"
+        elif "Gaia" in str(source):
+            badge_class = "badge-literature"
+            label = "Gaia DR3"
+        else:
+            badge_class = "badge-literature"
+            label = str(source)
+            
+        ref = data.get("stellar", {}).get(f"{param_key}_ref")
+        title_attr = f' title="{ref}"' if ref else ''
+        return f'<span class="badge {badge_class}"{title_attr}>{label}</span>'
+
+    r_star_badge = get_stellar_badge("r_star")
+    m_star_badge = get_stellar_badge("m_star")
+    teff_badge = get_stellar_badge("teff")
+    logg_badge = get_stellar_badge("logg")
+    feh_badge = get_stellar_badge("feh")
+    rho_star_badge = get_stellar_badge("rho_star")
 
     r_star = get_val("stellar", "r_star", 2, " R<sub>&sub;</sub>")
     m_star = get_val("stellar", "m_star", 2, " M<sub>&sub;</sub>")
@@ -1452,7 +1482,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
                         <span class="param-label">Stellar Radius (Rₛ)</span>
                         <span class="param-value">
                             {r_star}
-                            <span class="badge {stellar_badge}">{stellar_label}</span>
+                            {r_star_badge}
                         </span>
                     </div>
 
@@ -1460,7 +1490,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
                         <span class="param-label">Stellar Mass (Mₛ)</span>
                         <span class="param-value">
                             {m_star}
-                            <span class="badge {stellar_badge}">{stellar_label}</span>
+                            {m_star_badge}
                         </span>
                     </div>
 
@@ -1468,7 +1498,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
                         <span class="param-label">Effective Temp (T<sub>eff</sub>)</span>
                         <span class="param-value">
                             {teff}
-                            <span class="badge {stellar_badge}">{stellar_label}</span>
+                            {teff_badge}
                         </span>
                     </div>
 
@@ -1476,7 +1506,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
                         <span class="param-label">Surface Gravity (log g)</span>
                         <span class="param-value">
                             {logg}
-                            <span class="badge {stellar_badge}">{stellar_label}</span>
+                            {logg_badge}
                         </span>
                     </div>
 
@@ -1484,7 +1514,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
                         <span class="param-label">Metallicity ([Fe/H])</span>
                         <span class="param-value">
                             {feh}
-                            <span class="badge {stellar_badge}">{stellar_label}</span>
+                            {feh_badge}
                         </span>
                     </div>
 
@@ -1492,7 +1522,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
                         <span class="param-label">Stellar Density (ρₛ)</span>
                         <span class="param-value">
                             {rho_star}
-                            <span class="badge {stellar_badge}">{stellar_label}</span>
+                            {rho_star_badge}
                         </span>
                     </div>
                 </div>

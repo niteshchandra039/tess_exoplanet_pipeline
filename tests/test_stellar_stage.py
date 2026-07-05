@@ -97,7 +97,7 @@ def test_characterize_star_simbad_fallback(mock_query_vizier: MagicMock, mock_qu
         "parallax": 54.0,  # Prioritized from Gaia
     }
     
-    result = characterize_star(gaia_params, method="isoclassify")
+    result = characterize_star(gaia_params, method="gaia_only")
     
     # Verify values are merged and derived
     assert result["teff"] == 5800.0

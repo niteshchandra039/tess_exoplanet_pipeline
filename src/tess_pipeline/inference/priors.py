@@ -2,7 +2,7 @@
 inference/priors.py — Centralized prior definitions for the PyMC transit model.
 
 All priors are documented. Parameters:
-  * Stellar: ρ★ Gaussian from isoclassify/gaia_only
+  * Stellar: ρ★ Gaussian from multi-catalog merging
   * Orbital: log-uniform period, Gaussian t0
   * Transit: Kipping (2013) q1/q2 limb darkening, ImpactParameter distribution for b
   * Systematic: per-sector flux offsets, jitter (InverseGamma)

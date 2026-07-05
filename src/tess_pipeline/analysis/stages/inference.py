@@ -68,6 +68,14 @@ class InferenceStage:
                         "Skipping multi-planet MCMC fit and proceeding with 1-planet model.",
                         p2 * 100.0, MULTI_PLANET_PROBABILITY_THRESHOLD * 100.0,
                     )
+                    # Record the skipped candidates' probabilities and verdicts in metadata
+                    for d_idx in range(1, len(self.results.metadata["detections"])):
+                        det_skip = self.results.metadata["detections"][d_idx]
+                        sde_skip = det_skip.get("sde") or det_skip.get("snr") or 0.0
+                        p_skip = 1.0 / (1.0 + _math.exp(-0.5 * (float(sde_skip) - 7.0)))
+                        det_skip["existence_probability_bayesian"] = p_skip
+                        det_skip["bayesian_confidence"] = "Not Justified"
+
                     # Trim detections to only the first planet for the rest of this run
                     detections = detections[:1]
 

@@ -48,7 +48,7 @@ results.target             # TIC ID, coordinates
 results.lightcurve         # preprocessed LightCurve
 results.period             # {'value': float, 'source': 'tls'|'archive'|'bls'}
 results.detection          # TLS/BLS result dict
-results.stellar            # Gaia + isoclassify parameters
+results.stellar            # Catalog-resolved stellar parameters (VizieR/Gaia/SIMBAD)
 results.rv                 # SDSS radial velocity or None
 results.posterior          # ArviZ InferenceData
 results.planet             # derived parameters with credible intervals

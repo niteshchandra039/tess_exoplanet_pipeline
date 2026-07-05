@@ -43,8 +43,6 @@ dependencies = [
     "celerite2>=0.2.1",
     "arviz>=0.16",
     "netCDF4",
-    # Stellar characterization
-    "isoclassify",
     # Advanced modeling (PHOEBE)
     "phoebe>=2.4",
     # Development tools

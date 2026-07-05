@@ -25,7 +25,7 @@ class PipelineResults:
     lightcurve  : preprocessed lightkurve.LightCurve (or None)
     period      : {'value': float, 'source': 'archive'|'tls'|'bls'|'override'}
     detection   : TLS/BLS result dict (SDE/SNR, epoch, duration, depth, method)
-    stellar     : Gaia + isoclassify parameters; None values for unavailable fields
+    stellar     : Catalog-resolved stellar parameters (VizieR/Gaia/SIMBAD); None values for unavailable fields
     rv          : {'rv': float, 'rv_err': float} or None
     posterior   : arviz.InferenceData or None
     planet      : derived planetary parameters with credible intervals

@@ -1,6 +1,6 @@
 # Installation
 
-The pipeline installs all dependencies by default, ensuring all features (Bayesian MCMC inference, stellar characterization via isochrone fitting, and advanced PHOEBE modeling) are fully functional out of the box.
+The pipeline installs all dependencies by default, ensuring all features (Bayesian MCMC inference, multi-catalog stellar characterization, and advanced PHOEBE modeling) are fully functional out of the box.
 
 ## Install from Source
 
@@ -42,5 +42,4 @@ print("PHOEBE backend available:", phoebe_available())
 ## Dependency Notes
 
 - **C Compiler**: The `exoplanet` backend requires a C compiler for compiling C++ extensions (e.g. for `starry` / `exoplanet-core`). On Linux systems, `gcc` and `g++` are sufficient.
-- **isoclassify Grids**: `isoclassify` requires downloading stellar model grids to function. Please refer to the `isoclassify` documentation for downloading and configuring the required grids on your local machine.
 - **PHOEBE 2**: PHOEBE is installed automatically as part of the full stack. It is a heavy scientific library (~200 MB) with deep physical capabilities for binary and phase-curve modeling.

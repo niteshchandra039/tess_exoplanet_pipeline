@@ -127,7 +127,7 @@ def generate_pdf_report(results: "PipelineResults", output_dir: Path) -> Path:
         ax_stellar.axis("off")
         stellar_data = _build_stellar_table(results)
         if stellar_data:
-            col_labels = ["Stellar Parameter", "Value"]
+            col_labels = ["Stellar Parameter", "Value", "Source"]
             t3 = ax_stellar.table(
                 cellText=stellar_data,
                 colLabels=col_labels,
@@ -303,7 +303,7 @@ def _build_comparison_and_diagnostics(results: "PipelineResults") -> list[list[s
 
 
 def _build_stellar_table(results: "PipelineResults") -> list[list[str]]:
-    """Build stellar parameter table comparing literature vs. isoclassify/Gaia."""
+    """Build stellar parameter table comparing literature vs. resolved catalogs."""
     st = results.stellar
     rows: list[list[str]] = []
 
@@ -319,13 +319,26 @@ def _build_stellar_table(results: "PipelineResults") -> list[list[str]]:
         except Exception:
             return str(val)
 
-    rows.append(["R★ (R☉)", _fmt(st.get("r_star"), st.get("r_star_err"))])
-    rows.append(["M★ (M☉)", _fmt(st.get("m_star"), st.get("m_star_err"))])
-    rows.append(["Teff (K)", _fmt(st.get("teff"), st.get("teff_err"))])
-    rows.append(["log g (dex)", _fmt(st.get("logg"), st.get("logg_err"))])
-    rows.append(["[Fe/H]", _fmt(st.get("feh"), st.get("feh_err"))])
-    rows.append(["ρ★ (g/cm³)", _fmt(st.get("rho_star"), st.get("rho_star_err"))])
-    rows.append(["Stellar Source", str(st.get("method", "Gaia DR3 (Lit)"))])
+    def _get_src(param_key: str) -> str:
+        src = st.get(f"{param_key}_source")
+        if not src:
+            return "Catalog"
+        if "Torres" in str(src):
+            return "Torres 2010"
+        if "SIMBAD" in str(src):
+            return "SIMBAD"
+        if "VizieR" in str(src) or "TIC8" in str(src):
+            return "VizieR TIC8"
+        if "Gaia" in str(src):
+            return "Gaia DR3"
+        return str(src)
+
+    rows.append(["R★ (R☉)", _fmt(st.get("r_star"), st.get("r_star_err")), _get_src("r_star")])
+    rows.append(["M★ (M☉)", _fmt(st.get("m_star"), st.get("m_star_err")), _get_src("m_star")])
+    rows.append(["Teff (K)", _fmt(st.get("teff"), st.get("teff_err")), _get_src("teff")])
+    rows.append(["log g (dex)", _fmt(st.get("logg"), st.get("logg_err")), _get_src("logg")])
+    rows.append(["[Fe/H]", _fmt(st.get("feh"), st.get("feh_err")), _get_src("feh")])
+    rows.append(["ρ★ (g/cm³)", _fmt(st.get("rho_star"), st.get("rho_star_err")), "Derived"])
     return rows
 
 

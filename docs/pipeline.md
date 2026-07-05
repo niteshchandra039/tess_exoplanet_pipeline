@@ -19,7 +19,7 @@ Known period from archive?
 ↓
 Gaia DR3 query
 ↓
-Stellar characterization (isoclassify → Teff, logg, R★, ρ★)
+Stellar characterization (VizieR/Gaia/SIMBAD → Teff, logg, R★, ρ★)
 ↓
 SDSS query (optional; may return None)
 ↓
@@ -48,7 +48,7 @@ Export results (CSV, JSON, NetCDF posterior, figures, PDF)
 | `data/metadata.py` | TIC ID resolution and observation metadata |
 | `catalogs/nasa_archive.py` | Published period / planet parameters |
 | `catalogs/gaia.py` | Gaia DR3 stellar properties |
-| `catalogs/stellar.py` | Isochrone fitting (isoclassify) |
+| `catalogs/stellar.py` | Multi-catalog merging & characterization |
 | `catalogs/sdss.py` | SDSS radial velocity |
 | `transit/detection.py` | Period search orchestrator |
 | `transit/tls.py` | Transit Least Squares |

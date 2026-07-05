@@ -30,7 +30,7 @@ Follows:
 1. **TESS-Keck Survey XV** (Polanski et al. 2023, AJ 166, 45,
    [doi:10.3847/1538-3881/acd557](https://doi.org/10.3847/1538-3881/acd557)):
    - `exoplanet` + PyMC transit fits with GP noise
-   - Gaia-informed stellar parameters via isochrone fitting
+   - Gaia-informed stellar parameters via catalog querying
    - Fit **T14** (transit duration) directly rather than sampling circular stellar density
 
 2. **Precise Transit Photometry Using TESS II** (Saha et al. 2024, ApJS 275, 45,
@@ -45,12 +45,17 @@ more robust parameter estimates especially for low-impact-parameter transits.
 
 ### Stellar Characterization
 
-**Gaia-Kepler-TESS Host Catalog** (Berger et al. 2023, ApJS 264, 30,
-[doi:10.3847/1538-4365/acafbc](https://doi.org/10.3847/1538-4365/acafbc)):
+**Multi-Catalog Merging Hierarchy**:
 
-- Gaia DR3 parallax + photometry + spectroscopic [Fe/H] → isoclassify
-- Homogeneous Teff, logg, R★, M★, ρ★, L★ with full uncertainties
-- ρ★ posterior used as a prior in the Bayesian transit fit
+To resolve physical stellar host properties ($T_{\rm eff}$, $\log g$, $R_\star$, $M_\star$, $\rho_\star$), the pipeline integrates multiple catalogs in a robust hierarchy:
+1. **VizieR (TESS Input Catalog v8.2)** – Paegert et al. 2021 (IV/39/tic82)
+2. **Gaia DR3** – Gaia Collaboration 2022
+3. **SIMBAD** – Peer-reviewed spectroscopic values (adopting the latest value by bibcode year)
+
+For metallicity ($[{\rm Fe/H}]$), high-precision spectroscopic measurements from SIMBAD are prioritized over photometrically-derived estimates from Gaia or VizieR:
+$$\text{SIMBAD (Spectroscopic)} \rightarrow \text{VizieR (TIC8.2)} \rightarrow \text{Gaia DR3}$$
+
+Every parameter carries full source and bibcode reference metadata for downstream provenance tracing. If mass is missing, the physical value is derived using Torres et al. 2010. The resulting $\rho_\star$ posterior is used as a prior in the Bayesian transit fit.
 
 ### GP Noise Model
 

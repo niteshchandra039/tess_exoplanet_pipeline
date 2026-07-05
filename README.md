@@ -7,7 +7,7 @@ A Python library for step-by-step TESS light curve analysis: exoplanet detection
 - **Step-by-step API**: Run each stage independently with `TESSAnalysis`
 - **Data acquisition**: Download TESS SPOC PDCSAP light curves or load local FITS
 - **Period detection**: Transit Least Squares (primary) and Box Least Squares
-- **Stellar characterization**: Gaia DR3 + isochrone fitting via `isoclassify`
+- **Stellar characterization**: Multi-catalog merging (VizieR TIC v8.2 + Gaia DR3 + SIMBAD)
 - **Bayesian inference**: `exoplanet` + PyMC + NUTS with GP noise models
 - **Export**: CSV, JSON, NetCDF, figures, and PDF reports
 
@@ -53,23 +53,23 @@ See `notebooks/pipeline_walkthrough.ipynb` for a full walkthrough.
 
 ```
 src/tess_pipeline/
-├── analysis/            # TESSAnalysis session and stage modules
-│   ├── session.py
-│   └── stages/
-│       ├── target.py
-│       ├── lightcurve.py
-│       ├── period.py
-│       ├── stellar.py
-│       ├── inference.py
-│       └── visualization.py
-├── config.py
-├── results.py
-├── data/                # Download and preprocessing
-├── catalogs/            # Gaia, NASA Archive, SDSS
-├── transit/             # Period search and transit models
-├── inference/           # Bayesian fitting
-├── visualization/       # Plotting
-└── io/                  # Export and reporting
+56: ├── analysis/            # TESSAnalysis session and stage modules
+57: │   ├── session.py
+58: │   └── stages/
+59: │       ├── target.py
+60: │       ├── lightcurve.py
+61: │       ├── period.py
+62: │       ├── stellar.py
+63: │       ├── inference.py
+64: │       └── visualization.py
+65: ├── config.py
+66: ├── results.py
+67: ├── data/                # Download and preprocessing
+68: ├── catalogs/            # Gaia, NASA Archive, SDSS
+69: ├── transit/             # Period search and transit models
+70: ├── inference/           # Bayesian fitting
+71: ├── visualization/       # Plotting
+72: └── io/                  # Export and reporting
 ```
 
 ## License
