@@ -32,6 +32,7 @@ class StellarStage:
         self.gaia_params = query_gaia(
             ra=target_info.get("ra"), dec=target_info.get("dec"), tic_id=tic_id
         )
+        self.gaia_params["tic_id"] = tic_id
 
         # 1. Supplement missing parameters from local NASA archive
         missing_keys = [k for k in ["r_star", "teff", "logg"] if self.gaia_params.get(k) is None]

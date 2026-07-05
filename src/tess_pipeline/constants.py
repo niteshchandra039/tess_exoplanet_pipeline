@@ -33,15 +33,15 @@ DEFAULT_MAX_PLANETS: int = 1
 
 # ─── Stellar characterization ────────────────────────────────────────────────
 
-DEFAULT_STELLAR_METHOD: str = "isoclassify"   # or "gaia_only"
+DEFAULT_STELLAR_METHOD: str = "gaia_only"      # VizieR (TIC v8.2) > Gaia DR3 > SIMBAD
 
 # ─── Inference ───────────────────────────────────────────────────────────────
 
 DEFAULT_INFERENCE_BACKEND: str = "exoplanet"  # or "batman_only" or "phoebe"
-DEFAULT_CHAINS: int = 1
-DEFAULT_DRAWS: int = 2
-DEFAULT_TUNE: int = 2
-DEFAULT_TARGET_ACCEPT: float = 0.9
+DEFAULT_CHAINS: int = 4
+DEFAULT_DRAWS: int = 1500
+DEFAULT_TUNE: int = 1000
+DEFAULT_TARGET_ACCEPT: float = 0.95
 DEFAULT_GP_KERNEL: str = "SHO"      # or "Matern32"
 
 # ─── Limb darkening ──────────────────────────────────────────────────────────

@@ -279,7 +279,7 @@
             </div>
             <div class="kpi-card">
                 <div class="kpi-title">Effective Temp</div>
-                <div class="kpi-value">5855.5 K</div>
+                <div class="kpi-value">6027.0 K</div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-title">Stellar Radius</div>
@@ -334,7 +334,7 @@
                 <div class="param-row">
                     <span class="param-label">Planet Radius (Rₚ)</span>
                     <span class="param-value">
-                        2.05 &plusmn; 0.06 R<sub>&oplus;</sub>
+                        2.10 &plusmn; 0.02 R<sub>&oplus;</sub>
                         <span class="badge badge-derived">Derived (MCMC)</span>
                     </span>
                 </div>
@@ -342,7 +342,7 @@
                 <div class="param-row">
                     <span class="param-label">Transit Duration (T₁₄)</span>
                     <span class="param-value">
-                        3.854 &plusmn; 0.000 hr
+                        3.799 &plusmn; 0.000 hr
                         <span class="badge badge-derived">Derived (MCMC)</span>
                     </span>
                 </div>
@@ -358,7 +358,7 @@
                 <div class="param-row">
                     <span class="param-label">Semi-major Axis (a)</span>
                     <span class="param-value">
-                        0.0646 &plusmn; 0.0018 AU
+                        0.0671 &plusmn; 0.0008 AU
                         <span class="badge badge-derived">Derived (MCMC)</span>
                     </span>
                 </div>
@@ -366,7 +366,7 @@
                 <div class="param-row">
                     <span class="param-label">Equilibrium Temp (T<sub>eq</sub>)</span>
                     <span class="param-value">
-                        850 &plusmn; 426 K
+                        2024 &plusmn; 641 K
                         <span class="badge badge-derived">Derived (MCMC)</span>
                     </span>
                 </div>
@@ -388,7 +388,7 @@
                     <div class="param-row">
                         <span class="param-label">Stellar Mass (Mₛ)</span>
                         <span class="param-value">
-                            1.03 M<sub>&sub;</sub>
+                            1.08 M<sub>&sub;</sub>
                             <span class="badge badge-literature">Gaia DR3 (Lit)</span>
                         </span>
                     </div>
@@ -396,7 +396,7 @@
                     <div class="param-row">
                         <span class="param-label">Effective Temp (T<sub>eff</sub>)</span>
                         <span class="param-value">
-                            5855.5 K
+                            6027.0 K
                             <span class="badge badge-literature">Gaia DR3 (Lit)</span>
                         </span>
                     </div>
@@ -404,7 +404,7 @@
                     <div class="param-row">
                         <span class="param-label">Surface Gravity (log g)</span>
                         <span class="param-value">
-                            4.22
+                            4.45
                             <span class="badge badge-literature">Gaia DR3 (Lit)</span>
                         </span>
                     </div>
@@ -412,7 +412,7 @@
                     <div class="param-row">
                         <span class="param-label">Metallicity ([Fe/H])</span>
                         <span class="param-value">
-                            -0.23
+                            0.11
                             <span class="badge badge-literature">Gaia DR3 (Lit)</span>
                         </span>
                     </div>
@@ -420,7 +420,7 @@
                     <div class="param-row">
                         <span class="param-label">Stellar Density (ρₛ)</span>
                         <span class="param-value">
-                            0.959 g/cm&sup3;
+                            1.002 g/cm&sup3;
                             <span class="badge badge-literature">Gaia DR3 (Lit)</span>
                         </span>
                     </div>
@@ -832,21 +832,39 @@
   "stellar": {
     "r_star": 1.15,
     "r_star_err": 0.05,
-    "m_star": 1.0348225993061717,
-    "m_star_err": 0.10348225993061717,
-    "teff": 5855.533203125,
+    "m_star": 1.0806076056811271,
+    "m_star_err": 0.10806076056811272,
+    "teff": 6027.0,
     "teff_err": 5857.32373046875,
-    "logg": 4.223499774932861,
+    "logg": 4.449999809265137,
     "logg_err": null,
-    "feh": -0.2298000007867813,
+    "feh": 0.10999999940395355,
     "feh_err": null,
     "lum": null,
     "lum_err": null,
+    "parallax": 54.682509087903306,
+    "parallax_err": 0.03544243052601814,
     "age": null,
     "age_err": null,
     "method": "gaia_only",
-    "rho_star": 0.9592729799660152,
-    "rho_star_err": 0.15766325562281935
+    "rho_star": 1.0017153459643169,
+    "rho_star_err": 0.16463895674166515,
+    "reference": "Gaia+SIMBAD",
+    "r_star_unit": "R_sun",
+    "m_star_unit": "M_sun",
+    "rho_star_unit": "g/cm^3",
+    "teff_source": "SIMBAD",
+    "teff_ref": "2006A&A...458..873S",
+    "teff_unit": "K",
+    "logg_source": "SIMBAD",
+    "logg_ref": "2006A&A...458..873S",
+    "logg_unit": "dex",
+    "feh_source": "SIMBAD",
+    "feh_ref": "2006A&A...458..873S",
+    "feh_unit": "dex",
+    "parallax_source": "Gaia",
+    "parallax_ref": "Gaia DR3",
+    "parallax_unit": "mas"
   },
   "planet": {
     "rp_r_star": 0.01703308963787291,
@@ -865,30 +883,30 @@
     "t0_err": 0.0,
     "t0_16": 3042.8884615870593,
     "t0_84": 3042.8884615870593,
-    "rho_star": 0.9592729799660152,
+    "rho_star": 1.0017153459643169,
     "rho_star_err": 0.0,
-    "rho_star_16": 0.9592729799660152,
-    "rho_star_84": 0.9592729799660152,
-    "a_r_star": 12.586858549967475,
+    "rho_star_16": 1.0017153459643169,
+    "rho_star_84": 1.0017153459643169,
+    "a_r_star": 12.769818465706795,
     "a_r_star_err": 0.0,
-    "a_r_star_16": 12.586858549967475,
-    "a_r_star_84": 12.586858549967475,
-    "t14_hr": 3.8544725783200824,
+    "a_r_star_16": 12.769818465706795,
+    "a_r_star_84": 12.769818465706795,
+    "t14_hr": 3.7991270705153637,
     "t14_hr_err": 0.0,
-    "t14_hr_16": 3.8544725783200824,
-    "t14_hr_84": 3.8544725783200824,
-    "rp_earth": 2.051879085176745,
-    "rp_earth_err": 0.05746725131648822,
-    "rp_earth_16": 2.012801354281533,
-    "rp_earth_84": 2.090956816071957,
-    "a_au": 0.06457107560418185,
-    "a_au_err": 0.0018084507300301506,
-    "a_au_16": 0.06334132910776134,
-    "a_au_84": 0.06580082210060235,
-    "t_eq": 849.8905102078849,
-    "t_eq_err": 426.0157343985224,
-    "t_eq_16": 560.1998108168896,
-    "t_eq_84": 1139.58120959888
+    "t14_hr_16": 3.7991270705153637,
+    "t14_hr_84": 3.7991270705153637,
+    "rp_earth": 2.1023981183571703,
+    "rp_earth_err": 0.024737850607286394,
+    "rp_earth_16": 2.0855763799442157,
+    "rp_earth_84": 2.119219856770125,
+    "a_au": 0.06712257163034405,
+    "a_au_err": 0.0007897972010485962,
+    "a_au_16": 0.066585509533631,
+    "a_au_84": 0.0676596337270571,
+    "t_eq": 2024.4477384312513,
+    "t_eq_err": 640.8305957194389,
+    "t_eq_16": 1588.6829333420328,
+    "t_eq_84": 2460.21254352047
   },
   "planets": [
     {
@@ -908,30 +926,30 @@
       "t0_err": 0.0,
       "t0_16": 3042.8884615870593,
       "t0_84": 3042.8884615870593,
-      "rho_star": 0.9592729799660152,
+      "rho_star": 1.0017153459643169,
       "rho_star_err": 0.0,
-      "rho_star_16": 0.9592729799660152,
-      "rho_star_84": 0.9592729799660152,
-      "a_r_star": 12.586858549967475,
+      "rho_star_16": 1.0017153459643169,
+      "rho_star_84": 1.0017153459643169,
+      "a_r_star": 12.769818465706795,
       "a_r_star_err": 0.0,
-      "a_r_star_16": 12.586858549967475,
-      "a_r_star_84": 12.586858549967475,
-      "t14_hr": 3.8544725783200824,
+      "a_r_star_16": 12.769818465706795,
+      "a_r_star_84": 12.769818465706795,
+      "t14_hr": 3.7991270705153637,
       "t14_hr_err": 0.0,
-      "t14_hr_16": 3.8544725783200824,
-      "t14_hr_84": 3.8544725783200824,
-      "rp_earth": 2.051879085176745,
-      "rp_earth_err": 0.05746725131648822,
-      "rp_earth_16": 2.012801354281533,
-      "rp_earth_84": 2.090956816071957,
-      "a_au": 0.06457107560418185,
-      "a_au_err": 0.0018084507300301506,
-      "a_au_16": 0.06334132910776134,
-      "a_au_84": 0.06580082210060235,
-      "t_eq": 849.8905102078849,
-      "t_eq_err": 426.0157343985224,
-      "t_eq_16": 560.1998108168896,
-      "t_eq_84": 1139.58120959888
+      "t14_hr_16": 3.7991270705153637,
+      "t14_hr_84": 3.7991270705153637,
+      "rp_earth": 2.1023981183571703,
+      "rp_earth_err": 0.024737850607286394,
+      "rp_earth_16": 2.0855763799442157,
+      "rp_earth_84": 2.119219856770125,
+      "a_au": 0.06712257163034405,
+      "a_au_err": 0.0007897972010485962,
+      "a_au_16": 0.066585509533631,
+      "a_au_84": 0.0676596337270571,
+      "t_eq": 2024.4477384312513,
+      "t_eq_err": 640.8305957194389,
+      "t_eq_16": 1588.6829333420328,
+      "t_eq_84": 2460.21254352047
     }
   ],
   "diagnostics": {
@@ -1380,7 +1398,7 @@
   },
   "metadata": {
     "tess_pipeline_version": "0.1.0",
-    "run_start": "2026-07-02T23:05:43.245488",
+    "run_start": "2026-07-05T16:15:44.811790",
     "sectors_used": [
       64,
       65,

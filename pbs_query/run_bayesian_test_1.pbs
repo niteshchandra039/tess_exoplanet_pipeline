@@ -3,11 +3,11 @@
 # PBS Job Script: Bayesian Transit Fit
 #==============================================================================
 
-#PBS -N run_bayesian_test_1
+#PBS -N run_bayesian_test_longest
 #PBS -l select=1:ncpus=8
 #PBS -l walltime=48:00:00
-#PBS -o /mnt/home/project/cnitesh/nitesh/pbs_query/run_bayesian_test_1.out
-#PBS -e /mnt/home/project/cnitesh/nitesh/pbs_query/run_bayesian_test_1.err
+#PBS -o /mnt/home/project/cnitesh/nitesh/pbs_query/tess_exoplanet_pipeline/run_bayesian_test_longest.out
+#PBS -e /mnt/home/project/cnitesh/nitesh/pbs_query/tess_exoplanet_pipeline/run_bayesian_test_longest.err
 
 #------------------------------------------------------------------------------
 # Go to submission directory
@@ -18,13 +18,18 @@ cd "$PBS_O_WORKDIR"
 # Load software
 #------------------------------------------------------------------------------
 
-module add cuda9.2 gcc anaconda3 
+
+module load gcc/11.2.0 cuda9.2 anaconda3
+
 
 # Initialize conda for the bash shell script
 eval "$(conda shell.bash hook)"
 
 # Now activate the environment
 conda activate exo_model
+
+# check if the environment is activated
+echo $CONDA_DEFAULT_ENV
 
 #------------------------------------------------------------------------------
 # Job information

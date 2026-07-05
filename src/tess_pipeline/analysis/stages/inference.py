@@ -12,6 +12,11 @@ if TYPE_CHECKING:
 
 log = get_logger(__name__)
 
+# Minimum Bayesian existence probability required for a secondary planet candidate
+# before launching a multi-planet MCMC fit.  Candidates below this threshold are
+# skipped to avoid wasting compute on low-confidence detections.
+MULTI_PLANET_PROBABILITY_THRESHOLD: float = 0.75
+
 
 class InferenceStage:
     """Run MCMC transit fits or fast batman-only models."""
@@ -37,10 +42,38 @@ class InferenceStage:
             from tess_pipeline.inference.bayesian import run_bayesian_fit
 
             detections = self.results.metadata.get("detections", [])
-            
+
+            # ── Multi-planet probability gate ──────────────────────────────
+            # Before committing to an expensive multi-planet MCMC run, estimate
+            # the existence probability for the second candidate using its SDE/SNR.
+            # A sigmoid calibration (consistent with the BIC comparison block below)
+            # gives a rough probability: p ≈ 1 / (1 + exp(-0.5 * (SDE - 7))).
+            run_multi = False
+            if len(detections) >= 2:
+                import math as _math
+                second_det = detections[1]
+                sde2 = second_det.get("sde") or second_det.get("snr") or 0.0
+                # Sigmoid calibration: SDE=7 → ~50%, SDE=9 → ~73%, SDE=11 → ~88%
+                p2 = 1.0 / (1.0 + _math.exp(-0.5 * (float(sde2) - 7.0)))
+                if p2 > MULTI_PLANET_PROBABILITY_THRESHOLD:
+                    run_multi = True
+                    log.info(
+                        "Second candidate probability (%.1f%%) exceeds %.0f%% threshold. "
+                        "Proceeding with multi-planet MCMC fit.",
+                        p2 * 100.0, MULTI_PLANET_PROBABILITY_THRESHOLD * 100.0,
+                    )
+                else:
+                    log.info(
+                        "Second candidate probability (%.1f%%) is below %.0f%% threshold. "
+                        "Skipping multi-planet MCMC fit and proceeding with 1-planet model.",
+                        p2 * 100.0, MULTI_PLANET_PROBABILITY_THRESHOLD * 100.0,
+                    )
+                    # Trim detections to only the first planet for the rest of this run
+                    detections = detections[:1]
+
             # If we have multiple planets, first fit the 1-planet model to compute BIC comparison
             bic1 = None
-            if len(detections) >= 2:
+            if run_multi:
                 log.info("Multiple planets detected (%d). Running 1-planet model fit for comparison...", len(detections))
                 try:
                     trace1, _ = run_bayesian_fit(
@@ -53,7 +86,7 @@ class InferenceStage:
                         tune=cfg.tune,
                         target_accept=cfg.target_accept,
                         gp_kernel=cfg.gp_kernel,
-                        detections=detections[:1],  # fit only first planet
+                        detections=self.results.metadata["detections"][:1],  # fit only first planet
                     )
                     from tess_pipeline.inference.bayesian import calculate_bic
                     bic1 = calculate_bic(trace1, n_planets=1)
@@ -62,7 +95,7 @@ class InferenceStage:
                     log.warning("Could not fit 1-planet model for BIC comparison: %s", exc)
                     bic1 = None
 
-            # Fit the full multi-planet model
+            # Fit the final model (multi-planet if threshold passed, else 1-planet)
             posterior, model_outputs = run_bayesian_fit(
                 lc,
                 period=period,
@@ -78,8 +111,9 @@ class InferenceStage:
             self.results.posterior = posterior
             self.results.model = model_outputs
 
-            # Compute model comparison statistics if we have multiple planets
-            if len(detections) >= 2:
+            # Compute model comparison statistics if we ran a true multi-planet fit
+            all_detections = self.results.metadata.get("detections", [])
+            if run_multi and len(all_detections) >= 2:
                 if bic1 is not None:
                     try:
                         from tess_pipeline.inference.bayesian import calculate_bic
@@ -121,9 +155,9 @@ class InferenceStage:
                     except Exception as exc:
                         log.warning("Could not calculate model comparison: %s", exc)
             else:
-                # 1 planet defaults
-                if len(self.results.metadata.get("detections", [])) == 1:
-                    det = self.results.metadata["detections"][0]
+                # 1-planet defaults (either single detection or threshold not met)
+                if len(all_detections) >= 1:
+                    det = all_detections[0]
                     det["existence_probability_bayesian"] = 1.0
                     det["bayesian_confidence"] = "Confirmed"
 

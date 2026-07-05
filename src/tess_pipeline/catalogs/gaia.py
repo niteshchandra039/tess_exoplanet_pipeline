@@ -75,7 +75,7 @@ def _do_query(ra: float, dec: float) -> dict[str, Any]:
     coord = SkyCoord(ra=ra, dec=dec, unit="deg", frame="icrs")
     try:
         Gaia.MAIN_GAIA_TABLE = "gaiadr3.gaia_source"
-        job = Gaia.cone_search_async(coord, radius=u.Quantity(_GAIA_RADIUS_DEG, u.deg))
+        job = Gaia.cone_search(coord, radius=u.Quantity(_GAIA_RADIUS_DEG, u.deg))
         table = job.get_results()
     except Exception as exc:
         raise GaiaQueryError(f"Gaia cone search failed: {exc}") from exc
@@ -97,14 +97,25 @@ def _do_query(ra: float, dec: float) -> dict[str, Any]:
         except (TypeError, ValueError):
             return None
 
+    def _half_range(upper: float | None, lower: float | None) -> float | None:
+        """Convert Gaia asymmetric percentile bounds to a symmetric 1-sigma estimate."""
+        if upper is None or lower is None:
+            return None
+        diff = upper - lower
+        if diff < 0 or not math.isfinite(diff):
+            return None
+        return diff / 2.0
+
     result = {
         "r_star": _val("radius_val"),
-        "r_star_err": _val("radius_percentile_upper"),  # approximate
+        "r_star_err": _half_range(_val("radius_percentile_upper"), _val("radius_percentile_lower")),
         "teff": _val("teff_gspphot"),
-        "teff_err": _val("teff_gspphot_upper"),
+        "teff_err": _half_range(_val("teff_gspphot_upper"), _val("teff_gspphot_lower")),
         "lum": _val("lum_gspphot"),
         "feh": _val("mh_gspphot"),
+        "feh_err": _half_range(_val("mh_gspphot_upper"), _val("mh_gspphot_lower")),
         "logg": _val("logg_gspphot"),
+        "logg_err": _half_range(_val("logg_gspphot_upper"), _val("logg_gspphot_lower")),
         "ra": _val("ra"),
         "dec": _val("dec"),
         "parallax": _val("parallax"),

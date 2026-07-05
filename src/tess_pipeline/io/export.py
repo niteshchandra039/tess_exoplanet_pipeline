@@ -390,7 +390,7 @@ for method in ("tls", "bls"):
         ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | {{method.upper()}} Periodogram{{title_suffix}} ({{stat_name}} = {{stat:.2f}})", fontsize=10, fontweight="bold")
     axes[-1, 0].set_xlabel("Period (days)")
     fig.tight_layout()
-    print(f"Generating plot: plots/03_{method}_periodogram.png")
+    print(f"Generating plot: plots/03_{{method}}_periodogram.png")
     fig.savefig(f"plots/03_{{method}}_periodogram.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     
@@ -433,7 +433,7 @@ for method in ("tls", "bls"):
             mode_label = " Coarse" if mode == "coarse" else " Fine"
             ax_ind.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | {{method.upper()}}{{mode_label}} Periodogram (Planet {{idx+1}} Search) ({{stat_name}} = {{stat:.2f}})", fontsize=10, fontweight="bold")
             fig_ind.tight_layout()
-            print(f"Generating plot: plots/03_{method}_periodogram_{mode}_p{idx}.png")
+            print(f"Generating plot: plots/03_{{method}}_periodogram_{{mode}}_p{{idx}}.png")
             fig_ind.savefig(f"plots/03_{{method}}_periodogram_{{mode}}_p{{idx}}.png", dpi=150, bbox_inches="tight")
             plt.close(fig_ind)
 
@@ -535,7 +535,7 @@ if "time" in lc_data and "flux" in lc_data:
         
         fig.tight_layout()
         filename = f"04_mcmc_phase_p{{idx}}.png" if (idx > 0 or n_planets > 1) else "04_mcmc_phase.png"
-        print(f"Generating plot: plots/{filename}")
+        print(f"Generating plot: plots/{{filename}}")
         fig.savefig(f"plots/{{filename}}", dpi=150, bbox_inches="tight")
         plt.close(fig)
 
@@ -604,63 +604,103 @@ if "gp_model" in lc_data:
     plt.close(fig)
 
 # ── 5. Recreate Stacked transits ──
-if "period_med_p0" in lc_data or "period_p0" in lc_data:
-    p_med = float(lc_data.get("period_med_p0") or lc_data.get("period_p0", 1.0))
-    e_med = float(lc_data.get("epoch_med_p0") or lc_data.get("epoch_p0", time[0]))
-    t14_med = float(lc_data.get("t14_med_p0") or 0.15)
-    gp_model = lc_data.get("gp_model")
-    transit_model = lc_data.get("transit_model")
-    detrended = flux - gp_model if gp_model is not None else flux / np.median(flux)
+if "time" in lc_data:
+    keys = [k for k in lc_data.keys() if k.startswith("period_med_p")]
+    n_planets = len(keys) if keys else 1
     
-    half_width = max(0.2, t14_med * 3.0)
-    t_start = np.min(time)
-    t_end = np.max(time)
-    n_start = int(np.floor((t_start - e_med) / p_med))
-    n_end = int(np.ceil((t_end - e_med) / p_med))
-    epochs = [e_med + n * p_med for n in range(n_start, n_end + 1)]
-    epochs = [ep for ep in epochs if t_start - half_width < ep < t_end + half_width]
-    
-    if len(epochs) > 0:
-        max_to_plot = 8
-        if len(epochs) > max_to_plot:
-            indices = np.linspace(0, len(epochs) - 1, max_to_plot, dtype=int)
-            epochs_to_plot = [epochs[i] for i in indices]
+    for idx in range(n_planets):
+        if f"period_med_p{{idx}}" not in lc_data:
+            if idx == 0 and ("period_p0" in lc_data or "epoch_p0" in lc_data):
+                p_med = float(lc_data.get("period_p0") or 1.0)
+                e_med = float(lc_data.get("epoch_p0") or time[0])
+                t14_med = float(lc_data.get("t14_med_p0") or 0.15)
+            else:
+                break
         else:
-            epochs_to_plot = epochs
+            p_med = float(lc_data[f"period_med_p{{idx}}"])
+            e_med = float(lc_data[f"epoch_med_p{{idx}}"])
+            t14_med = float(lc_data.get(f"t14_med_p{{idx}}") or 0.15)
             
-        fig, axes = plt.subplots(len(epochs_to_plot), 1, figsize=(8, 1.5 * len(epochs_to_plot)), sharex=True)
-        if len(epochs_to_plot) == 1:
-            axes = [axes]
+        gp_model = lc_data.get("gp_model")
+        detrended = flux - gp_model if gp_model is not None else flux / np.median(flux)
+        
+        # Clean out other planets' transits
+        other_mod = np.zeros_like(flux)
+        j = 0
+        while True:
+            key = f"light_curve_median_p{{j}}"
+            if key in lc_data:
+                if j != idx:
+                    other_mod += lc_data[key]
+                j += 1
+            else:
+                break
+        detrended = detrended - other_mod
+        
+        # Select individual planet transit model if available
+        transit_model = None
+        if f"light_curve_median_p{{idx}}" in lc_data:
+            transit_model = lc_data[f"light_curve_median_p{{idx}}"] + 1.0
+        elif "transit_model" in lc_data:
+            transit_model = lc_data["transit_model"]
             
-        for idx, ep in enumerate(epochs_to_plot):
-            ax = axes[idx]
-            mask = (time >= ep - half_width) & (time <= ep + half_width)
-            t_sub = time[mask] - ep
-            f_sub = detrended[mask]
+        half_width = max(0.2, t14_med * 3.0)
+        t_start = np.min(time)
+        t_end = np.max(time)
+        n_start = int(np.floor((t_start - e_med) / p_med))
+        n_end = int(np.ceil((t_end - e_med) / p_med))
+        epochs = [e_med + n * p_med for n in range(n_start, n_end + 1)]
+        epochs = [ep for ep in epochs if t_start - half_width < ep < t_end + half_width]
+        
+        if len(epochs) > 0:
+            max_to_plot = 8
+            if len(epochs) > max_to_plot:
+                indices = np.linspace(0, len(epochs) - 1, max_to_plot, dtype=int)
+                epochs_to_plot = [epochs[i] for i in indices]
+            else:
+                epochs_to_plot = epochs
+                
+            fig, axes = plt.subplots(len(epochs_to_plot), 1, figsize=(8, 1.5 * len(epochs_to_plot)), sharex=True)
+            if len(epochs_to_plot) == 1:
+                axes = [axes]
+                
+            for s_idx, ep in enumerate(epochs_to_plot):
+                ax = axes[s_idx]
+                mask = (time >= ep - half_width) & (time <= ep + half_width)
+                t_sub = time[mask] - ep
+                f_sub = detrended[mask]
+                
+                if len(t_sub) > 0:
+                    ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True, label="Data" if s_idx == 0 else None)
+                    ax.axvline(0, color="#dc2626", linestyle="--", linewidth=0.8, alpha=0.7)
+                    
+                    if transit_model is not None:
+                        m_sub = transit_model[mask]
+                        sort_idx = np.argsort(t_sub)
+                        ax.plot(t_sub[sort_idx], m_sub[sort_idx], color="#dc2626", linewidth=1.5, label="Transit Model" if s_idx == 0 else None)
+                    
+                ax.set_ylabel(f"Transit {{s_idx+1}}")
+                ax.set_xlim(-half_width, half_width)
+                
+                if len(f_sub) > 0:
+                    min_val = np.min(f_sub)
+                    if transit_model is not None and len(m_sub) > 0:
+                        min_val = min(min_val, np.min(m_sub))
+                    local_std = np.std(f_sub)
+                    ax.set_ylim(min_val - 0.00001 * abs(min_val), 1.0 + 3.0 * local_std)
+                    
+            axes[-1].set_xlabel("Time since transit mid-time (days)")
+            if transit_model is not None:
+                axes[0].legend(fontsize=8, loc="upper right")
             
-            if len(t_sub) > 0:
-                ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True, label="Data" if idx == 0 else None)
-                ax.axvline(0, color="#dc2626", linestyle="--", linewidth=0.8, alpha=0.7)
-                
-                if transit_model is not None:
-                    m_sub = transit_model[mask]
-                    sort_idx = np.argsort(t_sub)
-                    ax.plot(t_sub[sort_idx], m_sub[sort_idx], color="#dc2626", linewidth=1.5, label="Transit Model" if idx == 0 else None)
-                
-            ax.set_ylabel(f"Transit {{idx+1}}")
-            ax.set_xlim(-half_width, half_width)
-            if len(f_sub) > 0:
-                local_std = np.std(f_sub)
-                ax.set_ylim(np.min(f_sub) - 0.00001 * np.min(f_sub), 1.0 + 3.0 * local_std)
-                
-        axes[-1].set_xlabel("Time since transit mid-time (days)")
-        if transit_model is not None:
-            axes[0].legend(fontsize=8, loc="upper right")
-        fig.suptitle(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | Stacked Individual Transits", y=0.99, fontsize=11, fontweight="bold")
-        plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.2)
-        print("Generating plot: plots/11_transit_stack.png")
-        fig.savefig("plots/11_transit_stack.png", dpi=150, bbox_inches="tight")
-        plt.close(fig)
+            title_suffix = f" - Planet {{idx+1}}" if n_planets > 1 else ""
+            fig.suptitle(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | Stacked Individual Transits{{title_suffix}}", y=0.99, fontsize=11, fontweight="bold")
+            plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.2)
+            
+            filename = f"11_transit_stack_p{{idx}}.png" if (idx > 0 or n_planets > 1) else "11_transit_stack.png"
+            print(f"Generating plot: plots/{{filename}}")
+            fig.savefig(f"plots/{{filename}}", dpi=150, bbox_inches="tight")
+            plt.close(fig)
 
 print("All plots recreated successfully.")
 """
@@ -804,9 +844,33 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             t_eq = pl.get("t_eq", 0.0)
             t_eq_err = pl.get("t_eq_err", 0.0)
 
+            det_for_planet = detections[idx] if idx < len(detections) else {}
+            bayes_prob_val = det_for_planet.get("existence_probability_bayesian")
+            bayes_conf_val = det_for_planet.get("bayesian_confidence", "N/A")
+            if bayes_prob_val is not None:
+                prob_pct = f"{bayes_prob_val * 100.0:.1f}%"
+                if idx == 0:
+                    prob_badge = "badge-derived"
+                    prob_label = "Planet 1 Detection Probability"
+                else:
+                    prob_badge = "badge-fits" if bayes_prob_val > 0.75 else "badge-warning"
+                    prob_label = f"Planet {idx + 1} Detection Probability"
+                prob_row_html = f"""
+                <div class="param-row">
+                    <span class="param-label">{prob_label}</span>
+                    <span class="param-value">
+                        <strong>{prob_pct}</strong>
+                        <span class="badge {prob_badge}">{bayes_conf_val}</span>
+                    </span>
+                </div>
+                """
+            else:
+                prob_row_html = ""
+
             planets_cards_html += f"""
             <div class="card">
                 <h2>Planet {idx + 1} Parameters</h2>
+                {prob_row_html}
                 
                 <div class="param-row">
                     <span class="param-label">Period (P)</span>
@@ -1037,8 +1101,8 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
 
     # Stellar sources
     stellar_method = data.get("stellar", {}).get("method", "gaia_only")
-    stellar_badge = "badge-derived" if stellar_method == "isoclassify" else "badge-literature"
-    stellar_label = "Derived (isoclassify)" if stellar_method == "isoclassify" else "Gaia DR3 (Lit)"
+    stellar_badge = "badge-literature"
+    stellar_label = "Catalog (VizieR/Gaia/SIMBAD)"
 
     r_star = get_val("stellar", "r_star", 2, " R<sub>&sub;</sub>")
     m_star = get_val("stellar", "m_star", 2, " M<sub>&sub;</sub>")
@@ -1073,18 +1137,18 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {{
-            --bg-color: #0b0f19;
-            --card-bg: rgba(17, 24, 39, 0.6);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --accent: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.15);
-            --success: #10b981;
-            --success-glow: rgba(16, 185, 129, 0.15);
-            --warning: #f59e0b;
-            --warning-glow: rgba(245, 158, 11, 0.15);
-            --danger: #ef4444;
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --card-border: #d1d9e0;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --accent: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.10);
+            --success: #059669;
+            --success-glow: rgba(5, 150, 105, 0.10);
+            --warning: #d97706;
+            --warning-glow: rgba(217, 119, 6, 0.10);
+            --danger: #dc2626;
             --font-family-body: 'Inter', sans-serif;
             --font-family-heading: 'Outfit', sans-serif;
         }}
@@ -1096,8 +1160,8 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
         body {{
             font-family: var(--font-family-body);
             background-color: var(--bg-color);
-            background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 40%);
+            background-image: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.04) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.04) 0%, transparent 40%);
             color: var(--text-primary);
             line-height: 1.6;
             padding: 2.5rem;
@@ -1114,7 +1178,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             font-family: var(--font-family-heading);
             font-size: 2.4rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: -0.02em;
@@ -1136,8 +1200,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             border-radius: 12px;
             padding: 1.25rem;
             text-align: center;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
         }}
         .kpi-title {{
             font-size: 0.8rem;
@@ -1151,7 +1214,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             font-family: var(--font-family-heading);
             font-size: 1.5rem;
             font-weight: 700;
-            color: #60a5fa;
+            color: var(--accent);
         }}
         .grid {{
             display: grid;
@@ -1164,23 +1227,22 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             border: 1px solid var(--card-border);
             border-radius: 16px;
             padding: 1.75rem;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
         }}
         .card h2 {{
             font-family: var(--font-family-heading);
             font-size: 1.35rem;
             font-weight: 700;
             margin-bottom: 1.25rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 2px solid var(--accent-glow);
             padding-bottom: 0.6rem;
-            color: #60a5fa;
+            color: var(--accent);
         }}
         .param-row {{
             display: flex;
             justify-content: space-between;
             padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid #e2e8f0;
             font-size: 0.95rem;
         }}
         .param-row:last-child {{
@@ -1195,6 +1257,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: var(--text-primary);
         }}
         .badge {{
             font-size: 0.7rem;
@@ -1208,17 +1271,22 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
         .badge-derived {{
             background-color: var(--success-glow);
             color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(5, 150, 105, 0.3);
         }}
         .badge-literature {{
             background-color: var(--accent-glow);
             color: var(--accent);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            border: 1px solid rgba(37, 99, 235, 0.3);
         }}
         .badge-fits {{
-            background-color: rgba(139, 92, 246, 0.15);
-            color: #a78bfa;
-            border: 1px solid rgba(139, 92, 246, 0.3);
+            background-color: rgba(124, 58, 237, 0.10);
+            color: #7c3aed;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }}
+        .badge-warning {{
+            background-color: var(--warning-glow);
+            color: var(--warning);
+            border: 1px solid rgba(217, 119, 6, 0.3);
         }}
         .confidence-table {{
             width: 100%;
@@ -1229,7 +1297,10 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
         .confidence-table th, .confidence-table td {{
             text-align: left;
             padding: 0.85rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid #e2e8f0;
+        }}
+        .confidence-table tr:last-child td {{
+            border-bottom: none;
         }}
         .confidence-table th {{
             color: var(--text-secondary);
@@ -1237,12 +1308,13 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             text-transform: uppercase;
             font-size: 0.8rem;
             letter-spacing: 0.05em;
+            background-color: #f8fafc;
         }}
         .tabs {{
             display: flex;
             gap: 0.5rem;
             margin-bottom: 1.75rem;
-            border-bottom: 1px solid var(--card-border);
+            border-bottom: 2px solid var(--card-border);
             padding-bottom: 0.75rem;
             overflow-x: auto;
         }}
@@ -1259,13 +1331,13 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             transition: all 0.25s ease;
         }}
         .tab-btn:hover {{
-            background: rgba(255, 255, 255, 0.05);
+            background: #f1f5f9;
             color: var(--text-primary);
         }}
         .tab-btn.active {{
             background: var(--accent-glow);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--accent);
+            border: 1px solid rgba(37, 99, 235, 0.3);
         }}
         .tab-content {{
             display: none;
@@ -1285,35 +1357,36 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
             transition: transform 0.2s ease;
         }}
         .image-card:hover {{
-            transform: translateY(-4px);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.10);
         }}
         .image-card img {{
             width: 100%;
             height: auto;
             border-bottom: 1px solid var(--card-border);
-            background: #000;
+            background: #f8fafc;
         }}
         .image-caption {{
             padding: 1.25rem;
             font-size: 0.9rem;
             color: var(--text-secondary);
-            background: rgba(0, 0, 0, 0.3);
+            background: #f8fafc;
             line-height: 1.5;
         }}
         pre {{
-            background: rgba(0, 0, 0, 0.4);
+            background: #f1f5f9;
             border: 1px solid var(--card-border);
             padding: 1.75rem;
             border-radius: 12px;
             overflow-x: auto;
-            color: #34d399;
+            color: #0f766e;
             font-family: monospace;
             font-size: 0.9rem;
-            box-shadow: inset 0 2px 10px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.05);
         }}
     </style>
 </head>

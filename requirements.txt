@@ -17,6 +17,7 @@ exoplanet-core>=0.3.0
 pymc>=5.0
 celerite2>=0.2.1
 arviz>=0.16
+netCDF4
 
 # Stellar characterization
 isoclassify

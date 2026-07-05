@@ -188,7 +188,12 @@ def plot_transit_stack(
 
         if len(f_sub) > 0:
             local_std = np.std(f_sub)
-            ax.set_ylim(np.min(f_sub) - 0.00001 * np.min(f_sub), 1.0 + 3.0 * local_std)
+            min_val = np.min(f_sub)
+            if transit_model is not None:
+                m_sub = transit_model[mask]
+                if len(m_sub) > 0:
+                    min_val = min(min_val, np.min(m_sub))
+            ax.set_ylim(min_val - 0.00001 * abs(min_val), 1.0 + 3.0 * local_std)
 
     axes[-1].set_xlabel("Time since transit mid-time (days)")
     if transit_model is not None:

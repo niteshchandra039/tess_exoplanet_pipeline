@@ -4,6 +4,32 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Apply publication-ready style configurations (MNRAS-style STIX fonts, inward ticks)
+plt.rcParams['font.size'] = 8
+plt.rcParams['axes.labelsize'] = 9
+plt.rcParams['axes.titlesize'] = 9
+plt.rcParams['xtick.labelsize'] = 8
+plt.rcParams['ytick.labelsize'] = 8
+plt.rcParams['legend.fontsize'] = 8
+plt.rcParams['legend.frameon'] = False
+plt.rcParams['font.family'] = 'STIXGeneral'
+plt.rcParams['mathtext.fontset'] = 'stix'
+plt.rcParams['xtick.direction'] = 'in'
+plt.rcParams['ytick.direction'] = 'in'
+plt.rcParams['xtick.top'] = True
+plt.rcParams['ytick.right'] = True
+plt.rcParams['xtick.major.size'] = 4.0
+plt.rcParams['xtick.minor.size'] = 2.0
+plt.rcParams['ytick.major.size'] = 4.0
+plt.rcParams['ytick.minor.size'] = 2.0
+plt.rcParams['xtick.major.width'] = 0.75
+plt.rcParams['xtick.minor.width'] = 0.5
+plt.rcParams['ytick.major.width'] = 0.75
+plt.rcParams['ytick.minor.width'] = 0.5
+plt.rcParams['axes.linewidth'] = 0.75
+plt.rcParams['savefig.dpi'] = 300
+plt.rcParams['savefig.bbox'] = 'tight'
+
 # Try to load target metadata
 tic_id = "261136679"
 sectors_str = "unknown"
@@ -305,62 +331,102 @@ if "gp_model" in lc_data:
     plt.close(fig)
 
 # ── 5. Recreate Stacked transits ──
-if "period_med_p0" in lc_data or "period_p0" in lc_data:
-    p_med = float(lc_data.get("period_med_p0") or lc_data.get("period_p0", 1.0))
-    e_med = float(lc_data.get("epoch_med_p0") or lc_data.get("epoch_p0", time[0]))
-    t14_med = float(lc_data.get("t14_med_p0") or 0.15)
-    gp_model = lc_data.get("gp_model")
-    transit_model = lc_data.get("transit_model")
-    detrended = flux - gp_model if gp_model is not None else flux / np.median(flux)
+if "time" in lc_data:
+    keys = [k for k in lc_data.keys() if k.startswith("period_med_p")]
+    n_planets = len(keys) if keys else 1
     
-    half_width = max(0.2, t14_med * 3.0)
-    t_start = np.min(time)
-    t_end = np.max(time)
-    n_start = int(np.floor((t_start - e_med) / p_med))
-    n_end = int(np.ceil((t_end - e_med) / p_med))
-    epochs = [e_med + n * p_med for n in range(n_start, n_end + 1)]
-    epochs = [ep for ep in epochs if t_start - half_width < ep < t_end + half_width]
-    
-    if len(epochs) > 0:
-        max_to_plot = 8
-        if len(epochs) > max_to_plot:
-            indices = np.linspace(0, len(epochs) - 1, max_to_plot, dtype=int)
-            epochs_to_plot = [epochs[i] for i in indices]
+    for idx in range(n_planets):
+        if f"period_med_p{idx}" not in lc_data:
+            if idx == 0 and ("period_p0" in lc_data or "epoch_p0" in lc_data):
+                p_med = float(lc_data.get("period_p0") or 1.0)
+                e_med = float(lc_data.get("epoch_p0") or time[0])
+                t14_med = float(lc_data.get("t14_med_p0") or 0.15)
+            else:
+                break
         else:
-            epochs_to_plot = epochs
+            p_med = float(lc_data[f"period_med_p{idx}"])
+            e_med = float(lc_data[f"epoch_med_p{idx}"])
+            t14_med = float(lc_data.get(f"t14_med_p{idx}") or 0.15)
             
-        fig, axes = plt.subplots(len(epochs_to_plot), 1, figsize=(8, 1.5 * len(epochs_to_plot)), sharex=True)
-        if len(epochs_to_plot) == 1:
-            axes = [axes]
+        gp_model = lc_data.get("gp_model")
+        detrended = flux - gp_model if gp_model is not None else flux / np.median(flux)
+        
+        # Clean out other planets' transits
+        other_mod = np.zeros_like(flux)
+        j = 0
+        while True:
+            key = f"light_curve_median_p{j}"
+            if key in lc_data:
+                if j != idx:
+                    other_mod += lc_data[key]
+                j += 1
+            else:
+                break
+        detrended = detrended - other_mod
+        
+        # Select individual planet transit model if available
+        transit_model = None
+        if f"light_curve_median_p{idx}" in lc_data:
+            transit_model = lc_data[f"light_curve_median_p{idx}"] + 1.0
+        elif "transit_model" in lc_data:
+            transit_model = lc_data["transit_model"]
             
-        for idx, ep in enumerate(epochs_to_plot):
-            ax = axes[idx]
-            mask = (time >= ep - half_width) & (time <= ep + half_width)
-            t_sub = time[mask] - ep
-            f_sub = detrended[mask]
+        half_width = max(0.2, t14_med * 3.0)
+        t_start = np.min(time)
+        t_end = np.max(time)
+        n_start = int(np.floor((t_start - e_med) / p_med))
+        n_end = int(np.ceil((t_end - e_med) / p_med))
+        epochs = [e_med + n * p_med for n in range(n_start, n_end + 1)]
+        epochs = [ep for ep in epochs if t_start - half_width < ep < t_end + half_width]
+        
+        if len(epochs) > 0:
+            max_to_plot = 8
+            if len(epochs) > max_to_plot:
+                indices = np.linspace(0, len(epochs) - 1, max_to_plot, dtype=int)
+                epochs_to_plot = [epochs[i] for i in indices]
+            else:
+                epochs_to_plot = epochs
+                
+            fig, axes = plt.subplots(len(epochs_to_plot), 1, figsize=(8, 1.5 * len(epochs_to_plot)), sharex=True)
+            if len(epochs_to_plot) == 1:
+                axes = [axes]
+                
+            for s_idx, ep in enumerate(epochs_to_plot):
+                ax = axes[s_idx]
+                mask = (time >= ep - half_width) & (time <= ep + half_width)
+                t_sub = time[mask] - ep
+                f_sub = detrended[mask]
+                
+                if len(t_sub) > 0:
+                    ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True, label="Data" if s_idx == 0 else None)
+                    ax.axvline(0, color="#dc2626", linestyle="--", linewidth=0.8, alpha=0.7)
+                    
+                    if transit_model is not None:
+                        m_sub = transit_model[mask]
+                        sort_idx = np.argsort(t_sub)
+                        ax.plot(t_sub[sort_idx], m_sub[sort_idx], color="#dc2626", linewidth=1.5, label="Transit Model" if s_idx == 0 else None)
+                    
+                ax.set_ylabel(f"Transit {s_idx+1}")
+                ax.set_xlim(-half_width, half_width)
+                
+                if len(f_sub) > 0:
+                    min_val = np.min(f_sub)
+                    if transit_model is not None and len(m_sub) > 0:
+                        min_val = min(min_val, np.min(m_sub))
+                    local_std = np.std(f_sub)
+                    ax.set_ylim(min_val - 0.00001 * abs(min_val), 1.0 + 3.0 * local_std)
+                    
+            axes[-1].set_xlabel("Time since transit mid-time (days)")
+            if transit_model is not None:
+                axes[0].legend(fontsize=8, loc="upper right")
             
-            if len(t_sub) > 0:
-                ax.scatter(t_sub, f_sub, s=1.5, color="black", alpha=0.4, rasterized=True, label="Data" if idx == 0 else None)
-                ax.axvline(0, color="#dc2626", linestyle="--", linewidth=0.8, alpha=0.7)
-                
-                if transit_model is not None:
-                    m_sub = transit_model[mask]
-                    sort_idx = np.argsort(t_sub)
-                    ax.plot(t_sub[sort_idx], m_sub[sort_idx], color="#dc2626", linewidth=1.5, label="Transit Model" if idx == 0 else None)
-                
-            ax.set_ylabel(f"Transit {idx+1}")
-            ax.set_xlim(-half_width, half_width)
-            if len(f_sub) > 0:
-                local_std = np.std(f_sub)
-                ax.set_ylim(np.min(f_sub) - 0.00001 * np.min(f_sub), 1.0 + 3.0 * local_std)
-                
-        axes[-1].set_xlabel("Time since transit mid-time (days)")
-        if transit_model is not None:
-            axes[0].legend(fontsize=8, loc="upper right")
-        fig.suptitle(f"TIC {tic_id} | Sectors: {sectors_str} | Stacked Individual Transits", y=0.99, fontsize=11, fontweight="bold")
-        plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.2)
-        print("Generating plot: plots/11_transit_stack.png")
-        fig.savefig("plots/11_transit_stack.png", dpi=150, bbox_inches="tight")
-        plt.close(fig)
+            title_suffix = f" - Planet {idx+1}" if n_planets > 1 else ""
+            fig.suptitle(f"TIC {tic_id} | Sectors: {sectors_str} | Stacked Individual Transits{title_suffix}", y=0.99, fontsize=11, fontweight="bold")
+            plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.2)
+            
+            filename = f"11_transit_stack_p{idx}.png" if (idx > 0 or n_planets > 1) else "11_transit_stack.png"
+            print(f"Generating plot: plots/{filename}")
+            fig.savefig(f"plots/{filename}", dpi=150, bbox_inches="tight")
+            plt.close(fig)
 
 print("All plots recreated successfully.")

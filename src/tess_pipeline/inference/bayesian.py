@@ -30,9 +30,9 @@ def run_bayesian_fit(
     epoch: float | None,
     stellar: dict[str, Any],
     chains: int = 4,
-    draws: int = 2000,
-    tune: int = 2000,
-    target_accept: float = 0.9,
+    draws: int = 1500,
+    tune: int = 1000,
+    target_accept: float = 0.95,
     gp_kernel: str = "SHO",
     detections: list[dict[str, Any]] | None = None,
 ) -> tuple[Any, dict[str, Any]]:
