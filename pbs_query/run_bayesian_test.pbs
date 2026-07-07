@@ -6,8 +6,8 @@
 #PBS -N run_bayesian_test_longest
 #PBS -l select=1:ncpus=8
 #PBS -l walltime=48:00:00
-#PBS -o /mnt/home/project/cnitesh/nitesh/pbs_query/tess_exoplanet_pipeline/run_bayesian_test_longest_500.out
-#PBS -e /mnt/home/project/cnitesh/nitesh/pbs_query/tess_exoplanet_pipeline/run_bayesian_test_longest_500.err
+#PBS -o /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/pbs_query/run_bayesian_test_longest_500.out
+#PBS -e /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/pbs_query/run_bayesian_test_longest_500.err
 
 #------------------------------------------------------------------------------
 # Go to submission directory
@@ -18,9 +18,7 @@ cd "$PBS_O_WORKDIR"
 # Load software
 #------------------------------------------------------------------------------
 
-
 module load gcc/11.2.0 cuda9.2 anaconda3
-
 
 # Initialize conda for the bash shell script
 eval "$(conda shell.bash hook)"
