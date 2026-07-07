@@ -64,7 +64,7 @@ echo "============================================================"
 SECONDS=0
 
 /usr/bin/time -v python -u \
-/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_bayesian_test_1.py
+/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_bayesian_test.py
 
 status=$?
 
