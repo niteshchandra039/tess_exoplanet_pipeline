@@ -124,11 +124,7 @@ def load_lightcurves_from_fits(
                         indices.append(idx)
                 selected_sector_numbers = [unique_sectors[i] for i in indices]
             elif isinstance(sectors, (list, tuple)):
-                for rank in sectors:
-                    idx = rank - 1
-                    if 0 <= idx < num_sectors:
-                        indices.append(idx)
-                selected_sector_numbers = [unique_sectors[i] for i in indices]
+                selected_sector_numbers = [sec for sec in unique_sectors if sec in [int(s) for s in sectors]]
             unique_files = [f for f, sec in file_sectors if sec in selected_sector_numbers]
             if not unique_files:
                 raise DataDownloadError(
@@ -344,11 +340,7 @@ def download_lightcurves(
                 indices.append(idx)
         selected_sectors = [available_sectors[i] for i in indices]
     elif isinstance(sectors, (list, tuple)):
-        for rank in sectors:
-            idx = rank - 1
-            if 0 <= idx < num_sectors:
-                indices.append(idx)
-        selected_sectors = [available_sectors[i] for i in indices]
+        selected_sectors = [sec for sec in available_sectors if sec in [int(s) for s in sectors]]
     if not selected_sectors:
         raise DataDownloadError(
             f"Sectors selection {sectors!r} matched no available sectors. Available: {available_sectors}"

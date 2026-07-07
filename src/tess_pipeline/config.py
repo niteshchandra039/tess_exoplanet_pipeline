@@ -216,6 +216,7 @@ class PipelineConfig:
     # Inference
     inference: bool = True
     inference_backend: str = constants.DEFAULT_INFERENCE_BACKEND
+    fit_duration: bool = True
     chains: int = constants.DEFAULT_CHAINS
     draws: int = constants.DEFAULT_DRAWS
     tune: int = constants.DEFAULT_TUNE
@@ -329,7 +330,7 @@ def build_config(
     cadence: int | None = None,
     sectors: int | str | None = None,
     all_sectors: bool | None = None,
-    force_download: bool = False,
+    force_download: bool | None = None,
     lightcurve_source: str | None = None,
     lightcurve_fits: str | Path | list[str | Path] | tuple[str | Path, ...] | None = None,
     search_method: str | None = None,
@@ -340,6 +341,7 @@ def build_config(
     stellar_method: str | None = None,
     inference: bool | None = None,
     inference_backend: str | None = None,
+    fit_duration: bool | None = None,
     chains: int | None = None,
     draws: int | None = None,
     tune: int | None = None,
@@ -347,7 +349,7 @@ def build_config(
     gp_kernel: str | None = None,
     output_dir: str | Path | None = None,
     plots: bool | None = None,
-    save_report: bool = False,
+    save_report: bool | None = None,
     verbose: bool | None = None,
     rv_times: Any = None,
     rv_vals: Any = None,
@@ -423,13 +425,13 @@ def build_config(
         author=resolve("author", author, str, constants.DEFAULT_AUTHOR),
         cadence=resolve("cadence", cadence, int, constants.DEFAULT_CADENCE),
         sectors=resolved_sectors,
-        force_download=force_download,
+        force_download=resolve("force_download", force_download, bool, False),
         lightcurve_source=resolved_lightcurve_source,
         lightcurve_fits=resolved_lightcurve_fits,
         search_method=resolve("search_method", search_method, str, constants.DEFAULT_SEARCH_METHOD),
         period_min=resolve("period_min", period_min, float, constants.DEFAULT_PERIOD_MIN),
         period_max=resolve("period_max", period_max, float, constants.DEFAULT_PERIOD_MAX),
-        period_override=period_override,
+        period_override=resolve("period_override", period_override, float, None),
         max_planets=resolve("max_planets", max_planets, int, constants.DEFAULT_MAX_PLANETS),
         stellar_method=resolve(
             "stellar_method", stellar_method, str, constants.DEFAULT_STELLAR_METHOD
@@ -438,6 +440,7 @@ def build_config(
         inference_backend=resolve(
             "inference_backend", inference_backend, str, constants.DEFAULT_INFERENCE_BACKEND
         ),
+        fit_duration=resolve("fit_duration", fit_duration, bool, True),
         chains=resolve("chains", chains, int, constants.DEFAULT_CHAINS),
         draws=resolve("draws", draws, int, constants.DEFAULT_DRAWS),
         tune=resolve("tune", tune, int, constants.DEFAULT_TUNE),
@@ -450,6 +453,6 @@ def build_config(
         input_is_magnitude=resolve("input_is_magnitude", input_is_magnitude, bool, False),
         output_dir=resolve("output_dir", output_dir, Path, constants.DEFAULT_OUTPUT_DIR),
         plots=resolve("plots", plots, bool, True),
-        save_report=save_report,
+        save_report=resolve("save_report", save_report, bool, False),
         verbose=resolve("verbose", verbose, bool, False),
     )

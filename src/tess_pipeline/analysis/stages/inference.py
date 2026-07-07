@@ -95,6 +95,7 @@ class InferenceStage:
                         target_accept=cfg.target_accept,
                         gp_kernel=cfg.gp_kernel,
                         detections=self.results.metadata["detections"][:1],  # fit only first planet
+                        fit_duration=cfg.fit_duration,
                     )
                     from tess_pipeline.inference.bayesian import calculate_bic
                     bic1 = calculate_bic(trace1, n_planets=1)
@@ -115,6 +116,7 @@ class InferenceStage:
                 target_accept=cfg.target_accept,
                 gp_kernel=cfg.gp_kernel,
                 detections=detections,
+                fit_duration=cfg.fit_duration,
             )
             self.results.posterior = posterior
             self.results.model = model_outputs

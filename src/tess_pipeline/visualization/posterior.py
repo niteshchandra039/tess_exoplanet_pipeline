@@ -7,6 +7,21 @@ from __future__ import annotations
 from typing import Any
 import matplotlib.pyplot as plt
 
+LABELS_DICT = {
+    "period": "Period $P$ [d]",
+    "rp_r_star": "$R_p/R_*$",
+    "b": "Impact parameter $b$",
+    "t14": "Duration $T_{14}$ [d]",
+    "t0": "Epoch $t_0$ [BTJD]",
+    "u1": "$u_1$",
+    "u2": "$u_2$",
+    "q1": "$q_1$",
+    "q2": "$q_2$",
+    "rho_star": "Density $\\rho_*$ [g/cm$^3$]",
+    "sigma_gp": "GP $\\sigma$",
+    "rho_gp": "GP $\\rho$",
+}
+
 
 def plot_corner(
     posterior: Any,
@@ -54,15 +69,7 @@ def plot_corner(
     available = list(ds.data_vars)
     var_names = [v for v in var_names if v in available]
 
-    labels_dict = {
-        "period": "Period P [d]",
-        "rp_r_star": "Rₚ/R★",
-        "b": "Impact Param b",
-        "t14": "Duration T₁₄ [d]",
-        "u1": "u₁",
-        "u2": "u₂",
-        "rho_star": "Density ρ★ [g/cm³]",
-    }
+    labels_dict = LABELS_DICT
     flat_samps = ds.stack(sample=("chain", "draw"))
 
     samples_list = []
@@ -86,7 +93,7 @@ def plot_corner(
             0.5, 0.5,
             f"Too few MCMC samples ({samples.shape[0]}) for {samples.shape[1]} dimensions.\n"
             "Increase draws and tune to generate the corner plot.",
-            ha="center", va="center", color="#dc2626", fontsize=10, fontweight="medium"
+            ha="center", va="center", color="#dc2626", fontsize=10, fontweight="bold"
         )
         return fig
 
@@ -97,7 +104,7 @@ def plot_corner(
         hist_kwargs={"color": "#0d9488", "fill": True, "alpha": 0.3},
         show_titles=True,
         title_fmt=".5f",
-        title_kwargs={"fontsize": 9, "fontweight": "medium"},
+        title_kwargs={"fontsize": 9, "fontweight": "normal"},
         label_kwargs={"fontsize": 10},
     )
 
@@ -142,22 +149,33 @@ def plot_trace(
     var_names = [v for v in var_names if v in available]
 
     fig_size = (12, 1.6 * len(var_names))
+    axes = None
     try:
-        az.plot_trace(posterior, var_names=var_names, backend_kwargs={"figsize": fig_size})
+        axes = az.plot_trace(posterior, var_names=var_names, backend_kwargs={"figsize": fig_size})
     except (TypeError, ValueError):
         try:
-            az.plot_trace(posterior, var_names=var_names, figsize=fig_size)
+            axes = az.plot_trace(posterior, var_names=var_names, figsize=fig_size)
         except (TypeError, ValueError):
-            az.plot_trace(posterior, var_names=var_names)
+            axes = az.plot_trace(posterior, var_names=var_names)
     
     fig = plt.gcf()
     # Clean up labels and spacing to prevent clutter
+    if axes is not None:
+        import numpy as np
+        axes_2d = np.atleast_2d(axes)
+        for i, v in enumerate(var_names):
+            if i < len(axes_2d):
+                label = LABELS_DICT.get(v, v)
+                axes_2d[i, 0].set_xlabel(label, fontsize=8.5)
+                axes_2d[i, 1].set_ylabel(label, fontsize=8.5)
+                axes_2d[i, 1].set_xlabel("Draw", fontsize=8.5)
+
     for ax in fig.axes:
         ax.tick_params(labelsize=8)
         ax.xaxis.label.set_size(8.5)
         ax.yaxis.label.set_size(8.5)
         if ax.get_title():
-            ax.set_title(ax.get_title(), fontsize=9, fontweight="medium")
+            ax.set_title(ax.get_title(), fontsize=9, fontweight="normal")
 
     fig.suptitle(f"TIC {tic_id} | Sectors: {sectors_str} | MCMC Trace Plots", y=0.99, fontsize=11, fontweight="bold")
     plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.4)

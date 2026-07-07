@@ -64,7 +64,8 @@ class PeriodStage:
         detections = []
 
         if self.archive_period is not None:
-            log.info("Archive period found: %.6f d; refining Planet 1", self.archive_period)
+            is_override = (self.results.period.get("source") == "override")
+            log.info("%s period found: %.6f d; refining Planet 1", "Override" if is_override else "Archive", self.archive_period)
             try:
                 half_width = min(0.01, self.archive_period * 0.002)
                 search_min = max(cfg.period_min, self.archive_period - half_width)
@@ -78,21 +79,26 @@ class PeriodStage:
                     stellar=None,
                     is_archive=True,
                 )
-                det1["note"] = "refined archive period"
+                if is_override:
+                    det1["period"] = self.archive_period
+                    det1["method"] = "override"
+                    det1["note"] = "user override preserved"
+                else:
+                    det1["note"] = "refined archive period"
             except Exception as exc:
-                log.warning("Refinement of archive period failed: %s", exc)
+                log.warning("Refinement of archive/override period failed: %s", exc)
                 det1 = {
                     "period": self.archive_period,
                     "epoch": float(lc.time.value[np.argmin(lc.flux.value)]),
                     "duration_hr": 3.0,
                     "depth": float(1.0 - np.percentile(lc.flux.value, 1)),
-                    "method": "archive",
+                    "method": "override" if is_override else "archive",
                     "sde": 10.0,
                     "snr": 10.0,
-                    "note": "archive fallback",
+                    "note": "override fallback" if is_override else "archive fallback",
                 }
             detections.append(det1)
-
+            
             # If max_planets > 1, search for more planets on the masked lightcurve
             if cfg.max_planets > 1:
                 period = det1["period"]
@@ -133,7 +139,7 @@ class PeriodStage:
                 "source": detections[0]["method"],
             }
             if self.archive_period is not None:
-                self.results.period["source"] = "archive"
+                self.results.period["source"] = "override" if is_override else "archive"
             log.info("Detections completed. Found %d planet candidate(s).", len(detections))
         else:
             raise RuntimeError("No period search detections were found.")

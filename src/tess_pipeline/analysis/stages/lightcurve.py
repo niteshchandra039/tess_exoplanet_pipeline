@@ -81,6 +81,15 @@ class LightCurveStage:
 
         cfg = self.config
         log.info("Preprocessing light curves")
+        
+        # Stitch and save raw light curve for recreation
+        try:
+            import lightkurve as lk
+            cleaned_raw = [c.remove_nans() for c in self.raw_collection]
+            self.results.lightcurve_raw = lk.LightCurveCollection(cleaned_raw).stitch()
+        except Exception as exc:
+            log.warning("Could not store raw light curve: %s", exc)
+
         from tess_pipeline.data.preprocess import preprocess
 
         # Extract period and epoch if they were found during archive lookup, override, or search

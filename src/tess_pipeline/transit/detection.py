@@ -143,17 +143,15 @@ def _pack(result: dict[str, Any], method: str, is_archive: bool = False) -> dict
 
         d["fap"] = fap
 
-        # Assign confidence category
-        if sde < 5.0:
+        # Assign confidence category and existence probability consistently
+        d["existence_probability_search"] = float(1.0 - fap)
+
+        if fap > 0.50:
             d["confidence"] = "Low"
-            d["existence_probability_search"] = float(max(0.01, 1.0 - fap))
-        elif sde < 6.0:
+        elif fap > 0.05:
             d["confidence"] = "Moderate"
-            d["existence_probability_search"] = float(0.5 + 0.4 * (sde - 5.0))
         else:
-            # SDE >= 6.0
             d["confidence"] = "High"
-            d["existence_probability_search"] = float(1.0 - 0.1 * np.exp(-(sde - 6.0)))
     else:
         d["fap"] = None
         d["confidence"] = "Low"

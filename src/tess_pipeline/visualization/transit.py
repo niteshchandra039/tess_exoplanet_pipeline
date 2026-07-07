@@ -106,8 +106,14 @@ def plot_bayesian_fit(
     """
     fig, axes = plt.subplots(2, 1, figsize=(11, 7.0), sharex=True)
 
-    time = np.asarray(lc.time.value)
-    flux = np.asarray(lc.flux.value)
+    time_raw = np.asarray(lc.time.value, dtype=float)
+    flux_raw = np.asarray(lc.flux.value, dtype=float)
+    sidx = np.argsort(time_raw)
+    time_sorted = time_raw[sidx]
+    flux_sorted = flux_raw[sidx]
+    uniq_mask = np.concatenate([[True], np.diff(time_sorted) > 0])
+    time = time_sorted[uniq_mask]
+    flux = flux_sorted[uniq_mask]
 
     gp_model = model_outputs.get("gp_model") if model_outputs else None
     transit_model = model_outputs.get("transit_model") if model_outputs else None
@@ -166,8 +172,17 @@ def plot_mcmc_phase_curve(
     fig, axes = plt.subplots(2, 1, figsize=(10, 7.0), sharex=True,
                              gridspec_kw={"height_ratios": [2, 1]})
 
-    time = np.asarray(lc.time.value)
-    flux = np.asarray(lc.flux.value)
+    time_raw = np.asarray(lc.time.value, dtype=float)
+    flux_raw = np.asarray(lc.flux.value, dtype=float)
+    flux_err_raw = np.asarray(lc.flux_err.value, dtype=float) if lc.flux_err is not None else np.ones_like(flux_raw) * 1e-3
+    sidx = np.argsort(time_raw)
+    time_sorted = time_raw[sidx]
+    flux_sorted = flux_raw[sidx]
+    flux_err_sorted = flux_err_raw[sidx]
+    uniq_mask = np.concatenate([[True], np.diff(time_sorted) > 0])
+    time = time_sorted[uniq_mask]
+    flux = flux_sorted[uniq_mask]
+    flux_err = flux_err_sorted[uniq_mask]
 
     # Stack the posterior to get flat samples
     post_group = posterior.posterior
@@ -214,7 +229,7 @@ def plot_mcmc_phase_curve(
         epoch_med = epoch or time[0]
 
     # Phase-fold the de-trended data
-    detrended_lc = lk.LightCurve(time=lc.time, flux=detrended_flux, flux_err=lc.flux_err)
+    detrended_lc = lk.LightCurve(time=time, flux=detrended_flux, flux_err=flux_err)
     phase, y_fold, y_fold_err = phase_fold(
         detrended_lc,
         period=period_med,

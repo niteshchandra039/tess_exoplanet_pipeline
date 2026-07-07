@@ -37,6 +37,7 @@ class PipelineResults:
 
     target: dict[str, Any] = field(default_factory=dict)
     lightcurve: Any = None
+    lightcurve_raw: Any = None
     period: dict[str, Any] = field(default_factory=dict)
     detection: dict[str, Any] = field(default_factory=dict)
     stellar: dict[str, Any] = field(default_factory=dict)

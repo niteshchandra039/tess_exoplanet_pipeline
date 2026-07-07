@@ -35,6 +35,7 @@ def run_bayesian_fit(
     target_accept: float = 0.95,
     gp_kernel: str = "SHO",
     detections: list[dict[str, Any]] | None = None,
+    fit_duration: bool = True,
 ) -> tuple[Any, dict[str, Any]]:
     """
     Build and sample a PyMC transit model (supports multiple planets).
@@ -121,19 +122,55 @@ def run_bayesian_fit(
     with pm.Model() as model:
 
         # ── Priors ────────────────────────────────────────────────────────────
-        stellar_vars = add_stellar_priors(model, stellar)
-        orbital_vars = add_orbital_priors(model, period=periods, epoch=epochs, period_fixed=False)
-        shape_vars = add_transit_shape_priors(model, depth_estimate=depths, fit_duration=False, n_planets=n_planets)
-        sys_vars = add_systematic_priors(model, n_sectors=1)
+        if fit_duration:
+            orbital_vars = add_orbital_priors(model, period=periods, epoch=epochs, period_fixed=False)
+            shape_vars = add_transit_shape_priors(model, depth_estimate=depths, fit_duration=True, n_planets=n_planets)
+            sys_vars = add_systematic_priors(model, n_sectors=1)
 
-        rho_star_var = stellar_vars["rho_star"]
-        t0 = orbital_vars["t0"]
-        period_var = orbital_vars["period"]
-        rp_r_star = shape_vars["rp_r_star"]
-        b = shape_vars["b"]
-        u1 = shape_vars["u1"]
-        u2 = shape_vars["u2"]
-        mean_flux = sys_vars["mean_flux"]
+            t0 = orbital_vars["t0"]
+            period_var = orbital_vars["period"]
+            rp_r_star = shape_vars["rp_r_star"]
+            b = shape_vars["b"]
+            u1 = shape_vars["u1"]
+            u2 = shape_vars["u2"]
+            t14_var = shape_vars["t14"]
+            mean_flux = sys_vars["mean_flux"]
+
+            # Compute derived rho_star from t14, period, rp_r_star, and b
+            sin_val = pm.math.sin(np.pi * t14_var / period_var)
+            term_num = (1.0 + rp_r_star) ** 2 - b ** 2
+            a_r_star = pm.math.sqrt(b ** 2 + term_num / (sin_val ** 2))
+            rho_star_planets = (a_r_star ** 3) / (52.91572 * period_var ** 2)
+            rho_star_var = pm.Deterministic("rho_star", pm.math.mean(rho_star_planets))
+
+            # Apply stellar prior as a Potential
+            stellar_rho = stellar.get("rho_star")
+            stellar_rho_err = stellar.get("rho_star_err")
+            if stellar_rho is not None and stellar_rho > 0:
+                rho_err = stellar_rho_err if stellar_rho_err is not None else stellar_rho * 0.1
+                pm.Potential(
+                    "stellar_density_prior",
+                    pm.logp(pm.Normal.dist(mu=stellar_rho, sigma=rho_err), rho_star_var)
+                )
+            else:
+                pm.Potential(
+                    "stellar_density_prior",
+                    pm.logp(pm.LogNormal.dist(mu=np.log(1.4), sigma=1.0), rho_star_var)
+                )
+        else:
+            stellar_vars = add_stellar_priors(model, stellar)
+            orbital_vars = add_orbital_priors(model, period=periods, epoch=epochs, period_fixed=False)
+            shape_vars = add_transit_shape_priors(model, depth_estimate=depths, fit_duration=False, n_planets=n_planets)
+            sys_vars = add_systematic_priors(model, n_sectors=1)
+
+            rho_star_var = stellar_vars["rho_star"]
+            t0 = orbital_vars["t0"]
+            period_var = orbital_vars["period"]
+            rp_r_star = shape_vars["rp_r_star"]
+            b = shape_vars["b"]
+            u1 = shape_vars["u1"]
+            u2 = shape_vars["u2"]
+            mean_flux = sys_vars["mean_flux"]
 
         # ── Keplerian orbit ───────────────────────────────────────────────────
         orbit = xo.orbits.KeplerianOrbit(
@@ -209,10 +246,13 @@ def run_bayesian_fit(
             "log_rho_gp": np.log(10.0),
             "log_rp": np.log(rp_inits),
         }
-        if "rho_star" in stellar and stellar["rho_star"] is not None:
-            init_dict["rho_star"] = stellar["rho_star"]
+        if fit_duration:
+            init_dict["log_t14"] = np.array([np.log(0.125)] * n_planets)
         else:
-            init_dict["rho_star"] = 1.40984
+            if "rho_star" in stellar and stellar["rho_star"] is not None:
+                init_dict["rho_star"] = stellar["rho_star"]
+            else:
+                init_dict["rho_star"] = 1.40984
 
         log.info(
             "Sampling: %d chains × %d draws (tune=%d, target_accept=%.2f)",

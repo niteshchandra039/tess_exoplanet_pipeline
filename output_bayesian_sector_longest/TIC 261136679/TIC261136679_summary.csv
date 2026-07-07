@@ -15,38 +15,38 @@ planet_1_t0,3042.8884615870593
 planet_1_t0_err,0.0
 planet_1_t0_16,3042.8884615870593
 planet_1_t0_84,3042.8884615870593
-planet_1_rho_star,1.0017153459643169
+planet_1_rho_star,2.0318994886635973
 planet_1_rho_star_err,0.0
-planet_1_rho_star_16,1.0017153459643169
-planet_1_rho_star_84,1.0017153459643169
-planet_1_a_r_star,12.769818465706795
+planet_1_rho_star_16,2.0318994886635973
+planet_1_rho_star_84,2.0318994886635973
+planet_1_a_r_star,16.16481311782682
 planet_1_a_r_star_err,0.0
-planet_1_a_r_star_16,12.769818465706795
-planet_1_a_r_star_84,12.769818465706795
-planet_1_t14_hr,3.7991270705153637
+planet_1_a_r_star_16,16.16481311782682
+planet_1_a_r_star_84,16.16481311782682
+planet_1_t14_hr,3.000000000000001
 planet_1_t14_hr_err,0.0
-planet_1_t14_hr_16,3.7991270705153637
-planet_1_t14_hr_84,3.7991270705153637
-planet_1_rp_earth,2.1023981183571703
-planet_1_rp_earth_err,0.024737850607286394
-planet_1_rp_earth_16,2.0855763799442157
-planet_1_rp_earth_84,2.119219856770125
-planet_1_a_au,0.06712257163034405
-planet_1_a_au_err,0.0007897972010485962
-planet_1_a_au_16,0.066585509533631
-planet_1_a_au_84,0.0676596337270571
-planet_1_t_eq,2024.4477384312513
-planet_1_t_eq_err,640.8305957194389
-planet_1_t_eq_16,1588.6829333420328
-planet_1_t_eq_84,2460.21254352047
-stellar_r_star,1.15
-stellar_r_star_err,0.05
-stellar_m_star,1.0806076056811271
-stellar_m_star_err,0.10806076056811272
-stellar_teff,6027.0
-stellar_teff_err,5857.32373046875
-stellar_logg,4.449999809265137
-stellar_logg_err,
+planet_1_t14_hr_16,3.000000000000001
+planet_1_t14_hr_84,3.000000000000001
+planet_1_rp_earth,2.0373188166977476
+planet_1_rp_earth_err,0.06542492587262827
+planet_1_rp_earth_16,1.9928298671043603
+planet_1_rp_earth_84,2.0818077662911345
+planet_1_a_au,0.0823376729801665
+planet_1_a_au_err,0.0026441301710370957
+planet_1_a_au_16,0.08053966446386128
+planet_1_a_au_84,0.08413568149647173
+planet_1_t_eq,1048.4910804738608
+planet_1_t_eq_err,0.3186866680125604
+planet_1_t_eq_16,1048.2743735396123
+planet_1_t_eq_84,1048.7077874081094
+stellar_r_star,1.149
+stellar_r_star_err,0.039000000804662704
+stellar_m_star,1.100000023841858
+stellar_m_star_err,0.12800000607967377
+stellar_teff,5992.1
+stellar_teff_err,100.0
+stellar_logg,4.35890007019043
+stellar_logg_err,0.06560000032186508
 stellar_feh,0.10999999940395355
 stellar_feh_err,
 stellar_lum,
@@ -56,23 +56,27 @@ stellar_parallax_err,0.03544243052601814
 stellar_age,
 stellar_age_err,
 stellar_method,gaia_only
-stellar_rho_star,1.0017153459643169
-stellar_rho_star_err,0.16463895674166515
-stellar_reference,Gaia+SIMBAD
-stellar_r_star_unit,R_sun
-stellar_m_star_unit,M_sun
+stellar_r_star_unit,solRad
+stellar_m_star_unit,solMass
 stellar_rho_star_unit,g/cm^3
-stellar_teff_source,SIMBAD
-stellar_teff_ref,2006A&A...458..873S
+stellar_rho_star,1.022356674685196
+stellar_rho_star_err,0.158083494330967
+stellar_reference,TIC v8.2+2025A&A...697A.102T+Gaia DR3
+stellar_r_star_source,VizieR (TIC8.2)
+stellar_r_star_ref,TIC v8.2
+stellar_m_star_source,VizieR (TIC8.2)
+stellar_m_star_ref,TIC v8.2
+stellar_teff_source,VizieR (TIC8.2)
+stellar_teff_ref,TIC v8.2
 stellar_teff_unit,K
-stellar_logg_source,SIMBAD
-stellar_logg_ref,2006A&A...458..873S
-stellar_logg_unit,dex
-stellar_feh_source,SIMBAD
-stellar_feh_ref,2006A&A...458..873S
-stellar_feh_unit,dex
+stellar_logg_source,VizieR (TIC8.2)
+stellar_logg_ref,TIC v8.2
+stellar_logg_unit,log(cm.s-2)
 stellar_parallax_source,Gaia
 stellar_parallax_ref,Gaia DR3
 stellar_parallax_unit,mas
+stellar_feh_source,SIMBAD
+stellar_feh_ref,2025A&A...697A.102T
+stellar_feh_unit,dex
 period_d,6.267763005662437
 period_source,archive

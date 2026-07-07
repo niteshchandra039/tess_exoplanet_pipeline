@@ -261,11 +261,24 @@ def _save_data_for_plots(results: "PipelineResults", target_dir: Path) -> None:
                     lc_kwargs[f"period_std_p{idx}"] = np.std(flat_samps["period"].values)
                     lc_kwargs[f"epoch_med_p{idx}"] = np.median(flat_samps["t0"].values)
                     
+    # ── Save raw stitched light curve for recreation ──
+    if getattr(results, "lightcurve_raw", None) is not None:
+        lc_kwargs["raw_time"] = np.asarray(results.lightcurve_raw.time.value)
+        lc_kwargs["raw_flux"] = np.asarray(results.lightcurve_raw.flux.value)
+
     try:
         np.savez(data_dir / "lightcurve_model_data.npz", **lc_kwargs)
         log.debug("Saved lightcurve model data: %s", data_dir / "lightcurve_model_data.npz")
     except Exception as exc:
         log.warning("Could not save lightcurve model data: %s", exc)
+
+    # ── Save MCMC Posterior NetCDF ──
+    if results.posterior is not None:
+        try:
+            results.posterior.to_netcdf(data_dir / "mcmc_posterior.nc")
+            log.debug("Saved MCMC posterior NetCDF: %s", data_dir / "mcmc_posterior.nc")
+        except Exception as exc:
+            log.warning("Could not save MCMC posterior NetCDF: %s", exc)
 
     # ── 3. Standalone Plotting Script (recreate_plots.py) ──
     tic_id = results.target.get("tic_id", "unknown")
@@ -307,7 +320,7 @@ plt.rcParams['savefig.bbox'] = 'tight'
 tic_id = "{tic_id}"
 sectors_str = "unknown"
 try:
-    with open("TIC{tic_id}_metadata.json") as f:
+    with open(f"TIC{{tic_id}}_metadata.json") as f:
         meta = json.load(f)
         secs = meta.get("metadata", {{}}).get("sectors_used", [])
         sectors_str = ", ".join(map(str, secs)) if secs else "unknown"
@@ -345,7 +358,31 @@ except Exception as e:
     print(f"Error loading data: {{e}}")
     exit(1)
 
-# ── 1. Recreate TLS/BLS Periodograms ──
+# ── 1. Recreate Raw & Flat Light Curves (01_raw.png, 02_flat.png) ──
+if "raw_time" in lc_data and "raw_flux" in lc_data:
+    fig, ax = plt.subplots(figsize=(14, 4))
+    ax.scatter(lc_data["raw_time"], lc_data["raw_flux"], s=0.5, color="steelblue", alpha=0.6, rasterized=True)
+    ax.set_xlabel("Time (BTJD)")
+    ax.set_ylabel("PDCSAP Flux")
+    ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | Raw TESS Light Curve", fontsize=10, fontweight="bold")
+    fig.tight_layout()
+    print("Generating plot: plots/01_raw.png")
+    fig.savefig("plots/01_raw.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+if "time" in lc_data and "flux" in lc_data:
+    fig, ax = plt.subplots(figsize=(14, 4))
+    ax.scatter(lc_data["time"], lc_data["flux"], s=0.5, color="darkorange", alpha=0.6, rasterized=True)
+    ax.axhline(1.0, color="gray", linewidth=0.8, linestyle="--")
+    ax.set_xlabel("Time (BTJD)")
+    ax.set_ylabel("Normalized Flux")
+    ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | Flattened TESS Light Curve", fontsize=10, fontweight="bold")
+    fig.tight_layout()
+    print("Generating plot: plots/02_flat.png")
+    fig.savefig("plots/02_flat.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+# ── 2. Recreate TLS/BLS Periodograms (03_tls_periodogram.png, 03_bls_periodogram.png) ──
 for method in ("tls", "bls"):
     keys = [k for k in pg_data.keys() if k.startswith(f"{{method}}_periods_p")]
     if not keys:
@@ -356,11 +393,9 @@ for method in ("tls", "bls"):
     else:
         n_panels = len(keys)
         
-    # Standard combined auto-mode periodogram
     fig, axes = plt.subplots(n_panels, 1, figsize=(12, 3.5 * n_panels), squeeze=False)
     for idx in range(n_panels):
         ax = axes[idx, 0]
-        # Prefer broad/coarse if available, else fine (auto mode)
         periods = pg_data.get(f"{{method}}_periods_broad_p{{idx}}")
         if periods is None:
             periods = pg_data.get(f"{{method}}_periods_p{{idx}}")
@@ -394,7 +429,7 @@ for method in ("tls", "bls"):
     fig.savefig(f"plots/03_{{method}}_periodogram.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
     
-    # Save individual coarse and fine periodograms for each planet candidate
+    # Save individual coarse/fine periodograms
     for idx in range(n_panels):
         stat = float(pg_data[f"sde_p{{idx}}"])
         stat_name = "SDE" if method == "tls" else "SNR"
@@ -437,15 +472,45 @@ for method in ("tls", "bls"):
             fig_ind.savefig(f"plots/03_{{method}}_periodogram_{{mode}}_p{{idx}}.png", dpi=150, bbox_inches="tight")
             plt.close(fig_ind)
 
-# ── 2. Recreate Phase curves ──
+# ── 3. Recreate Discovery Phase Curve (04_phase.png) ──
+keys = [k for k in pg_data.keys() if k.startswith("period_p")]
+n_planets = len(keys) if keys else 1
+for idx in range(n_planets):
+    p_disc = float(pg_data.get(f"period_p{{idx}}") or 1.0)
+    e_disc = float(pg_data.get(f"epoch_p{{idx}}") or (lc_data["time"][0] if "time" in lc_data else 0))
+    dur_hr = float(pg_data.get(f"duration_hr_p{{idx}}") or 3.0)
+    depth = float(pg_data.get(f"depth_p{{idx}}") or 0.005)
+    
+    if p_disc > 0 and "time" in lc_data and "flux" in lc_data:
+        phase_disc, flux_disc = phase_fold(lc_data["time"], lc_data["flux"], p_disc, e_disc)
+        fig, ax = plt.subplots(figsize=(10, 5))
+        ax.scatter(phase_disc * p_disc, flux_disc, s=0.8, color="black", alpha=0.2, label="Data", rasterized=True)
+        
+        bin_p, bin_f = bin_phase_curve(phase_disc, flux_disc, n_bins=80)
+        valid = np.isfinite(bin_f)
+        ax.errorbar(bin_p[valid] * p_disc, bin_f[valid], fmt="o", ms=4, color="steelblue", label="Binned")
+        
+        ax.set_xlim(-1.5 * (dur_hr / 24.0), 1.5 * (dur_hr / 24.0))
+        ax.set_ylim(1.0 - 3.0 * depth, 1.0 + 1.5 * depth)
+        ax.set_xlabel("Time since transit (days)")
+        ax.set_ylabel("Relative Flux")
+        ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | Phased Discovery Light Curve - Planet {{idx+1}}", fontsize=10, fontweight="bold")
+        ax.legend(fontsize=9, loc="upper right")
+        fig.tight_layout()
+        filename = f"04_phase_p{{idx}}.png" if (idx > 0 or n_planets > 1) else "04_phase.png"
+        print(f"Generating plot: plots/{{filename}}")
+        fig.savefig(f"plots/{{filename}}", dpi=150, bbox_inches="tight")
+        plt.close(fig)
+
+# ── 4. Recreate MCMC Phase Curves (04_mcmc_phase.png) ──
 if "time" in lc_data and "flux" in lc_data:
     time = lc_data["time"]
     flux = lc_data["flux"]
     
-    keys = [k for k in lc_data.keys() if k.startswith("period_med_p")]
-    n_planets = len(keys) if keys else 1
+    keys_mcmc = [k for k in lc_data.keys() if k.startswith("period_med_p")]
+    n_planets_mcmc = len(keys_mcmc) if keys_mcmc else 1
     
-    for idx in range(n_planets):
+    for idx in range(n_planets_mcmc):
         if f"period_med_p{{idx}}" not in lc_data:
             if idx == 0 and "gp_model" in lc_data:
                 p_med = float(lc_data.get("period_p0") or 1.0)
@@ -534,13 +599,26 @@ if "time" in lc_data and "flux" in lc_data:
         axes[1].set_ylim(-1.5 * depth, 1.5 * depth)
         
         fig.tight_layout()
-        filename = f"04_mcmc_phase_p{{idx}}.png" if (idx > 0 or n_planets > 1) else "04_mcmc_phase.png"
+        filename = f"04_mcmc_phase_p{{idx}}.png" if (idx > 0 or n_planets_mcmc > 1) else "04_mcmc_phase.png"
         print(f"Generating plot: plots/{{filename}}")
         fig.savefig(f"plots/{{filename}}", dpi=150, bbox_inches="tight")
         plt.close(fig)
 
-# ── 3. Recreate 2-Panel MCMC Fit plot ──
-if "gp_model" in lc_data and "transit_model" in lc_data:
+# ── 5. Recreate Residuals (05_residuals.png) ──
+if "time" in lc_data and "residuals" in lc_data:
+    fig, ax = plt.subplots(figsize=(12, 4))
+    ax.scatter(lc_data["time"], lc_data["residuals"], s=0.5, color="gray", alpha=0.5, rasterized=True, label="Residuals")
+    ax.axhline(0, color="black", linestyle="--", linewidth=0.8)
+    ax.set_xlabel("Time (BTJD)")
+    ax.set_ylabel("Residual Flux")
+    ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | MCMC Residuals vs Time", fontsize=10, fontweight="bold")
+    fig.tight_layout()
+    print("Generating plot: plots/05_residuals.png")
+    fig.savefig("plots/05_residuals.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+# ── 6. Recreate 2-Panel MCMC Fit plot (06_bayesian_fit.png) ──
+if "gp_model" in lc_data and "transit_model" in lc_data and "flux_model" in lc_data:
     gp_model = lc_data["gp_model"]
     transit_model = lc_data["transit_model"]
     flux_model = lc_data["flux_model"]
@@ -568,7 +646,21 @@ if "gp_model" in lc_data and "transit_model" in lc_data:
     fig.savefig("plots/06_bayesian_fit.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
 
-# ── 4. Recreate GP Autocorrelation Plot ──
+# ── 7. Recreate Posterior Predictive check (09_posterior_predictive.png) ──
+if "time" in lc_data and "flux" in lc_data and "flux_model" in lc_data:
+    fig, ax = plt.subplots(figsize=(12, 5))
+    ax.scatter(lc_data["time"], lc_data["flux"], s=0.5, color="gray", alpha=0.3, rasterized=True, label="Data")
+    ax.plot(lc_data["time"], lc_data["flux_model"], color="#dc2626", linewidth=1.5, zorder=5, label="Posterior Median Model")
+    ax.set_xlabel("Time (BTJD)")
+    ax.set_ylabel("Normalized Flux")
+    ax.set_title(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | MCMC Posterior Predictive Check", fontsize=10, fontweight="bold")
+    ax.legend(fontsize=9, loc="upper right")
+    fig.tight_layout()
+    print("Generating plot: plots/09_posterior_predictive.png")
+    fig.savefig("plots/09_posterior_predictive.png", dpi=150, bbox_inches="tight")
+    plt.close(fig)
+
+# ── 8. Recreate GP Autocorrelation Plot (10_gp_acf.png) ──
 if "gp_model" in lc_data:
     fig, ax = plt.subplots(figsize=(10, 4))
     res_before = flux - lc_data.get("transit_model", np.ones_like(flux))
@@ -603,7 +695,7 @@ if "gp_model" in lc_data:
     fig.savefig("plots/10_gp_acf.png", dpi=150, bbox_inches="tight")
     plt.close(fig)
 
-# ── 5. Recreate Stacked transits ──
+# ── 9. Recreate Stacked transits (11_transit_stack.png) ──
 if "time" in lc_data:
     keys = [k for k in lc_data.keys() if k.startswith("period_med_p")]
     n_planets = len(keys) if keys else 1
@@ -624,7 +716,6 @@ if "time" in lc_data:
         gp_model = lc_data.get("gp_model")
         detrended = flux - gp_model if gp_model is not None else flux / np.median(flux)
         
-        # Clean out other planets' transits
         other_mod = np.zeros_like(flux)
         j = 0
         while True:
@@ -637,7 +728,6 @@ if "time" in lc_data:
                 break
         detrended = detrended - other_mod
         
-        # Select individual planet transit model if available
         transit_model = None
         if f"light_curve_median_p{{idx}}" in lc_data:
             transit_model = lc_data[f"light_curve_median_p{{idx}}"] + 1.0
@@ -701,6 +791,142 @@ if "time" in lc_data:
             print(f"Generating plot: plots/{{filename}}")
             fig.savefig(f"plots/{{filename}}", dpi=150, bbox_inches="tight")
             plt.close(fig)
+
+# ── 10. Recreate MCMC Corner & Trace plots (07_corner.png, 08_trace.png) ──
+if os.path.exists("data_for_plots/mcmc_posterior.nc"):
+    try:
+        import arviz as az
+        posterior = az.from_netcdf("data_for_plots/mcmc_posterior.nc")
+        print("Successfully loaded posterior NetCDF.")
+        
+        # Corner Plot
+        try:
+            import corner
+            LABELS_DICT = {{
+                "period": "Period $P$ [d]",
+                "rp_r_star": "$R_p/R_*$",
+                "b": "Impact parameter $b$",
+                "t14": "Duration $T_{{14}}$ [d]",
+                "t0": "Epoch $t_0$ [BTJD]",
+                "u1": "$u_1$",
+                "u2": "$u_2$",
+                "q1": "$q_1$",
+                "q2": "$q_2$",
+                "rho_star": "Density $\\\\rho_*$ [g/cm$^3$]",
+                "sigma_gp": "GP $\\\\sigma$",
+                "rho_gp": "GP $\\\\rho$",
+            }}
+            
+            var_names = ["period", "rp_r_star", "b", "t14", "u1", "u2", "rho_star"]
+            available = list(posterior.posterior.data_vars)
+            var_names = [v for v in var_names if v in available]
+            
+            flat_samps = posterior.posterior.stack(sample=("chain", "draw"))
+            samples_list = []
+            labels = []
+            for v in var_names:
+                vals = flat_samps[v].values
+                if vals.ndim == 2:
+                    n_pl = vals.shape[0]
+                    for i in range(n_pl):
+                        samples_list.append(vals[i, :])
+                        labels.append(f"{{LABELS_DICT.get(v, v)}} (planet {{i+1}})")
+                else:
+                    samples_list.append(vals)
+                    labels.append(LABELS_DICT.get(v, v))
+            
+            samples = np.column_stack(samples_list)
+            
+            fig_corner = corner.corner(
+                samples,
+                labels=labels,
+                color="#0f766e",
+                hist_kwargs={{"color": "#0d9488", "fill": True, "alpha": 0.3}},
+                show_titles=True,
+                title_fmt=".5f",
+                title_kwargs={{"fontsize": 9, "fontweight": "normal"}},
+                label_kwargs={{"fontsize": 10}},
+            )
+            
+            desc = (
+                "MCMC Parameter Guide:\\n"
+                "--------------------\\n"
+                "P          : Orbital period [days]\\n"
+                "Rₚ/R★      : Planet/stellar radius ratio\\n"
+                "b          : Impact parameter\\n"
+                "T₁₄        : Transit duration [days]\\n"
+                "u₁, u₂     : Limb darkening coeffs\\n"
+                "ρ★         : Stellar density [g/cm³]"
+            )
+            fig_corner.text(0.62, 0.75, desc, fontsize=9.5, family="monospace", va="top", ha="left",
+                            bbox=dict(boxstyle="round,pad=0.6", fc="#f8fafc", alpha=0.9, ec="#cbd5e1"))
+            
+            fig_corner.suptitle(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | MCMC Posterior Corner Plot", y=1.02, fontsize=11, fontweight="bold")
+            print("Generating plot: plots/07_corner.png")
+            fig_corner.savefig("plots/07_corner.png", dpi=150, bbox_inches="tight")
+            plt.close(fig_corner)
+        except Exception as e_corner:
+            print(f"Failed to recreate corner plot: {{e_corner}}")
+            
+        # Trace Plot
+        try:
+            var_names_trace = ["rp_r_star", "b", "t14", "t0", "q1", "q2", "sigma_gp", "rho_gp"]
+            available_trace = list(posterior.posterior.data_vars)
+            var_names_trace = [v for v in var_names_trace if v in available_trace]
+            
+            fig_size = (12, 1.6 * len(var_names_trace))
+            axes = None
+            try:
+                axes = az.plot_trace(posterior, var_names=var_names_trace, backend_kwargs={{"figsize": fig_size}})
+            except (TypeError, ValueError):
+                try:
+                    axes = az.plot_trace(posterior, var_names=var_names_trace, figsize=fig_size)
+                except (TypeError, ValueError):
+                    axes = az.plot_trace(posterior, var_names=var_names_trace)
+                    
+            fig_trace = plt.gcf()
+            
+            LABELS_DICT = {{
+                "period": "Period $P$ [d]",
+                "rp_r_star": "$R_p/R_*$",
+                "b": "Impact parameter $b$",
+                "t14": "Duration $T_{{14}}$ [d]",
+                "t0": "Epoch $t_0$ [BTJD]",
+                "u1": "$u_1$",
+                "u2": "$u_2$",
+                "q1": "$q_1$",
+                "q2": "$q_2$",
+                "rho_star": "Density $\\\\rho_*$ [g/cm$^3$]",
+                "sigma_gp": "GP $\\\\sigma$",
+                "rho_gp": "GP $\\\\rho$",
+            }}
+            
+            if axes is not None:
+                axes_2d = np.atleast_2d(axes)
+                for i, v in enumerate(var_names_trace):
+                    if i < len(axes_2d):
+                        label = LABELS_DICT.get(v, v)
+                        axes_2d[i, 0].set_xlabel(label, fontsize=8.5)
+                        axes_2d[i, 1].set_ylabel(label, fontsize=8.5)
+                        axes_2d[i, 1].set_xlabel("Draw", fontsize=8.5)
+                        
+            for ax in fig_trace.axes:
+                ax.tick_params(labelsize=8)
+                ax.xaxis.label.set_size(8.5)
+                ax.yaxis.label.set_size(8.5)
+                if ax.get_title():
+                    ax.set_title(ax.get_title(), fontsize=9, fontweight="normal")
+                    
+            fig_trace.suptitle(f"TIC {{tic_id}} | Sectors: {{sectors_str}} | MCMC Trace Plots", y=0.99, fontsize=11, fontweight="bold")
+            plt.tight_layout(rect=[0, 0, 1, 0.96], h_pad=0.4)
+            print("Generating plot: plots/08_trace.png")
+            fig_trace.savefig("plots/08_trace.png", dpi=150, bbox_inches="tight")
+            plt.close(fig_trace)
+        except Exception as e_trace:
+            print(f"Failed to recreate trace plot: {{e_trace}}")
+            
+    except Exception as e_post:
+        print(f"Error loading/processing posterior: {{e_post}}")
 
 print("All plots recreated successfully.")
 """

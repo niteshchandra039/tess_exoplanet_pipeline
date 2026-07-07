@@ -78,8 +78,11 @@ def preprocess(
 
         # Construct a transit mask to protect transit points from clipping
         transit_mask = np.zeros(len(lc), dtype=bool)
-        if period is not None and epoch is not None:
+        if period is not None:
             t0 = epoch
+            if t0 is None:
+                t0 = float(lc.time.value[np.argmin(lc.flux.value)])
+                log.info("[preprocess] Epoch is None; estimating fallback epoch from flux minimum: %.5f", t0)
             if t0 > 2400000 and np.median(lc.time.value) < 100000:
                 t0 -= 2457000.0  # Convert BJD to BTJD if needed
             phase = ((lc.time.value - t0) / period) % 1.0
@@ -127,8 +130,11 @@ def preprocess(
 
     # Re-calculate transit mask on stitched light curve for flattening
     transit_mask_stitched = np.zeros(len(stitched), dtype=bool)
-    if period is not None and epoch is not None:
+    if period is not None:
         t0 = epoch
+        if t0 is None:
+            t0 = float(stitched.time.value[np.argmin(stitched.flux.value)])
+            log.info("[preprocess] Epoch is None; estimating fallback stitched epoch from flux minimum: %.5f", t0)
         if t0 > 2400000 and np.median(stitched.time.value) < 100000:
             t0 -= 2457000.0
         phase = ((stitched.time.value - t0) / period) % 1.0
