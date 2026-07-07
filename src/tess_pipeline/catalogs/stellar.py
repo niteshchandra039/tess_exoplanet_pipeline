@@ -123,6 +123,46 @@ def characterize_star(
         merged_params["feh_unit"] = "dex"
         adopted_sources["feh"] = "Gaia"
 
+    # If radius is missing, estimate it from luminosity and Teff using
+    # L/Lsun = (R/Rsun)^2 * (T/Tsun)^4  ->  R/Rsun = sqrt(L/Lsun) * (Tsun/T)^2.
+    if merged_params.get("r_star") is None:
+        teff_val = merged_params.get("teff")
+        lum_val = merged_params.get("lum")
+        if teff_val is not None and lum_val is not None and teff_val > 0 and lum_val > 0:
+            t_sun = 5772.0
+            r_est = math.sqrt(lum_val) * (t_sun / teff_val) ** 2
+            if math.isfinite(r_est) and r_est > 0:
+                merged_params["r_star"] = r_est
+                merged_params["r_star_err"] = None
+                merged_params["r_star_ref"] = "Stefan-Boltzmann from luminosity+Teff"
+                merged_params["r_star_unit"] = "R_sun"
+                adopted_sources["r_star"] = "Derived (Stefan-Boltzmann)"
+                log.info(
+                    "Estimated missing r_star from luminosity and Teff: R_star=%.4f R_sun",
+                    r_est,
+                )
+
+    # Last-resort fallback: estimate radius from Teff-only scaling for
+    # approximately main-sequence stars. This keeps the pipeline runnable
+    # when catalogs omit radius and luminosity.
+    if merged_params.get("r_star") is None:
+        teff_val = merged_params.get("teff")
+        if teff_val is not None and teff_val > 0:
+            t_sun = 5772.0
+            r_est = (teff_val / t_sun) ** 2
+            if math.isfinite(r_est) and r_est > 0:
+                merged_params["r_star"] = r_est
+                merged_params["r_star_err"] = 0.3 * r_est
+                merged_params["r_star_ref"] = "Main-sequence Teff scaling"
+                merged_params["r_star_unit"] = "R_sun"
+                adopted_sources["r_star"] = "Derived (Teff scaling)"
+                log.warning(
+                    "Estimated missing r_star from Teff-only scaling: "
+                    "R_star=%.4f +/- %.4f R_sun",
+                    r_est,
+                    0.3 * r_est,
+                )
+
     # If m_star is missing, estimate it using Torres et al. 2010
     if merged_params.get("m_star") is None:
         teff_val = merged_params.get("teff")

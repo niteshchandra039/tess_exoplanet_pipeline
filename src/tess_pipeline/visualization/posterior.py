@@ -159,22 +159,43 @@ def plot_trace(
             axes = az.plot_trace(posterior, var_names=var_names)
     
     fig = plt.gcf()
-    # Clean up labels and spacing to prevent clutter
+    # Clean up labels and spacing to prevent clutter.
+    # ArviZ may return either an ndarray of Matplotlib axes or a backend-specific
+    # PlotCollection wrapper; handle both safely.
     if axes is not None:
         import numpy as np
-        axes_2d = np.atleast_2d(axes)
-        for i, v in enumerate(var_names):
-            if i < len(axes_2d):
-                label = LABELS_DICT.get(v, v)
-                axes_2d[i, 0].set_xlabel(label, fontsize=8.5)
-                axes_2d[i, 1].set_ylabel(label, fontsize=8.5)
-                axes_2d[i, 1].set_xlabel("Draw", fontsize=8.5)
+
+        axes_matrix = None
+        if isinstance(axes, np.ndarray):
+            axes_matrix = np.atleast_2d(axes)
+        elif hasattr(axes, "axes"):
+            try:
+                axes_matrix = np.atleast_2d(np.asarray(axes.axes, dtype=object))
+            except Exception:
+                axes_matrix = None
+
+        if axes_matrix is not None:
+            nrows = min(len(var_names), axes_matrix.shape[0])
+            for i in range(nrows):
+                label = LABELS_DICT.get(var_names[i], var_names[i])
+
+                if axes_matrix.shape[1] > 0 and hasattr(axes_matrix[i, 0], "set_ylabel"):
+                    axes_matrix[i, 0].set_ylabel(label, fontsize=8.5)
+
+                if axes_matrix.shape[1] > 1:
+                    if hasattr(axes_matrix[i, 1], "set_ylabel"):
+                        axes_matrix[i, 1].set_ylabel(label, fontsize=8.5)
+                    if hasattr(axes_matrix[i, 1], "set_xlabel"):
+                        axes_matrix[i, 1].set_xlabel("Draw", fontsize=8.5)
 
     for ax in fig.axes:
-        ax.tick_params(labelsize=8)
-        ax.xaxis.label.set_size(8.5)
-        ax.yaxis.label.set_size(8.5)
-        if ax.get_title():
+        if hasattr(ax, "tick_params"):
+            ax.tick_params(labelsize=8)
+        if hasattr(ax, "xaxis") and hasattr(ax.xaxis, "label"):
+            ax.xaxis.label.set_size(8.5)
+        if hasattr(ax, "yaxis") and hasattr(ax.yaxis, "label"):
+            ax.yaxis.label.set_size(8.5)
+        if hasattr(ax, "get_title") and hasattr(ax, "set_title") and ax.get_title():
             ax.set_title(ax.get_title(), fontsize=9, fontweight="normal")
 
     fig.suptitle(f"TIC {tic_id} | Sectors: {sectors_str} | MCMC Trace Plots", y=0.99, fontsize=11, fontweight="bold")

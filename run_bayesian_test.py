@@ -16,7 +16,7 @@ def main() -> None:
     
     # Configure the analysis session with 500 tune and 500 draws for a fast test run
     analysis = TESSAnalysis(
-        target="TIC 261136679",
+        target="TIC 107782586",
         inference=True,
         inference_backend="exoplanet",  # uses exoplanet/PyMC/celerite2
         search_method="tls",
