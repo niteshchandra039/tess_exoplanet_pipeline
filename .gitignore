@@ -61,6 +61,11 @@ tess-pipeline.toml
 
 # Notes
 Notes/*
+!Notes/mnras_manuscript.tex
+!Notes/references.bib
+
+# Sphinx build output
+docs/_build/
 
 # Logs
 notebooks/logs/*

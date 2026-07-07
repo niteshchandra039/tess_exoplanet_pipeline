@@ -49,6 +49,14 @@ results = TESSAnalysis("TIC 307210830").run()
 
 See `notebooks/pipeline_walkthrough.ipynb` for a full walkthrough.
 
+## Documentation
+
+The Sphinx documentation scaffold lives in [`docs/index.md`](docs/index.md) and is configured from [`docs/conf.py`](docs/conf.py). It covers the public API, the pipeline overview, and notebook-backed walkthroughs.
+
+## Scientific manuscript
+
+The MNRAS-style manuscript scaffold is in [`Notes/mnras_manuscript.tex`](Notes/mnras_manuscript.tex), with its starter bibliography in [`Notes/references.bib`](Notes/references.bib).
+
 ## Project Structure
 
 ```

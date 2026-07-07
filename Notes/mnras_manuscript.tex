@@ -1,0 +1,52 @@
+\documentclass[fleqn,usenatbib]{mnras}
+
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{xcolor}
+
+\title[TESS Exoplanet Pipeline]{TESS Exoplanet Pipeline: Sphinx Documentation and an MNRAS-Style Scientific Analysis Framework}
+
+\author[Siya]{Siya\\
+Department of Astronomy and Astrophysics\\
+\texttt{siya@example.com}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We present the initial manuscript scaffold for the TESS exoplanet pipeline project. The paper will describe the pipeline architecture, detection workflow, stellar characterization, and Bayesian inference methods, and it will include a worked case study based on an analyzed TESS target. This first implementation pass establishes the MNRAS-formatted structure, section layout, and bibliography plumbing required for a full scientific draft.
+\end{abstract}
+
+\begin{keywords}
+exoplanets -- methods: data analysis -- techniques: photometric -- techniques: radial velocities -- stars: planetary systems
+\end{keywords}
+
+\section{Introduction}
+The TESS exoplanet pipeline provides a step-by-step workflow for identifying and characterizing transiting exoplanets from TESS light curves.
+
+\section{Methods}
+This section will document the target resolution, light-curve ingestion, preprocessing, period search, stellar characterization, and Bayesian transit modeling implemented in the codebase.
+
+\section{Analysis}
+This section will connect the software workflow to a representative target, summarize the intermediate products, and describe the diagnostics produced by the pipeline.
+
+\section{Results}
+This section will present the period estimates, transit model parameters, stellar properties, and derived planetary properties from the case study.
+
+\section{Discussion}
+This section will compare the pipeline outputs with the broader exoplanet literature and discuss limitations, systematics, and future extensions.
+
+\section{Conclusion}
+The manuscript will conclude with a summary of the pipeline capabilities and the scientific value of the case-study analysis.
+
+\bibliographystyle{mnras}
+\bibliography{references}
+
+\end{document}

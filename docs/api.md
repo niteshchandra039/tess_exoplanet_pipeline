@@ -1,5 +1,33 @@
 # API Reference
 
+## Public API
+
+## Reference objects
+
+### `TESSAnalysis`
+
+```{autoclass} tess_pipeline.TESSAnalysis
+:members:
+:undoc-members:
+:show-inheritance:
+```
+
+### `PipelineResults`
+
+```{autoclass} tess_pipeline.PipelineResults
+:members:
+:undoc-members:
+:show-inheritance:
+```
+
+### `Pipeline`
+
+```{autoclass} tess_pipeline.Pipeline
+:members:
+:undoc-members:
+:show-inheritance:
+```
+
 ## Pipeline
 
 ```python
