@@ -139,7 +139,8 @@ class TESSAnalysis:
             from tess_pipeline.visualization import lightcurve as vlc
             if self.results.lightcurve is not None:
                 tic_id, sectors_str = self._get_plot_metadata()
-                fig_raw = vlc.plot_raw_lightcurve(self.results.lightcurve, tic_id=tic_id, sectors_str=sectors_str)
+                lc_to_plot_raw = getattr(self.results, "lightcurve_raw", self.results.lightcurve)
+                fig_raw = vlc.plot_raw_lightcurve(lc_to_plot_raw, tic_id=tic_id, sectors_str=sectors_str)
                 self.results.figures["raw"] = fig_raw
                 self._save_step_plot("raw", fig_raw)
 

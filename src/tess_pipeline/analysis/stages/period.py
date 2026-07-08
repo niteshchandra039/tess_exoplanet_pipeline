@@ -20,6 +20,7 @@ class PeriodStage:
         self.config = config
         self.results = results
         self.archive_period: float | None = None
+        self.archive_periods: list[dict[str, Any]] = []
 
     def lookup_archive(self) -> float | None:
         """Query NASA Exoplanet Archive or use a configured period override."""
@@ -29,26 +30,43 @@ class PeriodStage:
         if cfg.period_override is not None:
             log.info("Using overridden period: %.6f d", cfg.period_override)
             self.archive_period = cfg.period_override
+            self.archive_periods = [{
+                "period": cfg.period_override,
+                "epoch": None,
+                "source": "override"
+            }]
             self.results.period = {"value": self.archive_period, "source": "override"}
             return self.archive_period
 
         log.info("Querying NASA Exoplanet Archive for TIC %s", tic_id)
-        from tess_pipeline.catalogs.nasa_archive import query_archive
+        from tess_pipeline.catalogs.nasa_archive import query_archive_all
 
-        archive_result = query_archive(tic_id)
-        if archive_result.get("period") is not None:
-            self.archive_period = archive_result["period"]
+        archive_results = query_archive_all(tic_id)
+        if archive_results:
+            self.archive_periods = archive_results
+            self.archive_period = archive_results[0]["period"]
             self.results.period = {
                 "value": self.archive_period,
                 "source": "archive",
-                "reference": archive_result.get("reference", ""),
-                "epoch": archive_result.get("epoch"),
+                "reference": archive_results[0].get("reference", ""),
+                "epoch": archive_results[0].get("epoch"),
+                "all_periods": [r["period"] for r in archive_results]
             }
             log.info(
-                "Archive period: %.6f d (ref: %s)",
+                "Archive periods found: %d planets (Primary: %.6f d)",
+                len(archive_results),
                 self.archive_period,
-                archive_result.get("reference", ""),
             )
+            
+            # Dynamically adjust max_planets if it's smaller than the archive list
+            from tess_pipeline.constants import DEFAULT_MAX_PLANETS
+            if cfg.max_planets == DEFAULT_MAX_PLANETS and len(archive_results) > DEFAULT_MAX_PLANETS:
+                log.info("No max_planets provided; defaulting to number of literature entries (%d)", len(archive_results))
+                cfg.max_planets = len(archive_results)
+            elif cfg.max_planets < len(archive_results):
+                log.info("Increasing max_planets from %d to %d to accommodate all literature entries", cfg.max_planets, len(archive_results))
+                cfg.max_planets = len(archive_results)
+                
         return self.archive_period
 
     def search(self) -> dict[str, Any]:
@@ -63,60 +81,68 @@ class PeriodStage:
 
         detections = []
 
-        if self.archive_period is not None:
+        if self.archive_periods:
             is_override = (self.results.period.get("source") == "override")
-            log.info("%s period found: %.6f d; refining Planet 1", "Override" if is_override else "Archive", self.archive_period)
-            try:
-                half_width = min(0.01, self.archive_period * 0.002)
-                search_min = max(cfg.period_min, self.archive_period - half_width)
-                search_max = min(cfg.period_max, self.archive_period + half_width)
-
-                det1 = search_period(
-                    lc,
-                    method=cfg.search_method,
-                    period_min=search_min,
-                    period_max=search_max,
-                    stellar=None,
-                    is_archive=True,
-                )
-                if is_override:
-                    det1["period"] = self.archive_period
-                    det1["method"] = "override"
-                    det1["note"] = "user override preserved"
-                else:
-                    det1["note"] = "refined archive period"
-            except Exception as exc:
-                log.warning("Refinement of archive/override period failed: %s", exc)
-                det1 = {
-                    "period": self.archive_period,
-                    "epoch": float(lc.time.value[np.argmin(lc.flux.value)]),
-                    "duration_hr": 3.0,
-                    "depth": float(1.0 - np.percentile(lc.flux.value, 1)),
-                    "method": "override" if is_override else "archive",
-                    "sde": 10.0,
-                    "snr": 10.0,
-                    "note": "override fallback" if is_override else "archive fallback",
-                }
-            detections.append(det1)
+            masked_lc = lc.copy()
             
-            # If max_planets > 1, search for more planets on the masked lightcurve
-            if cfg.max_planets > 1:
-                period = det1["period"]
-                t0 = det1["epoch"]
-                duration_days = (det1["duration_hr"] or 3.0) / 24.0
-                times = lc.time.value
+            for i, arch in enumerate(self.archive_periods):
+                p_arch = arch["period"]
+                log.info("%s period found for Planet %d: %.6f d; refining...", 
+                         "Override" if is_override else "Archive", i + 1, p_arch)
+                try:
+                    half_width = min(0.01, p_arch * 0.002)
+                    search_min = max(cfg.period_min, p_arch - half_width)
+                    search_max = min(cfg.period_max, p_arch + half_width)
+
+                    det = search_period(
+                        masked_lc,
+                        method=cfg.search_method,
+                        period_min=search_min,
+                        period_max=search_max,
+                        stellar=None,
+                        is_archive=True,
+                    )
+                    if is_override:
+                        det["period"] = p_arch
+                        det["method"] = "override"
+                        det["note"] = "user override preserved"
+                    else:
+                        det["note"] = "refined archive period"
+                except Exception as exc:
+                    log.warning("Refinement of archive/override period failed: %s", exc)
+                    det = {
+                        "period": p_arch,
+                        "epoch": arch.get("epoch") or float(masked_lc.time.value[np.argmin(masked_lc.flux.value)]),
+                        "duration_hr": 3.0,
+                        "depth": float(1.0 - np.percentile(masked_lc.flux.value, 1)),
+                        "method": "override" if is_override else "archive",
+                        "sde": 10.0,
+                        "snr": 10.0,
+                        "note": "override fallback" if is_override else "archive fallback",
+                    }
+                detections.append(det)
+                
+                # Mask this planet specifically
+                period = det["period"]
+                t0 = det["epoch"]
+                duration_days = (det["duration_hr"] or 3.0) / 24.0
+                times = masked_lc.time.value
                 phase = (times - t0 + 0.5 * period) % period - 0.5 * period
                 in_transit = np.abs(phase) < (0.75 * duration_days)
                 
-                masked_lc = lc[~in_transit]
+                masked_lc = masked_lc[~in_transit]
                 
+            # Now search for any extra planets using the fully masked lightcurve
+            remaining_planets_to_find = cfg.max_planets - len(self.archive_periods)
+            if remaining_planets_to_find > 0:
+                log.info("Searching for %d additional planet(s) in residuals...", remaining_planets_to_find)
                 extra_dets = search_multiple_planets(
                     masked_lc,
                     method=cfg.search_method,
                     period_min=cfg.period_min,
                     period_max=cfg.period_max,
                     stellar=None,
-                    max_planets=cfg.max_planets - 1,
+                    max_planets=remaining_planets_to_find,
                 )
                 detections.extend(extra_dets)
         else:

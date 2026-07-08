@@ -18,6 +18,53 @@ from tess_pipeline.utils.logging import get_logger
 log = get_logger(__name__)
 
 
+def query_archive_all(tic_id: int) -> list[dict[str, Any]]:
+    """
+    Search the NASA Exoplanet Archive for *tic_id* and return all planets.
+    """
+    archive_path = _find_local_archive_csv()
+    if archive_path is None:
+        log.info("No local NASA archive CSV found; skipping archive lookup")
+        return []
+
+    rows = _load_local_archive_rows(archive_path)
+    matches = [row for row in rows if _row_tic_id(row) == tic_id]
+    
+    # Filter only entries that are CP, KP, PC (optional based on preference, but usually good to keep all valid ones)
+    # We will just parse all matching ones with valid periods and group by TOI id to avoid duplicates
+    results = []
+    seen_tois = set()
+    
+    # Sort them by rank so we process the best variants first
+    matches.sort(key=_record_sort_key)
+    
+    for row in matches:
+        toi = row.get("toi", "")
+        if toi in seen_tois and toi:
+            continue
+            
+        period = _safe_float(row.get("pl_orbper"))
+        if period is None:
+            continue
+            
+        if toi:
+            seen_tois.add(toi)
+            
+        results.append({
+            "period": period,
+            "epoch": _safe_float(row.get("pl_tranmid")),
+            "planet_name": f"TOI-{toi}" if toi else None,
+            "rp_earth": _safe_float(row.get("pl_rade")),
+            "t_eq": _safe_float(row.get("pl_eqt")),
+            "reference": f"Local NASA Exoplanet Archive TOI export: {archive_path}",
+            "source": "toi-local"
+        })
+        
+    if not results:
+        log.info("No valid periods found in local NASA archive entry for TIC %d", tic_id)
+        
+    return results
+
 def query_archive(tic_id: int) -> dict[str, Any]:
     """
     Search the NASA Exoplanet Archive for *tic_id*.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Test script to run the TESS Exoplanet Pipeline with the modernized Bayesian (exoplanet/PyMC/GP)
-backend on target star TIC 107782586.
+backend on target star TIC 52368076.
 """
 
 from __future__ import annotations
@@ -9,24 +9,24 @@ import os
 import sys
 from tess_pipeline import TESSAnalysis
 
-sectors = 'longest'
+sectors = 'all'
 
 def main() -> None:
-    print("Initializing TESS Analysis for TIC 107782586 using Bayesian MCMC...")
+    print("Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...")
     
     # Configure the analysis session with 500 tune and 500 draws for a fast test run
     analysis = TESSAnalysis(
-        target="TIC 107782586",
+        target="TIC 52368076",
         inference=True,
         inference_backend="exoplanet",  # uses exoplanet/PyMC/celerite2
         search_method="tls",
         sectors=sectors,
-        max_planets=1,
+        # max_planets=3,
         chains=2,
-        draws=500,
-        tune=500,
+        draws=10,
+        tune=10,
         plots=True,
-        output_dir=f"output_bayesian_sector_{sectors}_500",
+        output_dir=f"output_bayesian_sector_{sectors}_500_2",
         verbose=True
     )
     

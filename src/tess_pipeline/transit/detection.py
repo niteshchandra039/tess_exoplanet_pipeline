@@ -233,51 +233,98 @@ def search_multiple_planets(
             break
 
         # Zoom in and run high-resolution narrow search on full-resolution data
+        # while checking sub-harmonics / aliases to robustly avoid harmonics
         coarse_period = det["period"]
-        delta_p = max(0.01, 0.02 * coarse_period)
-        narrow_min = max(period_min, coarse_period - delta_p)
-        narrow_max = min(effective_period_max, coarse_period + delta_p)
-
+        
         log.info(
-            "Significant peak found (coarse SDE/SNR = %.2f at %.4f d). Refining on full resolution in range %.4f–%.4f d...",
-            coarse_sig, coarse_period, narrow_min, narrow_max,
+            "Significant peak found (coarse SDE/SNR = %.2f at %.4f d). Checking sub-harmonics for robustness...",
+            coarse_sig, coarse_period,
         )
 
-        try:
-            refined_det = search_period(
-                current_lc,
-                method=method,
-                period_min=narrow_min,
-                period_max=narrow_max,
-                stellar=stellar,
-                coarse_search=False,
-            )
-            # Save the broad/coarse search raw and list results so they can be plotted
-            broad_tls = det.get("tls_result")
-            broad_bls = det.get("bls_result")
-            broad_tls_periods = det.get("tls_periods")
-            broad_tls_power = det.get("tls_power")
-            broad_bls_periods = det.get("bls_periods")
-            broad_bls_power = det.get("bls_power")
+        fractions = [1/3, 1/2, 1, 2, 3]
+        alias_results = []
+        
+        for f in fractions:
+            test_p = coarse_period * f
+            if test_p < period_min or test_p > effective_period_max:
+                continue
+                
+            delta_p = max(0.01, 0.02 * test_p)
+            narrow_min = max(period_min, test_p - delta_p)
+            narrow_max = min(effective_period_max, test_p + delta_p)
+            
+            try:
+                ref_det = search_period(
+                    current_lc,
+                    method=method,
+                    period_min=narrow_min,
+                    period_max=narrow_max,
+                    stellar=stellar,
+                    coarse_search=False,
+                )
+                sig = max(ref_det.get("sde", 0.0), ref_det.get("snr", 0.0))
+                if sig > 0:
+                    alias_results.append({
+                        "f": f,
+                        "det": ref_det,
+                        "sig": sig,
+                        "period": ref_det["period"]
+                    })
+            except Exception as exc:
+                log.warning("Planet %d harmonic check failed for f=%.2f: %s", i + 1, f, exc)
+                
+        if not alias_results:
+            log.warning("No valid refined results for Planet %d", i + 1)
+            break
+            
+        # Find the max signal across all tested fractions
+        # We heavily trust the SDE/SNR to tell the truth. TLS correctly penalizes 
+        # multiple/sub-harmonics. Instead of biasing towards shorter periods, we simply 
+        # select the one that yields the absolute highest signal, as that's mathematically
+        # the best fit for true physical transits without ghost epochs.
+        max_sig = max(res["sig"] for res in alias_results)
+        
+        chosen_res = None
+        for res in alias_results:
+             if res["sig"] == max_sig:
+                 chosen_res = res
+                 break
+                
+        refined_sig = chosen_res["sig"]
+        refined_det = chosen_res["det"]
+        f_chosen = chosen_res["f"]
 
-            det = refined_det
+        log.info(
+            "Harmonic resolution: selected fraction %.2f (refined period=%.4f d, SDE/SNR=%.2f, max_sig was %.2f)",
+            f_chosen, chosen_res["period"], refined_sig, max_sig
+        )
+        print(
+            f"Planet {i+1} derived robust period: {chosen_res['period']:.5f} days "
+            f"(SNR: {refined_sig:.2f}, via fraction {f_chosen:.2f} of initial peak {coarse_period:.5f}d)"
+        )
 
-            if broad_tls is not None:
-                det["tls_result_broad"] = broad_tls
-            if broad_bls is not None:
-                det["bls_result_broad"] = broad_bls
-            if broad_tls_periods is not None:
-                det["tls_periods_broad"] = broad_tls_periods
-            if broad_tls_power is not None:
-                det["tls_power_broad"] = broad_tls_power
-            if broad_bls_periods is not None:
-                det["bls_periods_broad"] = broad_bls_periods
-            if broad_bls_power is not None:
-                det["bls_power_broad"] = broad_bls_power
-        except Exception as exc:
-            log.warning("Planet %d refinement failed: %s; keeping coarse candidate", i + 1, exc)
+        # Save the broad/coarse search raw and list results so they can be plotted
+        broad_tls = det.get("tls_result")
+        broad_bls = det.get("bls_result")
+        broad_tls_periods = det.get("tls_periods")
+        broad_tls_power = det.get("tls_power")
+        broad_bls_periods = det.get("bls_periods")
+        broad_bls_power = det.get("bls_power")
 
-        refined_sig = max(det.get("sde", 0.0), det.get("snr", 0.0))
+        det = refined_det
+
+        if broad_tls is not None:
+            det["tls_result_broad"] = broad_tls
+        if broad_bls is not None:
+            det["bls_result_broad"] = broad_bls
+        if broad_tls_periods is not None:
+            det["tls_periods_broad"] = broad_tls_periods
+        if broad_tls_power is not None:
+            det["tls_power_broad"] = broad_tls_power
+        if broad_bls_periods is not None:
+            det["bls_periods_broad"] = broad_bls_periods
+        if broad_bls_power is not None:
+            det["bls_power_broad"] = broad_bls_power
 
         # For subsequent planets (Planet 2+), enforce SDE/SNR threshold of 6.0
         if len(detections) > 0 and refined_sig < 6.0:
