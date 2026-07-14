@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: transit_fitting_pipeline_report_1.aux
+The style file: plainnat.bst
+Database file #1: references.bib
+Warning--I didn't find a database entry for "tess_exoplanet_pipeline.zip:tests/test_download.py"
+Warning--I didn't find a database entry for "tess_exoplanet_pipeline.zip:pyproject.toml"
+Warning--I didn't find a database entry for "tess_exoplanet_pipeline.zip:pbs_query/run_bayesian_test.out"
+Warning--I didn't find a database entry for "tess_exoplanet_pipeline.zip:README.md"
+Warning--I didn't find a database entry for "gaia2022"
+You've used 11 entries,
+            2773 wiz_defined-function locations,
+            677 strings with 7022 characters,
+and the built_in function-call counts, 4808 in all, are:
+= -- 453
+> -- 233
+< -- 9
++ -- 80
+- -- 69
+* -- 380
+:= -- 759
+add.period$ -- 44
+call.type$ -- 11
+change.case$ -- 51
+chr.to.int$ -- 11
+cite$ -- 22
+duplicate$ -- 217
+empty$ -- 413
+format.name$ -- 91
+if$ -- 1009
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 10
+newline$ -- 74
+num.names$ -- 44
+pop$ -- 81
+preamble$ -- 1
+purify$ -- 40
+quote$ -- 0
+skip$ -- 166
+stack$ -- 0
+substring$ -- 188
+swap$ -- 11
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 121
+warning$ -- 0
+while$ -- 47
+width$ -- 0
+write$ -- 171
+(There were 5 warnings)

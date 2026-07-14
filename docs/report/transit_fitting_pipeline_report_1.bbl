@@ -1,0 +1,90 @@
+\begin{thebibliography}{11}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Agol et~al.(2020)Agol, Luger, and Foreman-Mackey]{agol2020}
+Eric Agol, Rodrigo Luger, and Daniel Foreman-Mackey.
+\newblock Analytic planetary transit light curves and derivatives for stars
+  with polynomial limb darkening.
+\newblock \emph{The Astronomical Journal}, 159\penalty0 (3):\penalty0 123,
+  2020.
+\newblock \doi{10.3847/1538-3881/ab4fee}.
+
+\bibitem[Foreman-Mackey et~al.(2017)]{foremanmackey2017}
+Daniel Foreman-Mackey et~al.
+\newblock Fast and scalable gaussian process modeling with applications to
+  astronomical time series.
+\newblock \emph{The Astronomical Journal}, 154\penalty0 (6):\penalty0 220,
+  2017.
+\newblock \doi{10.3847/1538-3881/aa9332}.
+
+\bibitem[Foreman-Mackey et~al.(2020)]{celerite2_2020}
+Daniel Foreman-Mackey et~al.
+\newblock celerite2: Fast and scalable gaussian process regression.
+\newblock \url{https://celerite2.readthedocs.io/}, 2020.
+\newblock Documentation.
+
+\bibitem[Foreman-Mackey et~al.(2021)]{foremanmackey2021}
+Daniel Foreman-Mackey et~al.
+\newblock exoplanet: Gradient-based probabilistic inference for exoplanet data
+  and other astronomical time series.
+\newblock \emph{Journal of Open Source Software}, 6\penalty0 (62):\penalty0
+  3285, 2021.
+\newblock \doi{10.21105/joss.03285}.
+
+\bibitem[Hippke and Heller(2019)]{hippke2019}
+Michael Hippke and Ren{\'e} Heller.
+\newblock Transit least squares for the detection of exoplanets and eclipsing
+  binaries.
+\newblock \emph{Astronomy \& Astrophysics}, 623:\penalty0 A39, 2019.
+\newblock \doi{10.1051/0004-6361/201834672}.
+
+\bibitem[Kipping(2013)]{kipping2013}
+David~M. Kipping.
+\newblock Efficient, uninformative sampling of limb darkening coefficients for
+  two-parameter laws.
+\newblock \emph{Monthly Notices of the Royal Astronomical Society},
+  435\penalty0 (3):\penalty0 2152--2160, 2013.
+\newblock \doi{10.1093/mnras/stt1435}.
+
+\bibitem[Mandel and Agol(2002)]{mandel2002}
+Kaisey Mandel and Eric Agol.
+\newblock Analytic light curves for planetary transit searches.
+\newblock \emph{The Astrophysical Journal}, 580\penalty0 (2):\penalty0
+  L171--L175, 2002.
+\newblock \doi{10.1086/345520}.
+
+\bibitem[Salvatier et~al.(2016)Salvatier, Wiecki, and
+  Fonnesbeck]{salvatier2016}
+John Salvatier, Thomas~V. Wiecki, and Christopher Fonnesbeck.
+\newblock Probabilistic programming in python using pymc3.
+\newblock \emph{PeerJ Computer Science}, 2:\penalty0 e55, 2016.
+\newblock \doi{10.7717/peerj-cs.55}.
+
+\bibitem[Seager and Mall{\'e}n-Ornelas(2003)]{seager2003}
+Sara Seager and Guillermina Mall{\'e}n-Ornelas.
+\newblock A unique solution of planet and star parameters from an extrasolar
+  planet transit light curve.
+\newblock \emph{The Astrophysical Journal}, 585\penalty0 (2):\penalty0
+  1038--1055, 2003.
+\newblock \doi{10.1086/346105}.
+
+\bibitem[Stassun et~al.(2019)]{stassun2019}
+Keivan~G. Stassun et~al.
+\newblock The revised tess input catalog and candidate target list.
+\newblock \emph{The Astronomical Journal}, 158\penalty0 (4):\penalty0 138,
+  2019.
+\newblock \doi{10.3847/1538-3881/ab3467}.
+
+\bibitem[Wenger et~al.(2000)]{wenger2000}
+Marc Wenger et~al.
+\newblock The simbad astronomical database. the cds reference database for
+  astronomical objects.
+\newblock \emph{Astronomy and Astrophysics Supplement Series}, 143\penalty0
+  (1):\penalty0 9--22, 2000.
+\newblock \doi{10.1051/aas:2000332}.
+
+\end{thebibliography}

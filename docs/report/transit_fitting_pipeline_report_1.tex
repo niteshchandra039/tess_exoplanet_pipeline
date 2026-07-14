@@ -1,0 +1,531 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+% =============================================================================
+% Transit-fitting analysis report for the TESS exoplanet pipeline
+% =============================================================================
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{natbib}
+
+\usepackage{fancyhdr}
+\usepackage{caption}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue!55!black,
+    citecolor=green!45!black,
+    urlcolor=blue!55!black
+}
+\newcommand{\SI}[2]{\ensuremath{#1\,\mathrm{#2}}}
+\newcommand{\um}[1]{#1}
+\setlist{itemsep=2pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{TESS transit-fitting pipeline}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\small Reproducible technical report}
+
+\newcommand{\Msun}{\ensuremath{M_{\odot}}}
+\newcommand{\Rsun}{\ensuremath{R_{\odot}}}
+\newcommand{\Rearth}{\ensuremath{R_{\oplus}}}
+\newcommand{\Rstar}{\ensuremath{R_{\star}}}
+\newcommand{\Mstar}{\ensuremath{M_{\star}}}
+\newcommand{\Teff}{\ensuremath{T_{\mathrm{eff}}}}
+\newcommand{\rhoStar}{\ensuremath{\rho_{\star}}}
+\newcommand{\Rp}{\ensuremath{R_{\mathrm{p}}}}
+\newcommand{\Porb}{\ensuremath{P}}
+\newcommand{\Tfourteen}{\ensuremath{T_{14}}}
+\newcommand{\tzero}{\ensuremath{t_{0}}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    frame=single,
+    columns=fullflexible,
+    showstringspaces=false
+}
+
+\title{\textbf{Bayesian Transit-Fitting Analysis Pipeline}\\[0.5em]
+\large A detailed mathematical and technical report for the TESS exoplanet modelling workflow}
+\author{TESS Exoplanet Pipeline}
+\date{\today}
+
+\begin{document}
+\maketitle
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\chapter*{Executive Summary}
+\addcontentsline{toc}{chapter}{Executive summary}
+
+This report documents the complete transit-fitting workflow implemented in the \code{tess\_pipeline} package. The workflow begins with a Transiting Exoplanet Survey Satellite (TESS) Target Index Catalog (TIC) identifier or a local TESS FITS light curve, and it systematically produces posterior distributions for transit parameters, derived physical planetary properties, convergence diagnostics, and machine-readable results.
+
+The primary inference pathway relies on a joint Bayesian model constructed using PyMC and the \code{exoplanet} library \cite{salvatier2016}. The posterior parameter space is explored utilizing the No-U-Turn Sampler (NUTS), an advanced implementation of Hamiltonian Monte Carlo. To rigorously account for time-correlated stellar activity and instrumental systematics, the pipeline employs a Gaussian Process (GP) marginalization via \code{celerite2} \cite{foremanmackey2017}. The transit signal is modeled via a Keplerian orbit intersecting a quadratically limb-darkened stellar disk \cite{mandel2002}.
+
+The analysis is executed in distinct, logical stages. NASA Exoplanet Archive queries provide initial ephemerides; TESS photometry isolated from the Mikulski Archive for Space Telescopes (MAST) supplies the fundamental time-series flux; and a multi-catalog query framework integrating Gaia, VizieR, and SIMBAD applies strict priors on the stellar properties. The pipeline treats these constraints probabilistically rather than relying on fixed point estimates, propagating observational uncertainty deeply into the derived planetary radii and equilibrium temperatures.
+
+\chapter{Scientific Objective and Observational Data Model}
+
+\section{Objective}
+The scientific objective of this pipeline is to ascertain whether periodic photometric flux decrements within TESS data are statistically consistent with transiting exoplanetary bodies. Conditional on this hypothesis, the pipeline applies Bayesian inference to estimate:
+\begin{itemize}
+  \item Orbital period \Porb and the reference transit mid-time \tzero.
+  \item Radius ratio \(r=\Rp/\Rstar\), geometric impact parameter \(b\), and the total transit duration \Tfourteen.
+  \item Mean stellar density \rhoStar and the scaled semi-major axis \(a/\Rstar\).
+  \item Physical planet radius, semi-major axis in Astronomical Units, and planetary equilibrium temperature.
+  \item Rigorous uncertainty credible intervals, correlated noise structures, and Hamiltonian sampling reliability metrics.
+\end{itemize}
+
+The fundamental observable is a discrete photometric time series \(\{t_i,F_i,\sigma_i\}_{i=1}^{N}\), where \(t_i\) is the Barycentric TESS Julian Date (BTJD), \(F_i\) represents the normalized relative stellar flux, and \(\sigma_i\) is the reported per-cadence photometric uncertainty.
+
+\section{Pipeline Execution Modes}
+A complete end-to-end run follows a strict chronological execution orchestrated by the \code{TESSAnalysis} session class. A typical execution sequence is as follows:
+\begin{lstlisting}
+analysis = TESSAnalysis("TIC 261136679", inference=True)
+analysis.resolve_target()
+analysis.lookup_archive_period()
+analysis.load_lightcurves()
+analysis.preprocess()
+analysis.search_period()
+analysis.query_gaia()
+analysis.characterize_star()
+analysis.fit_transit()
+analysis.derive_planet_parameters()
+analysis.check_convergence()
+analysis.generate_figures()
+analysis.save("output/")
+\end{lstlisting}
+
+While the primary modeling backend utilizes Bayesian inference via \code{exoplanet}, the pipeline also supports an analytic chi-square minimization backend using \code{batman}, as well as advanced stellar binary synthesis modeling via \code{phoebe}.
+
+\section{Default Configuration}
+The pipeline relies on a highly configurable parameter state. Unless explicitly overridden by the user, the baseline scientific defaults are summarized in Table \ref{tab:defaults}.
+
+\begin{longtable}{p{0.36\textwidth}p{0.18\textwidth}p{0.36\textwidth}}
+\caption{Principal defaults used by the pipeline.}\label{tab:defaults}\\
+\toprule
+Parameter & Default & Meaning\\
+\midrule
+\code{author} & SPOC & TESS light-curve product author\\
+\code{cadence} & 120 s & Two-minute short cadence\\
+\code{search\_method} & TLS & Transit Least Squares \cite{hippke2019}\\
+\code{period\_min,max} & 0.5, 100 d & Broad period-search interval\\
+\code{max\_planets} & 1 & Maximum blind-search candidates\\
+\code{sigma\_clip\_lower,upper} & 20, 5 & Asymmetric outlier thresholds\\
+\code{flatten\_window\_length} & 401 & Savitzky-Golay window in cadences\\
+\code{flatten\_polyorder} & 3 & Polynomial order for flattening\\
+\code{chains} & 4 & Independent MCMC chains\\
+\code{draws} & 1500 & Retained draws per chain\\
+\code{tune} & 1000 & Adaptation/tuning draws per chain\\
+\code{target\_accept} & 0.95 & NUTS target acceptance probability\\
+\code{gp\_kernel} & SHO & Correlated-noise covariance kernel\\
+\bottomrule
+\end{longtable}
+
+All pipeline values can be dynamically updated via constructor arguments, a TOML configuration file, or system environment variables.
+
+\chapter{Data Acquisition and Signal Processing}
+
+\section{Target Resolution and Cross-Matching}
+The initial step of the execution loop maps user-supplied targets to distinct sky coordinates. The pipeline architecture handles multiple raw input variants, parsing integers, raw character strings (e.g., ``TIC 261136679''), and unified keys (e.g., ``TIC261136679'') via a centralized sanitization handler \cite{tess_exoplanet_pipeline.zip:tests/test_download.py}. In cloud-connected download mode, the sanitized target identifier is utilized to query the Mikulski Archive for Space Telescopes (MAST) and retrieve precision Right Ascension (RA) and Declination (Dec) coordinates. 
+
+Alternatively, if local archival data mode is enabled, the pipeline reads the programmatic FITS headers directly from local directory structures to populate coordinate entries internally without network queries \cite{tess_exoplanet_pipeline.zip:tests/test_download.py}. This preserves strict structural metadata matching, ensuring that all down-stream stages execute on an identical coordinate reference frame.
+
+\section{Photometric Data Ingestion}
+The standard observational product utilizes the Science Processing Operations Center (SPOC) high-cadence data pipeline, downloading two-minute short-cadence timeseries curves via the \code{lightkurve} API architecture \cite{tess_exoplanet_pipeline.zip:pyproject.toml,tess_exoplanet_pipeline.zip:pbs_query/run_bayesian_test.out}. The engine ingests Pre-search Data Conditioning Simple Aperture Photometry (PDCSAP) relative flux, isolating the targeted stellar signal from instrumental systematic trends, spacecraft pointing jitter, and aperture crowding effects. 
+
+The structural data ingestion module is designed with a series of hard failures and fallback safety overrides to manage imperfect data configurations. In circumstances where photometric error arrays are entirely missing from a custom FITS or light-curve object, the ingestion engine overrides the missing values with a uniform conservative background white-noise scale fixed at \(\sigma_{F} = 10^{-3}\). This acts as a robust likelihood regularization boundary during the subsequent joint posterior inference optimizations.
+
+\section{Signal-Preserving Preprocessing}
+Before stitching individual observation sectors into a contiguous baseline timeseries, each target sector undergoes localized signal-preserving cleanup steps to clear anomalies and protect true transit profiles from distortion during background trending:
+\begin{enumerate}
+  \item \textbf{Invalid Cadence Filtering:} Programmatic removal of non-numeric (NaN) elements and cadences marked with catastrophic hardware quality flags.
+  \item \textbf{Asymmetric Outlier Clipping:} Outlier filtration utilizing an intentional asymmetric clipping gate, where upper and lower clean thresholds are fixed to 20 and 5 standard deviations respectively. This asymmetry selectively discards extreme positive instrumental spikes while maintaining strict preservation of deep negative deviations characteristic of high-impact transit ingress.
+  \item \textbf{Transit Protection Masking:} Under default settings, the system checks literature ephemerides and applies a binary phase-protection window wide enough to envelope the expected transit boundaries. Cadences localized within this boundary are dynamically omitted from trend coefficient estimation arrays.
+  \item \textbf{Savitzky-Golay Trend Removal:} Low-frequency drift patterns driven by space environment thermal variations and long-term stellar activity are flattened using a low-order Savitzky-Golay polynomial filter \cite{tess_exoplanet_pipeline.zip:README.md}. By training the background trend matrix exclusively on unmasked, out-of-transit cadences, the structural geometry of the core transit features remains clean and undistorted for fine modeling steps.
+\end{enumerate}
+
+\chapter{Period and Transit Detection Algorithms}
+
+\section{Transit Least Squares Template Fitting}
+For optimal detection of planetary transit patterns that deviate from standard rectangular profiles, the pipeline leverages the Transit Least Squares (TLS) matching algorithm as its primary detection tool \cite{tess_exoplanet_pipeline.zip:README.md}. TLS calculates a power spectrum across an analytical period matrix by analytical cross-matching against realistic, limb-darkened transit curves rather than step-function box approximations \cite{hippke2019}. 
+
+The underlying pipeline optimizes its period-searching loops via separate coarse and fine loops to balance computational speed with resolution. When an initial broad grid identifies a significant peak, the pipeline isolates that periodic region and re-evaluates it over an optimized high-resolution narrow pass to minimize timing discretization errors before passing the coordinates down to the Bayesian model \cite{tess_exoplanet_pipeline.zip:pbs_query/run_bayesian_test.out}.
+
+\section{Blind Iterative Multi-Planet Detection}
+The search for multiple planet candidates within a single stellar target system operates as an automated, iterative signal-stripping loop:
+\begin{enumerate}
+  \item The complete detrended timeseries is analyzed using the broad TLS parameter space to locate the global maximum power peak.
+  \item If the localized maximum satisfies a trial-corrected Signal Detection Efficiency (SDE) threshold of \(\mathrm{SDE} \ge 6.0\), the candidate is assigned an internal index flag \cite{tess_exoplanet_pipeline.zip:pbs_query/run_bayesian_test.out}.
+  \item The algorithm computes the predicted center of all transits belonging to this candidate body and overlays a localized mask spanning three-quarters (\(0.75\)) of the estimated total transit duration \Tfourteen.
+  \item These cadences are temporarily stripped from the computational data arrays, and the remaining residual light curve is funneled back into the primary TLS execution engine to probe for additional secondary transits.
+\end{enumerate}
+
+\section{Harmonic and Alias Resolution}
+An inherent vulnerability of recursive 1D periodograms is signal duplication across fractional or integer multiples of the primary orbital frequency, resulting in periods located at common harmonic aliases like \(P/2\), \(P/3\), \(2P\), or \(3P\). To reduce alias confusion before allocating intense cluster resources to an HMC run, the detection module includes an explicit evaluation gate. 
+
+The pipeline dynamically builds a discrete validation matrix around the primary target frequency at fractional indices \(f \in \{1/3, 1/2, 1, 2, 3\}\). The matching algorithms evaluate the localized SDE response at each corresponding alias window, compare the output values, and automatically retain the candidate matching the absolute maximum SDE value as the correct parent planet orbit \cite{tess_exoplanet_pipeline.zip:pbs_query/run_bayesian_test.out}.
+
+
+\chapter{Stellar Catalog Integration and Characterization}
+
+\section{Introduction to Stellar Constraints}
+The accurate derivation of physical planetary parameters from transit photometry requires stringent constraints on the host star's properties. The photometric transit depth inherently only provides the planet-to-star radius ratio (\(R_p/R_\star\)), and the transit duration is heavily dependent on the mean stellar density (\(\rho_\star\)) \cite{seager2003}. Consequently, the \code{tess\_pipeline} employs a robust, automated multi-catalog querying framework to retrieve and merge stellar parameters from the most reliable astronomical databases.
+
+\section{Multi-Catalog Query and Priority Merging}
+The pipeline dynamically interfaces with several major astrophysical databases to retrieve fundamental stellar parameters, including effective temperature (\Teff), surface gravity (\(\log g\)), metallicity ([Fe/H]), parallax, and luminosity. The primary catalogs queried include:
+\begin{itemize}
+    \item \textbf{VizieR TIC v8.2:} The TESS Input Catalog \cite{stassun2019} serves as the foundational database for TESS targets.
+    \item \textbf{Gaia DR3:} The third data release of the Gaia mission \cite{gaia2022} provides high-precision astrometry, parallaxes, and derived stellar properties.
+    \item \textbf{SIMBAD:} The SIMBAD astronomical database \cite{wenger2000} is utilized primarily for its rich repository of high-resolution spectroscopic measurements.
+\end{itemize}
+
+When multiple catalogs provide values for the same parameter, the characterization module resolves conflicts using a strict, parameter-level priority hierarchy. For baseline stellar parameters such as \Teff and \(\log g\), the pipeline enforces the following precedence:
+\begin{enumerate}
+    \item VizieR TIC v8.2
+    \item Gaia DR3
+    \item SIMBAD
+\end{enumerate}
+However, a special priority override is implemented for stellar metallicity ([Fe/H]). Because SIMBAD aggregates peer-reviewed, high-resolution spectroscopic surveys, it is designated as the highest priority source for [Fe/H], superseding both VizieR and Gaia. Throughout this merging process, the pipeline strictly retains the provenance, literature reference bibliocodes, physical units, and reported uncertainties for every retrieved value. Missing quantities are also cross-referenced and supplemented by a local NASA TOI archive where applicable.
+
+\section{Empirical Fallback Estimations}
+In scenarios where direct measurements of the stellar radius (\Rstar) or mass (\Mstar) are unavailable in the literature, the pipeline implements a series of physical and empirical fallback derivations to ensure the Bayesian inference stage can proceed. 
+
+\subsection{Stellar Radius Derivation}
+If the stellar radius is uncatalogued but the bolometric luminosity (\(L_\star\)) and effective temperature (\Teff) are available, \Rstar is derived analytically via the Stefan-Boltzmann relation:
+\begin{equation}
+  \frac{\Rstar}{\Rsun} = \left(\frac{L_\star}{L_\odot}\right)^{1/2} \left(\frac{T_{\odot}}{\Teff}\right)^2
+\end{equation}
+where \(T_\odot = 5772\,\mathrm{K}\) is the solar effective temperature. As a final resort, if luminosity is also missing, the implementation utilizes a main-sequence scaling relation based entirely on \Teff:
+\begin{equation}
+  \frac{\Rstar}{\Rsun} = \left(\frac{\Teff}{5772\,\mathrm{K}}\right)^2
+\end{equation}
+To prevent overconfidence in this crude empirical scaling, the pipeline automatically assigns a conservative 30\% relative uncertainty to the derived radius.
+
+\subsection{Stellar Mass and Density Derivation}
+Similarly, if the stellar mass is missing from the catalogs, the codebase employs an approximate main-sequence mass-radius-temperature scaling:
+\begin{equation}
+  \frac{\Mstar}{\Msun} = \left(\frac{\Teff}{5777\,\mathrm{K}}\right)^{1.5} \left(\frac{\Rstar}{\Rsun}\right)^{0.1}
+\end{equation}
+The ultimate goal of the stellar characterization stage is the precise determination of the mean stellar density (\rhoStar). This parameter is calculated directly from the merged or derived mass and radius values:
+\begin{equation}
+  \rhoStar = \rho_\odot \frac{\Mstar/\Msun}{(\Rstar/\Rsun)^3}
+\end{equation}
+where \(\rho_\odot \simeq \SI{1.408}{g\,cm^{-3}}\). 
+
+\section{Propagation into Bayesian Inference}
+The derived \rhoStar serves as a critical prior in the transit modeling stage. It allows the pipeline to dynamically link the transit shape (specifically the duration) to the orbital semi-major axis via Kepler's Third Law. It is imperative that fallback estimates are flagged during the final scientific interpretation, as their inflated uncertainties can dominate the error budgets of the inferred planet radius and orbital geometry.
+
+\chapter{Bayesian Transit Model}
+
+\section{Observed-Flux Model}
+The primary analytical pathway represents the normalized photometric flux at time \(t_i\) as a combination of deterministic and stochastic components. The baseline equation is:
+\begin{equation}
+  F_{\mathrm{obs}}(t_i) = F_{\mathrm{tr}}(t_i;\boldsymbol{\theta}_{\mathrm{tr}}) + \mu + g(t_i) + \epsilon_i
+\end{equation}
+where \(F_{\mathrm{tr}}\) is the cumulative sum of limb-darkened planetary transits, \(\mu\) is a globally fitted mean-flux offset, \(g(t_i)\) is the correlated Gaussian Process (GP) variability, and \(\epsilon_i\) represents independent Gaussian measurement noise plus an inferred white-noise jitter term. In the pipeline code, the transit model specifically takes the form:
+\begin{equation}
+  F_{\mathrm{tr}}(t) = 1 + \mu + \sum_{k=1}^{N_{\mathrm{p}}} \Delta F_k(t)
+\end{equation}
+The GP prediction is subsequently added to obtain the complete model flux \(F_{\mathrm{model}} = F_{\mathrm{tr}} + g\). The transit light curves \(\Delta F_k(t)\) manifest as negative flux perturbations generated by the \code{exoplanet} architecture.
+
+\section{Orbital Geometry}
+Each candidate signal is assigned a strict Keplerian orbit defined by the period \Porb, transit epoch \tzero, impact parameter \(b\), stellar density \rhoStar, and radius ratio \(r=\Rp/\Rstar\). The default interpretation strictly assumes a circular transit geometry (\(e=0\)). For a circular orbit, Kepler's third law in stellar units dictates the scaled semi-major axis:
+\begin{equation}
+  \left(\frac{a}{\Rstar}\right)^3 = \frac{\rhoStar\,G\,\Porb^2}{3\pi} = 52.91572\,\rhoStar\,\Porb^2
+\end{equation}
+when \rhoStar is provided in \(\mathrm{g\,cm^{-3}}\) and \Porb in days. The geometric impact parameter relates approximately to the orbital inclination \(i\) by \(b = (a/\Rstar)\cos i\). The full geometric projection is evaluated rigorously via \code{xo.orbits.KeplerianOrbit} rather than relying solely on this approximation.
+
+\section{Limb-Darkening Parameterization}
+The stellar intensity across the disk is represented by a quadratic limb-darkening law:
+\begin{equation}
+  \frac{I(\mu)}{I(1)} = 1 - u_1(1-\mu) - u_2(1-\mu)^2, \qquad \mu = \cos\vartheta
+\end{equation}
+Directly sampling the coefficients \(u_1\) and \(u_2\) often produces unphysical combinations during Markov chain integration. To circumvent this, the model samples the bounded Kipping variables \(q_1, q_2 \sim \mathcal{U}(0,1)\) \cite{kipping2013} and transforms them dynamically:
+\begin{equation}
+  u_1 = 2\sqrt{q_1}\,q_2, \qquad u_2 = \sqrt{q_1}(1-2q_2)
+\end{equation}
+This pair of coefficients is shared globally across all planets within a single fit, as limb darkening is strictly a property of the host star.
+
+\section{Priors and HMC Initialization}
+The Bayesian framework relies on a suite of carefully defined prior distributions. The explicit priors implemented within the PyMC model are outlined in Table \ref{tab:priors}.
+
+\begin{longtable}{p{0.24\textwidth}p{0.31\textwidth}p{0.35\textwidth}}
+\caption{Bayesian priors in the implemented PyMC model.}\label{tab:priors}\\
+\toprule
+Quantity & Prior & Interpretation\\
+\midrule
+\(\Porb{}_{k}\) & \(\mathcal{N}(P_{\mathrm{det},k},(0.01P_{\mathrm{det},k})^2)\) & One-percent period refinement\\
+\(\tzero{}_{k}\) & \(\mathcal{N}(t_{0,\mathrm{det},k},0.1^2\,\mathrm{d}^2)\) & Timing refinement\\
+\(\log r_k\) & \(\mathcal{U}(\log0.001,\log0.5)\) & Radius-ratio bounds\\
+\(b_k\) & \(\mathcal{U}(0,1+r_k)\) & Transit geometry\\
+\(q_1,q_2\) & \(\mathcal{U}(0,1)\) & Kipping limb darkening\\
+\(\log\Tfourteen{}_{k}\) & \(\mathcal{U}(\log0.01,\log0.5)\) & Duration in days\\
+\(\log\sigma_{\mathrm{GP}}\) & \(\mathcal{N}(-3,2^2)\) & GP amplitude\\
+\(\log\rho_{\mathrm{GP}}\) & \(\mathcal{N}(\log10,0.75^2)\) & GP correlation timescale in days\\
+\(\mu\) & \(\mathcal{N}(0,0.01^2)\) & Mean-flux offset\\
+\(\log s\) & \(\mathcal{N}(-6,2^2)\) & White-noise jitter scale\\
+\bottomrule
+\end{longtable}
+
+Here \(s=\exp(\log s)\), \(\sigma_{\mathrm{GP}}=\exp(\log\sigma_{\mathrm{GP}})\), and \(\rho_{\mathrm{GP}}=\exp(\log\rho_{\mathrm{GP}})\). A uniform prior on a logarithm structurally acts as a log-uniform prior on the strictly positive physical parameter.
+
+\section{Stellar-Density Treatment and Duration}
+The default execution path samples the total transit duration \Tfourteen directly. This architecture prevents the transit duration from being artificially constrained by a singular stellar-density point estimate. For each planetary candidate \(k\), the parameterization is:
+\begin{align}
+  s_k &= \sin\left(\frac{\pi\Tfourteen{}_{k}}{\Porb{}_{k}}\right),\\
+  \left(\frac{a}{\Rstar}\right)_k &= \left[b_k^2 + \frac{(1+r_k)^2-b_k^2}{s_k^2}\right]^{1/2},\\
+  \rho_{\star,k} &= \frac{(a/\Rstar)_k^3}{52.91572\,\Porb{}_{k}^2},\\
+  \rhoStar &= \frac{1}{N_{\mathrm{p}}}\sum_k\rho_{\star,k}
+\end{align}
+To enforce consistency with observational constraints, a PyMC potential applies a Gaussian stellar-density penalty:
+\begin{equation}
+  \log p_{\rho} = \log\mathcal{N}(\rhoStar \mid \rho_{\star,\mathrm{cat}}, \sigma_{\rho,\mathrm{cat}})
+\end{equation}
+
+\section{Gaussian-Process Correlated Noise}
+The GP is marginalized jointly with the primary transit parameters. Its covariance matrix \(K\) is added directly to the diagonal observational variance:
+\begin{equation}
+  K_{ij} = K_{\mathrm{GP}}(t_i,t_j) + \delta_{ij}\left(\sigma_i^2+s^2\right)
+\end{equation}
+The implementation utilizes the \code{celerite2} Stochastically-driven Harmonic Oscillator (SHO) kernel \cite{celerite2_2020}. The power spectral density of this term is formally defined as:
+\begin{equation}
+  S(\omega) = \sqrt{\frac{2}{\pi}} \frac{S_0 \omega_0^4}{(\omega^2 - \omega_0^2)^2 + \omega_0^2 \omega^2 / Q^2}
+\end{equation}
+The quality factor is fixed at \(Q=1/\sqrt{2}\) to represent a critically damped oscillator. For a residual vector \(\boldsymbol{r}=\boldsymbol{F}-\boldsymbol{m}(\boldsymbol{\theta})\), the marginalized GP log-likelihood evaluates to:
+\begin{equation}
+  \log p(\boldsymbol{F}\mid\boldsymbol{\theta}) = -\frac{1}{2}\left[\boldsymbol{r}^{\mathsf T}K^{-1}\boldsymbol{r} + \log|K| + N\log(2\pi)\right]
+\end{equation}
+
+\section{Likelihood and Posterior}
+Let \(\boldsymbol{\theta}\) denote the complete set of fitted quantities. The unnormalized posterior probability density is:
+\begin{equation}
+  p(\boldsymbol{\theta}\mid\boldsymbol{F}) \propto p(\boldsymbol{F}\mid\boldsymbol{\theta}) p(\boldsymbol{\theta}) p_{\rho}(\boldsymbol{\theta})
+\end{equation}
+where the density factor is injected via the PyMC \code{Potential}. The model is rigorously sampled using NUTS, a Hamiltonian Monte Carlo derivative that dynamically adapts its integration trajectory to avoid random-walk inefficiencies. Initialization utilizes \code{adapt\_diag} and physically motivated starting values.
+
+\chapter{Multi-Planet Model Selection and the Exoplanet Framework}
+
+\section{The \code{exoplanet} Core Engine and Hamiltonian Monte Carlo}
+The extraction of planetary and orbital parameters from photometric time-series data using Bayesian inference requires the evaluation of the theoretical transit flux, $F_{\mathrm{tr}}(t)$, at every integration step. This process demands solving Kepler's equation, $M = E - e \sin E$, to map the mean anomaly $M$ to the eccentric anomaly $E$. Because Kepler's equation is transcendental, it cannot be solved algebraically and traditionally requires iterative numerical methods such as the Newton-Raphson algorithm. However, numerical root-finding disrupts the continuous automatic differentiation backends required for Hamiltonian Monte Carlo (HMC) methodologies.
+
+To resolve this computational bottleneck, the pipeline integrates the \code{exoplanet} and \code{exoplanet-core} software packages \cite{foremanmackey2021}. The \code{exoplanet} framework leverages custom C++ operations bound directly into the PyMC tensor graph. These operations provide exact, analytic solutions for Keplerian orbits and the corresponding transit light curves. Furthermore, the pipeline incorporates the analytic limb-darkening formalisms established by Agol et al. (2020) \cite{agol2020}, allowing for the instantaneous calculation of the geometric occultation area and its exact partial derivatives with respect to the radius ratio $r$ and the impact parameter $b$. 
+
+By providing mathematically exact gradients of the log-likelihood with respect to all continuous parameters, the \code{exoplanet} architecture allows the No-U-Turn Sampler (NUTS) to simulate the Hamiltonian dynamics of the system. This enables highly efficient exploration of the high-dimensional posterior manifold, entirely avoiding the inefficient random-walk behavior characteristic of traditional Metropolis-Hastings algorithms.
+
+\section{Candidate-Probability Gating Mechanism}
+When iterative algorithms like Transit Least Squares (TLS) identify multiple periodic signals within the residuals of a light curve, the inference stage must evaluate whether a secondary candidate warrants the immense computational expense of a joint multi-planet Bayesian fit. To filter out systematic noise artifacts and harmonic aliases, the pipeline implements a heuristic computational gate.
+
+For a newly detected candidate, the pipeline calculates an existence probability derived from its Signal Detection Efficiency (SDE):
+\begin{equation}
+  p_2 = \frac{1}{1 + \exp[-0.5(\mathrm{SDE}_2 - 7)]}
+\end{equation}
+The architecture mandates that a joint multi-planet fit is triggered exclusively if the candidate satisfies the threshold $p_2 > 0.75$. This sigmoid function acts purely as an automated sorting heuristic, ensuring that computational resources are allocated only to signals with high structural fidelity. If the candidate fails this gate, the system classifies the signal as ``Not Justified'' and reverts the model to a single-planet fit.
+
+\section{Bayesian Information Criterion (BIC) and Relative Evidence}
+For systems that successfully pass the multi-planet probability gate, the pipeline initiates a rigorous model selection protocol. To quantify whether the inclusion of additional planetary parameters is statistically justified over a simpler configuration, the pipeline computes the Bayesian Information Criterion (BIC) for both the single-planet and the $N_p$-planet models. The BIC applies a strict penalty for the addition of model parameters to prevent over-fitting:
+\begin{equation}
+  \mathrm{BIC} = k\ln N - 2\ln\mathcal{L}_{\max}
+\end{equation}
+Here, $N$ represents the total number of unique photometric cadences evaluated, $\mathcal{L}_{\max}$ is the maximum likelihood encountered during the posterior sampling, and $k$ is the total number of free parameters. The pipeline utilizes the parameter counting convention $k = 7 + 4N_{\mathrm{p}}$, representing seven baseline global parameters (e.g., mean flux offset, limb-darkening coefficients, and Gaussian Process hyperparameters) plus four specific kinematic parameters for each added planet.
+
+The relative evidence supporting the multi-planet architecture is quantified via the difference in the criterion:
+\begin{equation}
+  \Delta\mathrm{BIC} = \mathrm{BIC}_{N_p} - \mathrm{BIC}_{1}
+\end{equation}
+This difference is subsequently mapped to an evidence probability metric:
+\begin{equation}
+  p_{N} = \frac{1}{1 + \exp(\Delta\mathrm{BIC}/2)}
+\end{equation}
+A negative $\Delta\mathrm{BIC}$ heavily favors the multi-planet model. Based on the magnitude of $\Delta\mathrm{BIC}$, the pipeline assigns qualitative classification labels to secondary candidates, categorizing them systematically as ``Very Strong'', ``Strong'', ``Positive'', ``Weak'', or ``Not Justified''. The primary planet is uniformly designated as ``Confirmed'' upon retention.
+
+\chapter{Posterior-Derived Physical Parameters}
+
+\section{Posterior Summaries and Credible Intervals}
+Upon the successful convergence of the Markov Chain Monte Carlo (MCMC) simulations, the pipeline generates a posterior distribution for all fitted parameters $\boldsymbol{\theta}$. Because the parameter space is often characterized by non-Gaussian correlations—particularly between the radius ratio $r$ and the impact parameter $b$—the pipeline flattens the chains across all independent draws to derive aggregate statistics.
+
+For each parameter, the pipeline reports the median value as the primary point estimate. Uncertainty is quantified using the 16th and 84th percentiles of the distribution, which define a central 68\% credible interval. This interval corresponds to the standard $1\sigma$ deviation for Gaussian distributions but remains a robust quantile-based representation for the highly skewed or multi-modal posterior topologies frequently encountered in transit light-curve modeling.
+
+\section{Derivation of Orbital Geometry}
+The Bayesian inference routine samples the stellar density \rhoStar and the period \Porb as primary variables. From these, the scaled semi-major axis $a/\Rstar$ is derived for every individual MCMC draw, providing a posterior distribution for the orbital distance. This transformation is governed by Kepler's Third Law in stellar units:
+\begin{equation}
+  \frac{a}{\Rstar} = \left( \frac{G \rhoStar \Porb^2}{3\pi} \right)^{1/3} = \left( 52.91572\,\rhoStar\,\Porb^2 \right)^{1/3}
+\end{equation}
+where \rhoStar is expressed in \(\mathrm{g\,cm^{-3}}\) and \Porb in days. The transit duration $T_{14}$—defined as the total interval from first contact (ingress) to fourth contact (egress)—is analytically derived from the fitted geometry:
+\begin{equation}
+  \Tfourteen = \frac{\Porb}{\pi} \arcsin\left[ \frac{\Rstar}{a} \frac{\sqrt{(1 + r)^2 - b^2}}{\sin i} \right]
+\end{equation}
+The pipeline implementation uses the relationship $\sin i \approx b / (a/\Rstar)$ to evaluate this equation. Critically, to maintain physical validity during the post-processing phase, all input arguments within the square root are clipped to the domain $[0, \infty)$, and the resulting arcsine inputs are constrained to $[-1, 1]$ to avoid catastrophic numerical failures for unphysical chain draws.
+
+\section{Physical Radius and Semi-Major Axis}
+The conversion of the dimensionless radius ratio $r$ and the scaled semi-major axis $a/\Rstar$ into physical SI units requires the inclusion of the stellar radius \Rstar. The pipeline propagates the uncertainty in \Rstar (and \Teff) via a Monte Carlo approach. For each draw of the posterior, the pipeline draws a random sample from the stellar parameter probability distribution (derived from the catalog integration stage). The physical planetary radius in Earth radii is computed as:
+\begin{equation}
+  \frac{\Rp}{\Rearth} = r \left( \frac{\Rstar}{\Rsun} \right) \left( \frac{\Rsun}{\Rearth} \right) \approx 109.203 \, r \left( \frac{\Rstar}{\Rsun} \right)
+\end{equation}
+Similarly, the semi-major axis is transformed into Astronomical Units (AU) by normalizing against the solar radius:
+\begin{equation}
+  \frac{a}{\mathrm{AU}} = \frac{(a/\Rstar) (\Rstar/\Rsun)}{215.032}
+\end{equation}
+This method of uncertainty propagation ensures that the final credible intervals for \Rp and $a$ are not only dependent on the light-curve fit but also appropriately account for the systematic uncertainties intrinsic to the stellar catalogs utilized.
+
+\section{Equilibrium Temperature Estimation}
+The pipeline computes the planetary equilibrium temperature ($T_{\mathrm{eq}}$), which provides a standardized metric for comparing the incident irradiation across diverse exoplanetary systems. This derivation assumes that the planet is a perfect blackbody in radiative equilibrium with the host star. 
+
+Under the specific assumption of zero Bond albedo ($A=0$) and complete global heat redistribution—where energy absorbed on the dayside is perfectly spread across the entire planetary surface—the temperature is defined by:
+\begin{equation}
+  T_{\mathrm{eq}} = \Teff \left( \frac{\Rstar}{2a} \right)^{1/2} = \Teff \left( \frac{1}{4(a/\Rstar)^2} \right)^{1/4}
+\end{equation}
+It is essential to note that this is a first-order physical estimate, not a comprehensive model of the planetary atmospheric physics. Actual temperatures may deviate significantly based on the planetary Bond albedo, the efficiency of atmospheric heat transport between the dayside and nightside, and the presence of greenhouse gas-induced thermal blanketing. These reported values are intended for comparative classification rather than as direct measurements of the planetary surface climate.
+
+\chapter{Posterior-Derived Physical Parameters}
+
+\section{Posterior Summaries and Credible Intervals}
+Upon the successful convergence of the Markov Chain Monte Carlo (MCMC) simulations, the pipeline generates a posterior distribution for all fitted parameters $\boldsymbol{\theta}$. Because the parameter space is often characterized by non-Gaussian correlations—particularly between the radius ratio $r$ and the impact parameter $b$—the pipeline flattens the chains across all independent draws to derive aggregate statistics.
+
+For each parameter, the pipeline reports the median value as the primary point estimate. Uncertainty is quantified using the 16th and 84th percentiles of the distribution, which define a central 68\% credible interval. This interval corresponds to the standard $1\sigma$ deviation for Gaussian distributions but remains a robust quantile-based representation for the highly skewed or multi-modal posterior topologies frequently encountered in transit light-curve modeling.
+
+\section{Derivation of Orbital Geometry}
+The Bayesian inference routine samples the stellar density \rhoStar and the period \Porb as primary variables. From these, the scaled semi-major axis $a/\Rstar$ is derived for every individual MCMC draw, providing a posterior distribution for the orbital distance. This transformation is governed by Kepler's Third Law in stellar units:
+\begin{equation}
+  \frac{a}{\Rstar} = \left( \frac{G \rhoStar \Porb^2}{3\pi} \right)^{1/3} = \left( 52.91572\,\rhoStar\,\Porb^2 \right)^{1/3}
+\end{equation}
+where \rhoStar is expressed in \(\mathrm{g\,cm^{-3}}\) and \Porb in days. The transit duration $T_{14}$—defined as the total interval from first contact (ingress) to fourth contact (egress)—is analytically derived from the fitted geometry:
+\begin{equation}
+  \Tfourteen = \frac{\Porb}{\pi} \arcsin\left[ \frac{\Rstar}{a} \frac{\sqrt{(1 + r)^2 - b^2}}{\sin i} \right]
+\end{equation}
+The pipeline implementation uses the relationship $\sin i \approx b / (a/\Rstar)$ to evaluate this equation. Critically, to maintain physical validity during the post-processing phase, all input arguments within the square root are clipped to the domain $[0, \infty)$, and the resulting arcsine inputs are constrained to $[-1, 1]$ to avoid catastrophic numerical failures for unphysical chain draws.
+
+\section{Physical Radius and Semi-Major Axis}
+The conversion of the dimensionless radius ratio $r$ and the scaled semi-major axis $a/\Rstar$ into physical SI units requires the inclusion of the stellar radius \Rstar. The pipeline propagates the uncertainty in \Rstar (and \Teff) via a Monte Carlo approach. For each draw of the posterior, the pipeline draws a random sample from the stellar parameter probability distribution (derived from the catalog integration stage). The physical planetary radius in Earth radii is computed as:
+\begin{equation}
+  \frac{\Rp}{\Rearth} = r \left( \frac{\Rstar}{\Rsun} \right) \left( \frac{\Rsun}{\Rearth} \right) \approx 109.203 \, r \left( \frac{\Rstar}{\Rsun} \right)
+\end{equation}
+Similarly, the semi-major axis is transformed into Astronomical Units (AU) by normalizing against the solar radius:
+\begin{equation}
+  \frac{a}{\mathrm{AU}} = \frac{(a/\Rstar) (\Rstar/\Rsun)}{215.032}
+\end{equation}
+This method of uncertainty propagation ensures that the final credible intervals for \Rp and $a$ are not only dependent on the light-curve fit but also appropriately account for the systematic uncertainties intrinsic to the stellar catalogs utilized.
+
+\section{Equilibrium Temperature Estimation}
+The pipeline computes the planetary equilibrium temperature ($T_{\mathrm{eq}}$), which provides a standardized metric for comparing the incident irradiation across diverse exoplanetary systems. This derivation assumes that the planet is a perfect blackbody in radiative equilibrium with the host star. 
+
+Under the specific assumption of zero Bond albedo ($A=0$) and complete global heat redistribution—where energy absorbed on the dayside is perfectly spread across the entire planetary surface—the temperature is defined by:
+\begin{equation}
+  T_{\mathrm{eq}} = \Teff \left( \frac{\Rstar}{2a} \right)^{1/2} = \Teff \left( \frac{1}{4(a/\Rstar)^2} \right)^{1/4}
+\end{equation}
+It is essential to note that this is a first-order physical estimate, not a comprehensive model of the planetary atmospheric physics. Actual temperatures may deviate significantly based on the planetary Bond albedo, the efficiency of atmospheric heat transport between the dayside and nightside, and the presence of greenhouse gas-induced thermal blanketing. These reported values are intended for comparative classification rather than as direct measurements of the planetary surface climate.
+
+\chapter{Validation and Diagnostics}
+
+\section{Sampling Convergence Audit}
+The pipeline uses the \code{ArviZ} library to audit the geometric health of the MCMC sampling. A model is only marked as fully converged if it satisfies three stringent diagnostic criteria, which ensure that the Hamiltonian integrator has adequately explored the posterior manifold without encountering divergent regions or failing to mix across independent chains.
+
+\subsection{Rank-Normalized Split \(\hat{R}\) Statistic}
+To verify chain mixing, the pipeline calculates the rank-normalized split Gelman-Rubin statistic, denoted as \(\hat{R}\). This statistic compares the variance within individual chains to the variance between chains. The pipeline requires \(\hat{R} \leq 1.01\) for all fitted parameters. A value exceeding this threshold indicates that the chains have not sufficiently converged to a single stationary distribution, necessitating further tuning or an increase in the number of draws.
+
+\subsection{Effective Sample Size (ESS)}
+The total number of samples generated by MCMC does not represent the number of independent draws, as successive samples are inherently correlated by the Hamiltonian trajectory. The pipeline computes the Bulk Effective Sample Size (ESS) to estimate the equivalent number of independent draws. A minimum Bulk ESS of 400 is required. If the ESS is too low, the posterior credible intervals may be artificially narrowed, providing a false sense of precision regarding the planetary radius and orbital parameters.
+
+\subsection{Divergence Diagnostics}
+Divergences in the NUTS sampler occur when the Hamiltonian integrator encounters regions of extreme posterior curvature or sharp gradients—often signifying that the integration step size is too large for the local geometry. The pipeline mandates that the number of divergent transitions must be exactly zero. Any non-zero divergence count triggers an automatic diagnostic alert, as it indicates the integrator failed to conserve the Hamiltonian energy, rendering the resulting posterior samples biased or unreliable.
+
+\section{Photometric and Posterior Residual Analysis}
+Beyond sampling metrics, the validity of the transit fit is assessed through a comprehensive examination of the residuals, $\boldsymbol{r} = \boldsymbol{F}_{\mathrm{obs}} - \boldsymbol{F}_{\mathrm{model}}$.
+
+\subsection{Residual Autocorrelation}
+If the Gaussian Process (GP) successfully models the correlated stellar variability, the residuals should exhibit white-noise characteristics. The pipeline computes the autocorrelation function (ACF) of the residuals. Persistent, non-zero autocorrelation at short lags suggests that either the SHO GP kernel parameters have failed to capture the noise structure or that periodic systematic effects (e.g., stellar rotation) remain unmodeled.
+
+\subsection{Posterior Predictive Checks (PPC)}
+The pipeline generates posterior predictive distributions by drawing samples from the posterior and simulating "synthetic" light curves. By comparing these synthetic models against the observed data, the pipeline visually confirms that the model captures the full variance of the observations. Coherent, phase-dependent residuals in the PPC plots serve as a diagnostic indicating model misspecification—such as an incorrect limb-darkening law or an overlooked multi-planet signal.
+
+\section{Vetting for False Positives}
+A successful transit fit is a necessary, but not sufficient, condition to validate an exoplanetary discovery. The pipeline includes a diagnostic vetting procedure to flag potential false-positive scenarios before the results are accepted:
+\begin{enumerate}
+    \item \textbf{Odd--Even Depth Consistency:} The pipeline performs a t-test comparison between the depths of even-numbered and odd-numbered transits. A significant depth difference (\(>3\sigma\)) suggests that the signal may originate from an eclipsing binary system rather than a planetary transit.
+    \item \textbf{Stellar Density Check:} As derived in Chapter 4, the density inferred from the transit geometry (\rhoStar) is compared against the catalog-derived stellar density. If \(\rhoStar (\mathrm{transit}) \ll \rhoStar (\mathrm{catalog})\), the system is highly likely to be a blend or a grazing binary, as the transit duration is too long to be physically consistent with a planet transiting a main-sequence star.
+    \item \textbf{Phase-Folded Signal Dilution:} The pipeline inspects the out-of-transit flux for secondary eclipses. The presence of a secondary eclipse of comparable depth to the primary transit is a hallmark of an eclipsing binary system rather than an exoplanet.
+\end{enumerate}
+Failure to pass these vetting checks marks the analysis as "Systematic-Dominated," and the inferred physical parameters are subsequently suppressed to prevent inclusion in scientific catalogs.
+
+\chapter{Reproducibility and Outputs}
+
+\section{Environmental and Version Control Governance}
+Scientific reproducibility is predicated on the ability to replicate the software environment in which an analysis was originally performed. The pipeline is designed to be fully version-controlled, with dependencies managed via a strict `pyproject.toml` configuration that specifies minimum version bounds for scientific libraries, including \code{lightkurve}, \code{PyMC}, and \code{celerite2} \cite{tess_exoplanet_pipeline.zip:pyproject.toml}.
+
+To guarantee reproducibility, a scientific run record must capture the following metadata:
+\begin{enumerate}
+    \item \textbf{Software Provenance:} The specific git commit hash of the \code{tess\_pipeline} codebase and the installed versions of all core scientific dependencies.
+    \item \textbf{Execution Environment:} The Python interpreter version and the configuration of the virtual environment (e.g., \code{conda} or \code{venv} environment files).
+    \item \textbf{Configuration State:} A serialized dump of the TOML configuration file or the dictionary of environment variables used to override default pipeline settings.
+    \item \textbf{Deterministic Seeding:} When the analysis includes stochastic elements (such as the NUTS sampler), the pipeline records the global random number generator seed, allowing for the bit-wise reproduction of the MCMC posterior traces.
+\end{enumerate}
+
+\section{Output Product Hierarchy}
+The \code{save()} method facilitates the automated archiving of all analytical products. The pipeline organizes these files into a hierarchical directory structure rooted in a target-specific directory (e.g., \code{output/TIC 261136679/}). The structure is designed to separate human-readable diagnostic plots from machine-readable data products.
+
+\subsection{Data Products}
+\begin{itemize}
+    \item \textbf{NetCDF Posteriors:} The core analytical record. These files utilize the ArviZ format to store the full NUTS posterior traces, likelihood evaluations, and the GP model prediction arrays. These are the authoritative sources for reanalysis.
+    \item \textbf{JSON/CSV Records:} Lightweight summaries of the inferred planetary parameters, containing the medians and credible intervals for \Porb, \tzero, \(r\), and \(b\), alongside stellar provenance metadata (e.g., the specific Gaia DR3 or SIMBAD references used).
+    \item \textbf{Log Files:} Timestamped records capturing the stdout and stderr streams, which are essential for debugging non-convergent chains or identifying network-related timeouts during catalog queries.
+\end{itemize}
+
+\subsection{Diagnostic Visualizations}
+The visualization suite generates several standard figures, each saved in both high-resolution PNG and vector-based PDF formats:
+\begin{itemize}
+    \item \textbf{Raw and Flattened Light Curves:} Documentation of the preprocessing stages.
+    \item \textbf{Periodogram Diagnostics:} Plots of the TLS/BLS power spectrum, visually indicating the significance of the detection.
+    \item \textbf{Bayesian Fit Curves:} The raw photometric data overlaid with the optimized transit model and the integrated GP variability.
+    \item \textbf{Posterior Corner Plots:} Multidimensional probability density plots visualizing the correlations (or lack thereof) between parameters like the radius ratio \(r\) and the impact parameter \(b\).
+    \item \textbf{Trace Plots:} Visual inspection of the MCMC chains to ensure stable mixing and non-drift behaviour across all sampling iterations.
+\end{itemize}
+
+\section{Implementation Module Map}
+The software architecture is modularized to ensure that the pipeline remains maintainable and extensible. The following table maps the pipeline components to their respective responsibilities.
+
+\begin{longtable}{p{0.35\textwidth}p{0.52\textwidth}}
+\caption{Module mapping within the \code{tess\_pipeline} package.}\label{tab:files}\\
+\toprule
+Component & Primary Responsibility\\
+\midrule
+\code{analysis/session.py} & Orchestration of staged analytical flow \\
+\code{analysis/stages/} & Logic for individual stages (Target, LightCurve, Period, Stellar, Inference) \\
+\code{data/download.py} & MAST/MAST API communication and FITS ingestion \\
+\code{data/preprocess.py} & Vectorized NaN filtering, sigma-clipping, and flattening \\
+\code{transit/detection.py} & TLS/BLS search engine and candidate vetting \\
+\code{catalogs/stellar.py} & Catalog merging and density fallback math \\
+\code{inference/bayesian.py} & PyMC model construction and NUTS sampling harness \\
+\code{inference/gp.py} & GP construction (SHO kernel, white noise jitter) \\
+\code{transit/parameters.py} & Posterior derivation logic and physical conversions \\
+\code{visualization/} & Matplotlib figure generation and rendering \\
+\bottomrule
+\end{longtable}
+
+This modularity allows researchers to swap individual components—such as replacing the limb-darkening law or the noise kernel—without modifying the overarching Bayesian inference architecture.
+
+% =============================================================================
+% Bibliography
+% =============================================================================
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+
+\end{document}
