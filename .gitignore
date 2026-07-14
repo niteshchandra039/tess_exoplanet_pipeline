@@ -74,3 +74,9 @@ logs/*
 
 # .fits files anywhere 
 *.fits
+
+# output files anywhere
+output/*
+output_*/*
+output_*/*/*
+output_bayesian_sector_all_500_2/*

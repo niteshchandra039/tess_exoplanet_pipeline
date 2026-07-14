@@ -1,0 +1,710 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+% -----------------------------------------------------------------------------
+% Transit-fitting analysis report for the TESS exoplanet pipeline
+% -----------------------------------------------------------------------------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{fancyhdr}
+\usepackage{caption}
+
+\hypersetup{colorlinks=true,linkcolor=blue!55!black,citecolor=green!45!black,urlcolor=blue!55!black}
+\newcommand{\SI}[2]{\ensuremath{#1\,\mathrm{#2}}}
+\newcommand{\um}[1]{#1}
+\setlist{itemsep=2pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{TESS transit-fitting pipeline}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\small Reproducible technical report}
+
+\newcommand{\Msun}{\ensuremath{M_{\odot}}}
+\newcommand{\Rsun}{\ensuremath{R_{\odot}}}
+\newcommand{\Rearth}{\ensuremath{R_{\oplus}}}
+\newcommand{\Rstar}{\ensuremath{R_{\star}}}
+\newcommand{\Mstar}{\ensuremath{M_{\star}}}
+\newcommand{\Teff}{\ensuremath{T_{\mathrm{eff}}}}
+\newcommand{\rhoStar}{\ensuremath{\rho_{\star}}}
+\newcommand{\Rp}{\ensuremath{R_{\mathrm{p}}}}
+\newcommand{\Porb}{\ensuremath{P}}
+\newcommand{\Tfourteen}{\ensuremath{T_{14}}}
+\newcommand{\tzero}{\ensuremath{t_{0}}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,columns=fullflexible,showstringspaces=false}
+
+\title{\textbf{Transit-Fitting Analysis Pipeline}\\[0.5em]
+\large A detailed technical report for the TESS exoplanet-modelling workflow}
+\author{TESS Exoplanet Pipeline}\date{15 July 2026}
+
+\begin{document}
+\maketitle
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\chapter*{Executive summary}
+\addcontentsline{toc}{chapter}{Executive summary}
+This report documents the complete transit-fitting workflow implemented in the
+\code{tess\_pipeline} package. The workflow starts with a TIC identifier or a
+local TESS FITS light curve and ends with posterior distributions for transit
+parameters, derived planetary properties, convergence diagnostics, plots, and
+machine-readable results. The primary inference path is a joint PyMC--
+\code{exoplanet} model sampled with the No-U-Turn Sampler (NUTS). A Gaussian
+process (GP) accounts for time-correlated stellar and instrumental variability,
+while the transit signal is generated from a Keplerian orbit and a quadratic
+limb-darkened light-curve model.
+
+The analysis is deliberately staged. Archive information and period searches
+provide initial timing information; TESS photometry supplies the transit shape;
+Gaia/TIC/SIMBAD information supplies stellar constraints; and the final
+Bayesian model propagates uncertainty jointly rather than treating a point
+estimate as exact. Unless explicitly overridden, the documented defaults are a
+TESS SPOC two-minute cadence, TLS period detection, a four-chain NUTS run with
+1500 posterior draws and 1000 tuning draws per chain, target acceptance 0.95,
+and a stochastically-driven harmonic oscillator (SHO) GP kernel.
+
+\textbf{Important scope.} This document describes the implemented model and its
+assumptions, including implementation choices that should not be interpreted as
+universal astronomical standards. In particular, the current code uses a
+single fitted flux offset for the Bayesian light curve even though the prior
+helper is written to support multiple sectors, and the reported BIC parameter
+count follows the project's fixed convention. These details are recorded for
+reproducibility.
+
+\chapter{Scientific objective and data model}
+\section{Objective}
+The objective is to determine whether periodic flux decreases in TESS
+photometry are consistent with one or more transiting planets and, conditional
+on that interpretation, estimate
+\begin{itemize}
+  \item orbital period \Porb and reference transit time \tzero,
+  \item radius ratio \(r=\Rp/\Rstar\), impact parameter \(b\), and duration \Tfourteen,
+  \item stellar density \rhoStar and orbital scale \(a/\Rstar\),
+  \item physical planet radius, semi-major axis, and equilibrium temperature,
+  \item uncertainty intervals, residual structure, and sampling reliability.
+\end{itemize}
+The observable is a time series \(\{t_i,F_i,\sigma_i\}_{i=1}^{N}\), where
+\(t_i\) is normally BTJD, \(F_i\) is normalized relative flux, and \(\sigma_i\)
+is the reported per-cadence uncertainty. The likelihood uses the original
+uncertainty when available and adds an inferred white-noise jitter term.
+
+\section{Entry points and execution modes}
+A complete run is equivalent to:
+\begin{lstlisting}
+analysis = TESSAnalysis("TIC 307210830", inference=True)
+analysis.resolve_target()
+analysis.lookup_archive_period()
+analysis.load_lightcurves()
+analysis.preprocess()
+analysis.search_period()
+analysis.query_gaia()
+analysis.characterize_star()
+analysis.query_sdss()
+analysis.fit_transit()
+analysis.derive_planet_parameters()
+analysis.check_convergence()
+analysis.generate_figures()
+analysis.save("output/")
+\end{lstlisting}
+The same stages are executed by \code{analysis.run()}. The inference backend
+can be \code{exoplanet} (the primary Bayesian path), \code{batman\_only} (a
+fast analytic fit without MCMC), or \code{phoebe} (an advanced binary/star-
+planet modelling path). This report concentrates on the \code{exoplanet}
+backend, while documenting the alternatives where relevant.
+
+\section{Default configuration}
+\begin{longtable}{p{0.36\textwidth}p{0.18\textwidth}p{0.36\textwidth}}
+\caption{Principal defaults used by the pipeline.}\label{tab:defaults}\\
+\toprule
+Parameter & Default & Meaning\\
+\midrule
+\code{author} & SPOC & TESS light-curve product author\\
+\code{cadence} & 120 s & Two-minute short cadence\\
+\code{search\_method} & TLS & Transit Least Squares\\
+\code{period\_min,max} & 0.5, 100 d & Broad period-search interval\\
+\code{max\_planets} & 1 & Maximum blind-search candidates\\
+\code{sigma\_clip\_lower,upper} & 20, 5 & Asymmetric outlier thresholds\\
+\code{flatten\_window\_length} & 401 & Savitzky--Golay window in cadences\\
+\code{flatten\_polyorder} & 3 & Polynomial order for flattening\\
+\code{flatten\_break\_tolerance} & 5 & Gap tolerance in cadences\\
+\code{chains} & 4 & Independent MCMC chains\\
+\code{draws} & 1500 & Retained draws per chain\\
+\code{tune} & 1000 & Adaptation/tuning draws per chain\\
+\code{target\_accept} & 0.95 & NUTS target acceptance probability\\
+\code{gp\_kernel} & SHO & Correlated-noise covariance kernel\\
+\bottomrule
+\end{longtable}
+All values can be changed through explicit constructor arguments, a TOML
+configuration file, or \code{TESS\_PIPELINE\_*} environment variables. Explicit
+arguments have highest priority.
+
+\chapter{End-to-end pipeline}
+\section{Target resolution}
+The target stage normalizes a TIC identifier supplied as an integer, ``TIC
+123'', or ``TIC123''. In download mode it resolves the TIC to a target record
+and sky coordinates (right ascension and declination). In FITS mode, the
+identifier and coordinates may be read from FITS headers. The resolved target
+is retained in the results metadata so that every catalogue query and output
+can be traced to the same object.
+
+\section{Archive information and period initialization}
+The pipeline optionally queries the NASA Exoplanet Archive. A user-supplied
+period override takes precedence over the archive. If archive periods exist,
+each is refined in a narrow interval around the literature value. If no archive
+period is available, the search covers the configured interval.
+
+The archive is used as initialization and provenance, not as a replacement for
+photometric fitting. The final period has a continuous prior with a one-percent
+width around each supplied candidate unless the model is explicitly configured
+to fix it. The epoch prior is centered on the archive/search epoch with a
+standard deviation of 
+um{0.1} day.
+
+\section{TESS light-curve acquisition}
+The default product is a SPOC light curve obtained through \code{lightkurve}
+from MAST. The user may instead provide one or more local FITS files. Sectors
+are recorded after loading, and the raw sectors are retained for diagnostic
+plots. The expected photometric product is PDCSAP-like relative flux, although
+the implementation accepts a compatible \code{LightCurve} object.
+
+The following assumptions apply at this stage:
+\begin{enumerate}
+  \item time values are comparable across sectors after lightkurve loading;
+  \item quality flags have been handled by the selected lightkurve product and
+        its quality bitmask;
+  \item the target is sufficiently isolated that the extracted aperture flux is
+        a useful proxy for the target flux; and
+  \item flux uncertainties are either supplied by the light curve or replaced
+        by a conservative default scale of \(10^{-3}\) in the Bayesian routine.
+\end{enumerate}
+
+\section{Preprocessing and normalization}
+Preprocessing is applied per sector before stitching:
+\begin{enumerate}
+  \item remove NaN cadences;
+  \item construct a transit mask if \Porb and \tzero are available;
+  \item sigma-clip only non-transit points, protecting candidate transits;
+  \item stitch the cleaned sectors;
+  \item flatten the stitched curve with a Savitzky--Golay filter;
+  \item remove NaNs and perform a final outlier pass.
+\end{enumerate}
+For a time \(t\), phase is defined by
+\begin{equation}
+  \phi(t)=\left[\frac{t-\tzero}{\Porb}\right]_{\mathrm{wrapped}},
+  \qquad -0.5\leq \phi < 0.5.
+\end{equation}
+The default protected region is \(|\phi|<0.15/\Porb\), equivalent to a
+window of \SI{0.15}{day} in time around each predicted transit. This is a
+protection mask, not a measurement of the final transit duration.
+
+Outliers are removed with lower and upper thresholds of 20 and 5 standard
+deviations, respectively. The asymmetric choice is intentional: it is more
+aggressive for positive excursions than for negative transit-like excursions.
+The default flattening window has 401 two-minute cadences, approximately
+\SI{13.4}{hour}. The transit mask is passed to the flattening operation so that
+the first-pass trend is not trained on the signal being measured. The resulting
+curve is normalized near unit flux; residual correlated variability is left for
+the GP in the final fit.
+
+\section{Period and transit detection}
+\subsection{Transit Least Squares and Box Least Squares}
+TLS searches a grid of periods and transit durations using limb-darkened transit
+shapes. It is the preferred detector for small, non-box-shaped signals. BLS is
+available as an alternative or cross-check and uses a box-shaped template. The
+canonical detection record contains \Porb, \tzero, \Tfourteen, depth, method,
+SDE or SNR, false-alarm probability (FAP), confidence, and a search-based
+existence probability.
+
+For a TLS detection with signal detection efficiency \(\mathrm{SDE}\), the
+implemented trial-corrected approximation is
+\begin{equation}
+  \mathrm{FAP}=1-\left(1-e^{-\mathrm{SDE}}\right)^{n_{\mathrm{trials}}},
+  \qquad P_{\mathrm{search}}=1-\mathrm{FAP}.
+\end{equation}
+The number of trials is the number of TLS periods when available, otherwise
+1000. Confidence labels are ``High'' for FAP \(\leq 0.05\), ``Moderate'' for
+\(0.05<\mathrm{FAP}\leq0.50\), and ``Low'' above 0.50. These are screening
+labels and are not a formal Bayesian model probability.
+
+\subsection{Multiple candidates and aliases}
+Blind multi-planet searches are iterative. After a candidate is found, cadences
+within \(0.75\Tfourteen\) of each predicted transit are masked and the residual
+light curve is searched again. A broad search may downsample a very large curve
+to ten-minute cadence. The allowed period maximum is capped when possible so
+that at least three transits fit in the time baseline. A coarse SDE/SNR below
+4 stops the search; additional candidates must pass a refined SDE/SNR threshold
+of 6.
+
+To reduce harmonic confusion, the code refines the initial period near
+\(fP\), where \(f\in\{1/3,1/2,1,2,3\}\), and retains the candidate with the
+largest refined SDE/SNR. This procedure is a practical alias-resolution rule;
+it does not prove that the selected period is dynamically unique.
+
+\section{Stellar characterization}
+Stellar information enters the transit model primarily through the stellar
+density prior and is also required to convert a radius ratio into a physical
+planet radius. Gaia DR3 is queried first for the target position. Missing
+quantities are supplemented by a local NASA TOI archive and then by the MAST
+TIC catalogue. The characterization module additionally queries VizieR TIC
+v8.2 and SIMBAD and merges values with the following parameter-level priority:
+\begin{enumerate}
+  \item VizieR TIC v8.2;
+  \item Gaia DR3;
+  \item SIMBAD.
+\end{enumerate}
+The special priority for metallicity is SIMBAD spectroscopic [Fe/H], followed
+by VizieR and Gaia. Provenance, reference, units, and reported uncertainties
+are retained in the results.
+
+The stellar quantities are \(\Rstar\), \(\Mstar\), \Teff, \(\log g\), [Fe/H],
+parallax, luminosity, and \rhoStar. If radius is unavailable but luminosity and
+\Teff are available, it is estimated from the Stefan--Boltzmann relation:
+\begin{equation}
+  \frac{\Rstar}{\Rsun}=\left(\frac{L_\star}{L_\odot}\right)^{1/2}
+  \left(\frac{T_{\odot}}{\Teff}\right)^2.
+\end{equation}
+As a last resort the implementation uses a main-sequence \Teff scaling,
+\(\Rstar/\Rsun=(\Teff/5772\,\mathrm{K})^2\), and assigns a 30-percent radius
+uncertainty. If mass is missing, the code uses the approximate scaling
+\begin{equation}
+  \frac{\Mstar}{\Msun}=
+  \left(\frac{\Teff}{5777\,\mathrm{K}}\right)^{1.5}
+  \left(\frac{\Rstar}{\Rsun}\right)^{0.1}.
+\end{equation}
+The density is calculated from mass and radius as
+\begin{equation}
+  \rhoStar=\rho_\odot\frac{\Mstar/\Msun}{(\Rstar/\Rsun)^3},
+  \qquad \rho_\odot\simeq\SI{1.408}{g\,cm^{-3}}.
+\end{equation}
+Fallback estimates must be flagged in scientific interpretation because their
+uncertainty can dominate the planet-radius and orbital-geometry inference.
+
+\chapter{Bayesian transit model}
+\section{Observed-flux model}
+The primary model represents the normalized flux at time \(t_i\) as
+\begin{equation}
+  F_{\mathrm{obs}}(t_i)=F_{\mathrm{tr}}(t_i;\boldsymbol{\theta}_{\mathrm{tr}})
+  + \mu + g(t_i)+\epsilon_i,
+\end{equation}
+where \(F_{\mathrm{tr}}\) is the sum of limb-darkened planet transits, \(\mu\)
+is a fitted mean-flux offset, \(g(t)\) is correlated GP variability, and
+\(\epsilon_i\) is independent Gaussian measurement noise plus jitter. In the
+code, the transit model is represented as
+\begin{equation}
+  F_{\mathrm{tr}}(t)=1+\mu+\sum_{k=1}^{N_{\mathrm{p}}}\Delta F_k(t),
+\end{equation}
+and the GP prediction is added to obtain \(F_{\mathrm{model}}
+=F_{\mathrm{tr}}+g\). The transit light curves \(\Delta F_k\) are negative
+flux perturbations generated by \code{exoplanet}.
+
+\section{Orbital geometry}
+Each candidate is assigned a Keplerian orbit with period \Porb, transit epoch
+\tzero, impact parameter \(b\), stellar density \rhoStar, and radius ratio
+\(r=\Rp/\Rstar\). Eccentricity is not sampled explicitly in this implementation;
+the default interpretation is a circular transit geometry. Consequently,
+transit-derived density should be interpreted as a circular-orbit density unless
+an eccentricity model is added.
+
+For a circular orbit, Kepler's third law in stellar units gives
+\begin{equation}
+  \left(\frac{a}{\Rstar}\right)^3
+  =\frac{\rhoStar\,G\,\Porb^2}{3\pi}
+  =52.91572\,\rhoStar\,\Porb^2,
+\end{equation}
+when \rhoStar is in \(\mathrm{g\,cm^{-3}}\) and \Porb is in days. The impact parameter
+is related approximately to inclination by \(b=(a/\Rstar)\cos i\) for a
+circular orbit. The full orbital geometry is evaluated by
+\code{xo.orbits.KeplerianOrbit}, rather than by this approximation alone.
+
+\section{Limb darkening}
+The stellar intensity is represented by a quadratic limb-darkening law,
+\begin{equation}
+  \frac{I(\mu)}{I(1)}=1-u_1(1-\mu)-u_2(1-\mu)^2,
+  \qquad \mu=\cos\vartheta.
+\end{equation}
+Directly sampling \(u_1,u_2\) can produce unphysical combinations. The model
+therefore samples the Kipping variables \(q_1,q_2\sim\mathcal{U}(0,1)\) and
+transforms them as
+\begin{equation}
+  u_1=2\sqrt{q_1}\,q_2,
+  \qquad
+  u_2=\sqrt{q_1}(1-2q_2).
+\end{equation}
+The same pair is shared by all planets in one fit, because limb darkening is a
+property of the host star and not of an individual planet.
+
+\section{Priors}
+The prior distributions actually used by the primary model are listed in
+\cref{tab:priors}. A uniform prior on a logarithm is a log-uniform prior on the
+positive physical parameter.
+\begin{longtable}{p{0.24\textwidth}p{0.31\textwidth}p{0.35\textwidth}}
+\caption{Bayesian priors in the implemented PyMC model.}\label{tab:priors}\\
+\toprule
+Quantity & Prior & Interpretation\\
+\midrule
+\(\Porb{}_{k}\) & \(\mathcal{N}(P_{\mathrm{det},k},(0.01P_{\mathrm{det},k})^2)\) & One-percent period refinement\\
+\(\tzero{}_{k}\) & \(\mathcal{N}(t_{0,\mathrm{det},k},0.1^2\,\mathrm{d}^2)\) & Timing refinement\\
+\(\log r_k\) & \(\mathcal{U}(\log0.001,\log0.5)\) & Radius-ratio bounds\\
+\(b_k\) & \(\mathcal{U}(0,1+r_k)\) & Transit geometry\\
+\(q_1,q_2\) & \(\mathcal{U}(0,1)\) & Kipping limb darkening\\
+\(\log\Tfourteen{}_{k}\) & \(\mathcal{U}(\log0.01,\log0.5)\) & Duration in days, if fitted\\
+\(\log\sigma_{\mathrm{GP}}\) & \(\mathcal{N}(-3,2^2)\) & GP amplitude\\
+\(\log\rho_{\mathrm{GP}}\) & \(\mathcal{N}(\log10,0.75^2)\) & GP correlation timescale in days\\
+\(\mu\) & \(\mathcal{N}(0,0.01^2)\) & Mean-flux offset\\
+\(\log s\) & \(\mathcal{N}(-6,2^2)\) & White-noise jitter scale\\
+\bottomrule
+\end{longtable}
+Here \(s=\exp(\log s)\), \(\sigma_{\mathrm{GP}}=\exp(\log\sigma_{\mathrm{GP}})\),
+and \(\rho_{\mathrm{GP}}=\exp(\log\rho_{\mathrm{GP}})\). The period is
+technically mutable in the current Bayesian call: \code{period\_fixed=False}
+is passed by the inference routine.
+
+\section{Stellar-density treatment and duration parameterization}
+The default \code{fit\_duration=True} path samples \Tfourteen directly. This
+avoids forcing duration to be determined only by a stellar-density point
+estimate. For each planet, the code computes
+\begin{align}
+  s_k &= \sin\left(\frac{\pi\Tfourteen{}_{k}}{\Porb{}_{k}}\right),\\
+  \left(\frac{a}{\Rstar}\right)_k
+    &=\left[b_k^2+\frac{(1+r_k)^2-b_k^2}{s_k^2}\right]^{1/2},\\
+  \rho_{\star,k} &=\frac{(a/\Rstar)_k^3}{52.91572\,\Porb{}_{k}^2},\\
+  \rhoStar &= \frac{1}{N_{\mathrm{p}}}\sum_k\rho_{\star,k}.
+\end{align}
+A PyMC potential applies a Gaussian stellar-density constraint,
+\begin{equation}
+  \log p_{\rho}=\log\mathcal{N}(\rhoStar\mid
+  \rho_{\star,\mathrm{cat}},\sigma_{\rho,\mathrm{cat}}).
+\end{equation}
+If no catalogue density is available, the fallback is
+\(\rhoStar\sim\operatorname{LogNormal}(\log1.4,1)\). When
+\code{fit\_duration=False}, the alternative path samples \rhoStar directly as a
+truncated normal around the catalogue value, or as the same broad log-normal
+fallback. This distinction is important when comparing analyses.
+
+\section{Gaussian-process noise}
+The GP is marginalized jointly with the transit parameters. Its covariance
+matrix is added to the diagonal observational variance:
+\begin{equation}
+  K_{ij}=K_{\mathrm{GP}}(t_i,t_j)+
+  \delta_{ij}\left(\sigma_i^2+s^2\right).
+\end{equation}
+The default celerite2 SHO kernel has quality factor
+\(Q=1/\sqrt{2}\), fixed in the code. The alternative is a Matérn
+\(\nu=3/2\) kernel. The GP timescale prior is intentionally centered at ten
+days with width 0.75 in log space so that the GP is less able to absorb short
+transit events. This is a prior regularization assumption, not a guarantee that
+stellar variability has a ten-day physical period.
+
+For residual vector \(\boldsymbol{r}=\boldsymbol{F}-\boldsymbol{m}
+(\boldsymbol{\theta})\), the marginalized Gaussian-process log likelihood is
+\begin{equation}
+  \log p(\boldsymbol{F}\mid\boldsymbol{\theta})
+  =-\frac{1}{2}\left[\boldsymbol{r}^{\mathsf T}K^{-1}\boldsymbol{r}
+  +\log|K|+N\log(2\pi)\right].
+\end{equation}
+The celerite2 implementation exploits the structured kernel for efficient
+factorization and prediction. The posterior also stores a GP prediction,
+transit model, full flux model, and residuals for diagnostics.
+
+\section{Likelihood and posterior}
+Let \(\boldsymbol{\theta}\) denote all fitted quantities. The posterior is
+\begin{equation}
+  p(\boldsymbol{\theta}\mid\boldsymbol{F})
+  \propto p(\boldsymbol{F}\mid\boldsymbol{\theta})
+  p(\boldsymbol{\theta})p_{\rho}(\boldsymbol{\theta}),
+\end{equation}
+where the density factor is implemented as a PyMC \code{Potential}. The model
+is sampled with NUTS, a Hamiltonian Monte Carlo method that adapts a trajectory
+length to avoid random-walk behavior. Initialization uses \code{adapt\_diag}
+and physically motivated initial values: \(b=0.1\), \(q_1=q_2=0.3\),
+\(\log s=-6\), \(\log\sigma_{\mathrm{GP}}=-3\),
+\(\log\rho_{\mathrm{GP}}=\log10\), and \(\log r\) initialized from the
+square root of the detected depth.
+
+\chapter{Multi-planet model selection}
+\section{Candidate-probability gate}
+For a second or later detection, the inference stage estimates a rough existence
+probability from its SDE/SNR:
+\begin{equation}
+  p_2=\frac{1}{1+\exp[-0.5(\mathrm{SDE}_2-7)]}.
+\end{equation}
+A multi-planet MCMC fit is launched only when \(p_2>0.75\). Otherwise, the
+candidate is recorded as ``Not Justified'' and the fit is trimmed to the first
+planet. This sigmoid is a computational gate, not a calibrated posterior
+probability from the light curve.
+
+\section{BIC comparison}
+When the gate passes, a one-planet model is sampled first. A final multi-planet
+model is then sampled and compared with
+\begin{equation}
+  \mathrm{BIC}=k\ln N-2\ln\mathcal{L}_{\max},
+\end{equation}
+where \(N\) is the number of unique time samples and the implementation uses
+\(k=7+4N_{\mathrm{p}}\): seven base parameters plus four per planet. The
+reported difference is
+\begin{equation}
+  \Delta\mathrm{BIC}=\mathrm{BIC}_{N}-\mathrm{BIC}_{1},
+  \qquad
+  p_{N}=\frac{1}{1+\exp(\Delta\mathrm{BIC}/2)}.
+\end{equation}
+Negative \(\Delta\mathrm{BIC}\) favors the multi-planet model. The mapping to
+\(p_N\) is a convenient relative-evidence summary and should not be confused
+with a rigorously normalized model posterior. The first candidate is labeled
+``Confirmed'' when retained; secondary labels are Very Strong, Strong, Positive,
+Weak, or Not Justified according to the size of \(\Delta\mathrm{BIC}\).
+
+\chapter{Posterior-derived physical parameters}
+\section{Posterior summaries}
+For each planet, samples are flattened over chains and draws. The pipeline
+reports the median, standard deviation, and 16th and 84th percentiles for fitted
+and derived quantities. The interval \([q_{16},q_{84}]\) is a central
+approximately one-standard-deviation credible interval only when the posterior
+is close to symmetric; it remains a quantile interval for skewed posteriors.
+
+\section{Transit geometry}
+For every posterior sample, the code derives
+\begin{equation}
+  \frac{a}{\Rstar}=\left(52.91572\,\rhoStar\,\Porb^2\right)^{1/3}.
+\end{equation}
+The total first-to-fourth-contact duration is computed as
+\begin{equation}
+  \Tfourteen=\frac{\Porb}{\pi}
+  \arcsin\left[\left(
+  \frac{(1+r)^2-b^2}{(a/\Rstar)^2-b^2}
+  \right)^{1/2}\right],
+\end{equation}
+then converted from days to hours by multiplying by 24. Arguments are clipped
+to the physical interval before evaluating the square root and arcsine.
+
+\section{Planet radius and semi-major axis}
+Using the stellar radius in solar units,
+\begin{equation}
+  \frac{\Rp}{\Rearth}=r\frac{\Rstar}{\Rsun}\frac{\Rsun}{\Rearth}
+  =109.203\,r\frac{\Rstar}{\Rsun}.
+\end{equation}
+The semi-major axis in astronomical units is calculated from \(a/\Rstar\):
+\begin{equation}
+  \frac{a}{\mathrm{AU}}=
+  \frac{(a/\Rstar)(\Rstar/\Rsun)}{215.032}.
+\end{equation}
+The current implementation propagates stellar-radius uncertainty by drawing
+normal samples around \Rstar and \Teff, truncating nonphysical radius and
+temperature draws to positive floors. This is Monte Carlo uncertainty
+propagation, not a joint stellar posterior sampled in the transit model.
+
+\section{Equilibrium temperature}
+The reported equilibrium temperature assumes zero Bond albedo and complete
+redistribution of absorbed energy over the planet:
+\begin{equation}
+  T_{\mathrm{eq}}=\Teff\left(\frac{1}{4(a/\Rstar)^2}\right)^{1/4}.
+\end{equation}
+This expression uses \(T_\star(a)\approx\Teff/\sqrt{a/\Rstar}\) and the
+factor \(1/4\) for full redistribution. It is not a prediction of the actual
+surface temperature, atmospheric temperature, or day-side temperature.
+
+\chapter{Validation and diagnostics}
+\section{Sampling convergence}
+The convergence stage uses ArviZ summaries while excluding large deterministic
+vectors such as the full light curve, GP prediction, and model curves. The
+reported checks are:
+\begin{itemize}
+  \item maximum rank-normalized split \(\hat R\), with a threshold of 1.01;
+  \item minimum bulk effective sample size (ESS), with a threshold of 400;
+  \item total number of divergent NUTS transitions, which must be zero.
+\end{itemize}
+The run is marked converged only if all available checks pass. A failure should
+prompt inspection of trace plots, increasing \code{target\_accept}, extending
+tuning, improving parameterization, checking priors, or revisiting the light
+curve and stellar constraints. Convergence does not establish that the
+astrophysical model is correct; it only indicates that the sampler explored its
+specified posterior acceptably.
+
+\section{Photometric and posterior checks}
+The generated products include raw and flattened light curves, periodograms,
+phase-folded data, Bayesian fit curves, corner plots, trace plots, posterior
+predictive curves, residual plots, GP residual autocorrelation, and stacked
+individual transits. The following checks are recommended:
+\begin{enumerate}
+  \item verify that the transit appears in more than one event and more than one
+        sector when the baseline permits;
+  \item compare the fitted transit depth with the raw and flattened flux;
+  \item inspect whether the GP follows out-of-transit variability rather than
+        attenuating the transit itself;
+  \item inspect residual autocorrelation before and after GP correction;
+  \item check that posterior predictive curves cover the observed data without
+        leaving coherent phase-dependent residuals;
+  \item compare TLS and BLS period evidence and examine harmonics;
+  \item verify that the inferred \rhoStar is compatible with catalogue values
+        and that fallback stellar estimates have not driven the result.
+\end{enumerate}
+
+\section{Known limitations and failure modes}
+\begin{itemize}
+  \item A transit search is not a validation of planetary origin. Blends,
+        eclipsing binaries, stellar activity, dilution, and instrumental systematics
+        require additional vetting.
+  \item The default orbital interpretation is circular. Eccentric systems can
+        yield biased density and duration if eccentricity is not modeled.
+  \item The current GP is global in time and uses one fitted mean-flux element
+        in the Bayesian call. Sector-specific offsets may be required for strong
+        discontinuities between sectors.
+  \item The initial flattening is a preprocessing operation. An overly short
+        window can suppress or distort long-duration transits; an overly long
+        window can leave systematics for the GP.
+  \item The catalogue merge is parameter-wise. Correlations among stellar
+        radius, mass, temperature, and density are not fully propagated.
+  \item The BIC approximation uses a fixed parameter-count convention and a
+        maximum sampled likelihood, so it should be used comparatively and not
+        as a replacement for full marginal likelihood model comparison.
+  \item The archive period and the search-based existence probability encode
+        prior information and detection heuristics; they are not independent
+        evidence if the same photometry contributed to both.
+\end{itemize}
+
+\chapter{Reproducibility and outputs}
+\section{Recommended run record}
+A reproducible analysis should record the target, software version, Python
+version, selected interpreter, input FITS files or MAST query, sectors, cadence,
+quality mask, all preprocessing parameters, period-search method and range,
+stellar catalogue references, inference backend, GP kernel, random seed if set,
+chain/draw/tune settings, and any warnings. The pipeline stores core settings in
+results metadata and retains catalogue provenance where available.
+
+\section{Output products}
+The \code{save()} method writes results under the configured output directory,
+usually in a target-specific directory such as \code{output/TIC <id>/}. Depending
+on the run, products include:
+\begin{itemize}
+  \item JSON metadata and derived parameters;
+  \item CSV tables of planet parameters and diagnostics;
+  \item NetCDF ArviZ posterior data;
+  \item PNG figures for each analysis stage;
+  \item an HTML/PDF-style report when report generation is enabled.
+\end{itemize}
+The posterior NetCDF file is the authoritative record for posterior inference;
+plots and summary tables are projections of that object and should not be used
+as substitutes when reanalysis is required.
+
+\section{Implementation map}
+\begin{longtable}{p{0.35\textwidth}p{0.52\textwidth}}
+\caption{Main implementation components.}\label{tab:files}\\
+\toprule
+Component & Responsibility\\
+\midrule
+\code{analysis/session.py} & Public staged API and complete-run orchestration\\
+\code{config.py}, \code{constants.py} & Configuration precedence, validation, defaults\\
+\code{data/preprocess.py} & NaN removal, protected sigma clipping, stitching, flattening\\
+\code{analysis/stages/period.py} & Archive refinement and detection orchestration\\
+\code{transit/detection.py} & TLS/BLS selection and iterative multi-planet search\\
+\code{catalogs/stellar.py} & Catalogue merging and stellar-density calculation\\
+\code{inference/priors.py} & PyMC prior definitions and parameter transforms\\
+\code{inference/bayesian.py} & Keplerian transit model, GP likelihood, NUTS sampling\\
+\code{inference/gp.py} & SHO or Matérn-3/2 celerite2 GP construction\\
+\code{transit/parameters.py} & Posterior summaries and physical parameter derivation\\
+\code{inference/diagnostics.py} & \(\hat R\), ESS, divergences, convergence flag\\
+\bottomrule
+\end{longtable}
+
+\chapter{Mathematical assumptions checklist}
+Before accepting a result, the analyst should explicitly answer:
+\begin{enumerate}
+  \item Is the input flux normalized and are TESS quality flags appropriate?
+  \item Are enough independent transit events observed to distinguish \Porb from
+        an integer harmonic?
+  \item Was the transit mask wide enough to protect the signal but not so wide
+        that most out-of-transit information was removed?
+  \item Is the adopted stellar radius, mass, and density measured or fallback-
+        estimated, and are their uncertainties realistic?
+  \item Does a circular orbit provide a defensible approximation?
+  \item Does the GP timescale separate stellar variability from the transit
+        duration, and do posterior predictive checks support that separation?
+  \item Are \(\hat R\), ESS, and divergences acceptable for all scientifically
+        important parameters?
+  \item Are the radius, temperature, and model-comparison summaries reported
+        with credible intervals and provenance?
+  \item Have false positives, dilution, contamination, eclipsing-binary
+        scenarios, and odd--even transit differences been investigated?
+\end{enumerate}
+
+\chapter*{References and software context}
+\addcontentsline{toc}{chapter}{References and software context}
+\begin{description}[leftmargin=3.5cm,style=nextline]
+  \item[Kipping (2013)] Efficient, uninformative sampling of limb-darkening
+  coefficients in two-parameter laws, \emph{MNRAS}, 435, 2152.
+  \item[Mandel and Agol (2002)] Analytic light curves for planetary transit
+  searches, \emph{ApJL}, 580, L171.
+  \item[Hippke et al. (2019)] Transit Least Squares, \emph{Astronomy and
+  Astrophysics}, 623, A39.
+  \item[Polanski et al. (2023)] TESS-Keck Survey transit-fitting methodology,
+  as followed by the Bayesian implementation where applicable.
+  \item[Software] The implementation uses Python, NumPy, SciPy, pandas,
+  lightkurve, Astropy, astroquery, transitleastsquares, batman-package,
+  PyMC, exoplanet, celerite2, ArviZ, and Matplotlib. Exact versions should be
+  recorded from the active environment for each scientific run.
+\end{description}
+
+\appendix
+\chapter{Parameter notation}
+\begin{longtable}{p{0.18\textwidth}p{0.28\textwidth}p{0.42\textwidth}}
+\caption{Notation used in this report.}\label{tab:notation}\\
+\toprule
+Symbol & Name & Units or meaning\\
+\midrule
+\(t\) & Observation time & BTJD or consistent days\\
+\(F\) & Normalized flux & Dimensionless\\
+\(\Porb\) & Orbital period & days\\
+\(\tzero\) & Transit mid-time & BTJD\\
+\(r\) & Radius ratio & \(\Rp/\Rstar\)\\
+\(b\) & Impact parameter & Stellar-radius units\\
+\(\Tfourteen\) & First-to-fourth contact duration & days or hours\\
+\(a/\Rstar\) & Scaled semi-major axis & Dimensionless\\
+\(\rhoStar\) & Stellar density & \(\mathrm{g\,cm^{-3}}\)\\
+\(q_1,q_2\) & Kipping limb-darkening variables & Unit interval\\
+\(\sigma_{\mathrm{GP}}\) & GP amplitude & Relative-flux units\\
+\(\rho_{\mathrm{GP}}\) & GP correlation timescale & days\\
+\(s\) & White-noise jitter & Relative-flux units\\
+\bottomrule
+\end{longtable}
+
+\chapter{Minimal reproducibility template}
+\begin{lstlisting}
+from tess_pipeline import TESSAnalysis
+
+analysis = TESSAnalysis(
+    "TIC 307210830",
+    inference=True,
+    cadence=120,
+    sectors="all",
+    search_method="tls",
+    inference_backend="exoplanet",
+    chains=4,
+    draws=1500,
+    tune=1000,
+    target_accept=0.95,
+    gp_kernel="SHO",
+)
+results = analysis.run()
+analysis.save("output")
+\end{lstlisting}
+For a controlled reanalysis, replace the target download with explicit FITS
+paths, preserve the exact configuration, and archive the generated NetCDF
+posterior together with catalogue query results and software-environment
+metadata.
+
+\end{document}

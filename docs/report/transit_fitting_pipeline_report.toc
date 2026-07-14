@@ -1,0 +1,42 @@
+\contentsline {chapter}{Executive summary}{1}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Scientific objective and data model}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Objective}{2}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Entry points and execution modes}{2}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Default configuration}{3}{section.1.3}%
+\contentsline {chapter}{\numberline {2}End-to-end pipeline}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Target resolution}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Archive information and period initialization}{4}{section.2.2}%
+\contentsline {section}{\numberline {2.3}TESS light-curve acquisition}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Preprocessing and normalization}{5}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Period and transit detection}{5}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Transit Least Squares and Box Least Squares}{5}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Multiple candidates and aliases}{6}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Stellar characterization}{6}{section.2.6}%
+\contentsline {chapter}{\numberline {3}Bayesian transit model}{8}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Observed-flux model}{8}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Orbital geometry}{8}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Limb darkening}{9}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Priors}{9}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Stellar-density treatment and duration parameterization}{9}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Gaussian-process noise}{10}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Likelihood and posterior}{10}{section.3.7}%
+\contentsline {chapter}{\numberline {4}Multi-planet model selection}{12}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Candidate-probability gate}{12}{section.4.1}%
+\contentsline {section}{\numberline {4.2}BIC comparison}{12}{section.4.2}%
+\contentsline {chapter}{\numberline {5}Posterior-derived physical parameters}{13}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Posterior summaries}{13}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Transit geometry}{13}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Planet radius and semi-major axis}{13}{section.5.3}%
+\contentsline {section}{\numberline {5.4}Equilibrium temperature}{14}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Validation and diagnostics}{15}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Sampling convergence}{15}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Photometric and posterior checks}{15}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Known limitations and failure modes}{16}{section.6.3}%
+\contentsline {chapter}{\numberline {7}Reproducibility and outputs}{17}{chapter.7}%
+\contentsline {section}{\numberline {7.1}Recommended run record}{17}{section.7.1}%
+\contentsline {section}{\numberline {7.2}Output products}{17}{section.7.2}%
+\contentsline {section}{\numberline {7.3}Implementation map}{17}{section.7.3}%
+\contentsline {chapter}{\numberline {8}Mathematical assumptions checklist}{19}{chapter.8}%
+\contentsline {chapter}{References and software context}{20}{chapter*.3}%
+\contentsline {chapter}{\numberline {A}Parameter notation}{21}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Minimal reproducibility template}{22}{appendix.B}%

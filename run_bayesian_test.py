@@ -21,7 +21,7 @@ def main() -> None:
         inference_backend="exoplanet",  # uses exoplanet/PyMC/celerite2
         search_method="tls",
         sectors=sectors,
-        # max_planets=3,
+        max_planets=1,
         chains=2,
         draws=10,
         tune=10,
