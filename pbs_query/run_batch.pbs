@@ -1,0 +1,76 @@
+#!/bin/bash
+#==============================================================================
+# PBS Job Script: Bayesian Transit Fit
+#==============================================================================
+
+#PBS -N run_batch_longest
+#PBS -l select=1:ncpus=8
+#PBS -l walltime=48:00:00
+#PBS -o /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/pbs_query/run_batch_longest_500.out
+#PBS -e /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/pbs_query/run_batch_longest_500.err
+
+#------------------------------------------------------------------------------
+# Go to submission directory
+#------------------------------------------------------------------------------
+cd "$PBS_O_WORKDIR"
+
+#------------------------------------------------------------------------------
+# Load software
+#------------------------------------------------------------------------------
+
+module load gcc/11.2.0 cuda9.2 anaconda3
+
+# Initialize conda for the bash shell script
+eval "$(conda shell.bash hook)"
+
+# Now activate the environment
+conda activate exo_model
+
+# check if the environment is activated
+echo $CONDA_DEFAULT_ENV
+
+#------------------------------------------------------------------------------
+# Job information
+#------------------------------------------------------------------------------
+echo "============================================================"
+echo "                PBS JOB INFORMATION"
+echo "============================================================"
+echo "Job ID          : ${PBS_JOBID}"
+echo "Job Name        : ${PBS_JOBNAME}"
+echo "Queue           : ${PBS_QUEUE}"
+echo "Host            : $(hostname)"
+echo "Working Dir     : ${PBS_O_WORKDIR}"
+echo "Start Time      : $(date)"
+echo "Allocated CPUs  : ${PBS_NP:-Unknown}"
+echo "============================================================"
+
+echo
+echo "Python executable:"
+which python
+
+echo
+python --version
+
+echo
+echo "Package versions:"
+
+echo
+echo "============================================================"
+echo "Starting Bayesian analysis..."
+echo "============================================================"
+
+SECONDS=0
+
+/usr/bin/time -v python -u \
+/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/batch.py
+
+status=$?
+
+echo
+echo "============================================================"
+echo "Finished at : $(date)"
+echo "Elapsed     : $(($SECONDS/3600))h $((($SECONDS%3600)/60))m $(($SECONDS%60))s"
+echo "Exit Status : ${status}"
+echo "============================================================"
+
+exit ${status}
