@@ -80,3 +80,7 @@ output/*
 output_*/*
 output_*/*/*
 output_bayesian_sector_all_500_2/*
+
+# pipeline_1
+tess_exoplanet_pipeline_1/*
+
