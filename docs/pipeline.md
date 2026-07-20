@@ -35,7 +35,7 @@ Convergence diagnostics (R-hat, ESS, posterior predictive)
 ↓
 Diagnostic plots (phase-fold, corner, residuals)
 ↓
-Export results (CSV, JSON, NetCDF posterior, figures, PDF)
+Export results (CSV, JSON, compressed posterior values, figures, PDF)
 ```
 
 ## Module Responsibilities
@@ -59,7 +59,7 @@ Export results (CSV, JSON, NetCDF posterior, figures, PDF)
 | `inference/priors.py` | Prior definitions |
 | `inference/diagnostics.py` | Convergence checks |
 | `visualization/` | All plotting functions |
-| `io/export.py` | CSV, JSON, NetCDF, FITS export |
+| `io/export.py` | CSV, JSON, compressed posterior values, FITS export |
 | `io/report.py` | PDF report generation |
 
 ## Configuration

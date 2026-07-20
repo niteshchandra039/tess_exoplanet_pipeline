@@ -9,7 +9,7 @@ A Python library for step-by-step TESS light curve analysis: exoplanet detection
 - **Period detection**: Transit Least Squares (primary) and Box Least Squares
 - **Stellar characterization**: Multi-catalog merging (VizieR TIC v8.2 + Gaia DR3 + SIMBAD)
 - **Bayesian inference**: `exoplanet` + PyMC + NUTS with GP noise models
-- **Export**: CSV, JSON, NetCDF, figures, and PDF reports
+- **Export**: CSV, JSON, compressed posterior sample values, figures, and PDF reports
 
 ## Installation
 

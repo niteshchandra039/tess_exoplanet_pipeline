@@ -9,7 +9,7 @@ import os
 import sys
 from tess_pipeline import TESSAnalysis
 
-sectors = 'all'
+sectors = 'longest'  # Use 'longest' to analyze continuous sectors or specify a list of sectors, e.g., [14, 15, 16]
 
 def main() -> None:
     print("Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...")
@@ -21,14 +21,15 @@ def main() -> None:
         inference_backend="exoplanet",  # uses exoplanet/PyMC/celerite2
         search_method="tls",
         sectors=sectors,
-        max_planets=1,
-        chains=2,
-        draws=10,
-        tune=10,
+        # max_planets=1,
+        chains=5,
+        draws=500,
+        tune=500,
         plots=True,
-        output_dir=f"output_bayesian_sector_{sectors}_500_2",
+        output_dir=f"output_bayesian_sector_{sectors}_500_5",
         verbose=True
     )
+
     
     # Run the target characterization, download, detrending, and period search
     print("1. Resolving target coordinates...")

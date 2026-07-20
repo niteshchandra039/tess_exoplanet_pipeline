@@ -4,7 +4,7 @@ io/export.py — Export pipeline results to various file formats.
 Formats:
   * CSV    — parameter summary table with medians and uncertainties
   * JSON   — metadata, config, and derived parameters
-  * NetCDF — full posterior via ArviZ (arviz.InferenceData.to_netcdf)
+    * NPZ     — compressed posterior sample values needed for plot recreation
   * FITS   — light curve arrays and model arrays
   * PNG    — diagnostic figures
   * HTML   — modern exoplanet analysis dashboard
@@ -21,6 +21,24 @@ if TYPE_CHECKING:
     from tess_pipeline.results import PipelineResults
 
 log = get_logger(__name__)
+
+# These are the only posterior values consumed by recreate_plots.py.  Keeping
+# model predictions and likelihood/ sampler groups out of the archive avoids
+# duplicating large arrays that are already represented in lightcurve_model_data.npz.
+_PLOT_POSTERIOR_VARS = (
+    "period",
+    "rp_r_star",
+    "b",
+    "t14",
+    "t0",
+    "u1",
+    "u2",
+    "q1",
+    "q2",
+    "rho_star",
+    "sigma_gp",
+    "rho_gp",
+)
 
 
 def save_results(results: "PipelineResults", output_dir: Path) -> None:
@@ -104,15 +122,30 @@ def _save_json(results: "PipelineResults", prefix: Path) -> None:
 
 
 def _save_posterior(results: "PipelineResults", prefix: Path) -> None:
-    """Write full posterior to NetCDF via ArviZ."""
+    """Write only plot-required posterior sample values to a compressed NPZ."""
     if results.posterior is None:
         return
     try:
-        path = Path(str(prefix) + "_posterior.nc")
-        results.posterior.to_netcdf(str(path))
-        log.debug("Saved posterior: %s", path)
+        import numpy as np
+
+        posterior_group = results.posterior.posterior
+        data_vars = getattr(posterior_group, "data_vars", {})
+        plot_vars = {
+            name: np.asarray(data_vars[name].values)
+            for name in _PLOT_POSTERIOR_VARS
+            if name in data_vars
+        }
+        if not plot_vars:
+            log.warning("No plot-required posterior variables were found")
+            return
+
+        data_dir = prefix.parent / "data_for_plots"
+        data_dir.mkdir(parents=True, exist_ok=True)
+        path = data_dir / "posterior_samples.npz"
+        np.savez_compressed(path, **plot_vars)
+        log.debug("Saved compressed posterior sample values: %s", path)
     except Exception as exc:  # noqa: BLE001
-        log.warning("Could not save posterior: %s", exc)
+        log.warning("Could not save compressed posterior sample values: %s", exc)
 
 
 def _save_lightcurve_fits(results: "PipelineResults", prefix: Path) -> None:
@@ -271,14 +304,6 @@ def _save_data_for_plots(results: "PipelineResults", target_dir: Path) -> None:
         log.debug("Saved lightcurve model data: %s", data_dir / "lightcurve_model_data.npz")
     except Exception as exc:
         log.warning("Could not save lightcurve model data: %s", exc)
-
-    # ── Save MCMC Posterior NetCDF ──
-    if results.posterior is not None:
-        try:
-            results.posterior.to_netcdf(data_dir / "mcmc_posterior.nc")
-            log.debug("Saved MCMC posterior NetCDF: %s", data_dir / "mcmc_posterior.nc")
-        except Exception as exc:
-            log.warning("Could not save MCMC posterior NetCDF: %s", exc)
 
     # ── 3. Standalone Plotting Script (recreate_plots.py) ──
     tic_id = results.target.get("tic_id", "unknown")
@@ -793,11 +818,14 @@ if "time" in lc_data:
             plt.close(fig)
 
 # ── 10. Recreate MCMC Corner & Trace plots (07_corner.png, 08_trace.png) ──
-if os.path.exists("data_for_plots/mcmc_posterior.nc"):
+if os.path.exists("data_for_plots/posterior_samples.npz"):
     try:
         import arviz as az
-        posterior = az.from_netcdf("data_for_plots/mcmc_posterior.nc")
-        print("Successfully loaded posterior NetCDF.")
+        posterior_values = np.load("data_for_plots/posterior_samples.npz", allow_pickle=False)
+        posterior = az.from_dict({{
+            "posterior": {{name: posterior_values[name] for name in posterior_values.files}}
+        }})
+        print("Successfully loaded compressed posterior sample values.")
         
         # Corner Plot
         try:

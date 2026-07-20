@@ -69,7 +69,7 @@ results.plot("phase")
 results.plot("posterior")
 
 # Export
-results.save("output/")    # CSV, JSON, NetCDF, FITS, figures
+results.save("output/")    # CSV, JSON, compressed posterior values, FITS, figures
 
 # Data access
 results.target             # TIC ID, coordinates
