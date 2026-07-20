@@ -1,0 +1,1322 @@
+exo_model
+============================================================
+                PBS JOB INFORMATION
+============================================================
+Job ID          : 24586.hn1
+Job Name        : run_batch_longest
+Queue           : regular
+Host            : hpc063
+Working Dir     : /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline
+Start Time      : Fri Jul 17 18:05:31 IST 2026
+Allocated CPUs  : Unknown
+============================================================
+
+Python executable:
+/mnt/home/project/cnitesh/.conda/envs/exo_model/bin/python
+
+Python 3.12.11
+
+Package versions:
+
+============================================================
+Starting Bayesian analysis...
+============================================================
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+18:05:56  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 391903064
+18:05:56  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 391903064' to TIC 391903064
+18:05:56  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 391903064 (matched 2 row(s))
+18:05:56  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 391903064 from local archive
+18:05:56  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 391903064
+2. Checking archival orbital period...
+18:05:56  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 391903064
+18:05:56  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 2 planets (Primary: 4.665801 d)
+18:05:56  INFO      tess_pipeline.analysis.stages.period  No max_planets provided; defaulting to number of literature entries (2)
+3. Downloading TESS light curves from MAST...
+18:05:56  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 391903064
+18:06:25  INFO      tess_pipeline.data.download  [download] Starting download for TIC 391903064 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+18:06:28  INFO      tess_pipeline.data.download  [download] Found 43 available sector(s): [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 61, 62, 63, 64, 65, 66, 67, 68, 87, 88, 89, 90, 93, 94, 95, 96, 97, 98]
+18:06:28  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
+18:06:28  INFO      tess_pipeline.data.download  [download] Downloading 13 selected sector(s) from MAST
+18:07:11  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+18:07:11  INFO      tess_pipeline.data.download  [fits] Step 2/4: 13 FITS file(s) queued
+18:07:11  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/13: data/fits/tess2020186164531-s0027-0000000391903064-0189-s_lc.fits
+18:07:11  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/13: data/fits/tess2020212050318-s0028-0000000391903064-0190-s_lc.fits
+18:07:11  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 3/13: data/fits/tess2020238165205-s0029-0000000391903064-0193-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 4/13: data/fits/tess2020266004630-s0030-0000000391903064-0195-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 5/13: data/fits/tess2020294194027-s0031-0000000391903064-0198-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 6/13: data/fits/tess2020324010417-s0032-0000000391903064-0200-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 7/13: data/fits/tess2020351194500-s0033-0000000391903064-0203-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 8/13: data/fits/tess2021014023720-s0034-0000000391903064-0204-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 9/13: data/fits/tess2021039152502-s0035-0000000391903064-0205-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 10/13: data/fits/tess2021065132309-s0036-0000000391903064-0207-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 11/13: data/fits/tess2021091135823-s0037-0000000391903064-0208-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 12/13: data/fits/tess2021118034608-s0038-0000000391903064-0209-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 13/13: data/fits/tess2021146024351-s0039-0000000391903064-0210-s_lc.fits
+18:07:12  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 13 light curve(s) from local FITS in 1.0s
+18:07:12  INFO      tess_pipeline.data.download  [download] Completed TIC 391903064 download in 47.3s (13 sector file(s))
+18:07:12  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+18:07:12  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+18:07:14  DEBUG     tess_pipeline.data.preprocess  Stitched 13 sectors → 214061 cadences
+18:07:16  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 213956 cadences remain
+18:07:17  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/01_raw.png
+18:07:17  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/02_flat.png
+5. Searching for transit signals...
+18:07:17  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 4.665801 d; refining...
+18:07:17  INFO      tess_pipeline.transit.detection  Running TLS (period 4.7–4.7 d)
+18:07:25  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=9, dur_step=1.10)
+18:07:25  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 4.656469098600001, 'period_max': 4.6751323014, 'duration_grid_step': 1.1, 'oversampling_factor': 9}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 213956 data points, 100 periods from 4.657 to 4.675 days
+Using all 32 CPU threads
+18:07:39  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+18:07:40  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2040.3826...
+18:07:46  INFO      tess_pipeline.transit.tls  TLS: period=4.665720 d, epoch=2040.3643, duration=2.49 h, depth=0.000768, SDE=2.36
+18:07:46  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 2: 8.817646 d; refining...
+18:07:46  INFO      tess_pipeline.transit.detection  Running TLS (period 8.8–8.8 d)
+18:07:46  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=32, dur_step=1.10)
+18:07:46  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 8.8076457, 'period_max': 8.8276457, 'duration_grid_step': 1.1, 'oversampling_factor': 32}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 207025 data points, 165 periods from 8.808 to 8.828 days
+Using all 32 CPU threads
+18:07:59  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+18:07:59  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2039.1325...
+18:08:04  INFO      tess_pipeline.transit.tls  TLS: period=8.817522 d, epoch=2039.1299, duration=2.68 h, depth=0.000337, SDE=2.32
+18:08:04  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+18:08:04  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/03_tls_periodogram.png
+18:08:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/tls_periodogram_coarse_p0.png
+18:08:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/tls_periodogram_fine_p0.png
+18:08:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/tls_periodogram_coarse_p1.png
+18:08:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/tls_periodogram_fine_p1.png
+18:08:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+18:08:05  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+18:08:13  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+18:08:13  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+18:08:13  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 391903064 (matched 2 row(s))
+18:08:13  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 1.0200000 from local NASA archive
+7. Characterizing host star properties...
+18:08:13  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+18:08:13  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+18:08:16  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+18:08:16  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=5627.0, logg=4.420300006866455, feh=None, r_star=1.021, m_star=1.0, parallax=None
+18:08:18  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 391903064 measurements
+18:08:18  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=5555.0, logg=4.495999813079834, feh=0.07930000126361847, parallax=12.6836
+8. Skipping SDSS checking (disabled in this version)...
+18:08:18  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+18:08:27  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+18:08:27  INFO      tess_pipeline.analysis.stages.inference  Second candidate probability (8.8%) is below 75% threshold. Skipping multi-planet MCMC fit and proceeding with 1-planet model.
+18:08:27  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=213956 points, 1 planets)
+18:08:28  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+18:08:28  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.159   127     13.68 s/draw   3:47…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.174   127     19.45 s/draw   5:23…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.154   127     23.22 s/draw   6:26…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.143   63      7.92 s/draw    2:11…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.001   1023    55.49 s/draw   15:2…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+09:36:25  INFO      tess_pipeline.inference.bayesian  Sampling complete
+09:37:15  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/06_bayesian_fit.png
+09:37:21  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/07_corner.png
+09:37:22  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/08_trace.png
+09:37:22  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/09_posterior_predictive.png
+09:37:23  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+09:37:25  WARNING   tess_pipeline.inference.diagnostics  Convergence issues detected (see ConvergenceWarning)
+12. Generating figures...
+09:37:25  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 391903064
+============================================================
+  Period         : 4.665720 d  [archive]
+  Epoch (t0)     : 2040.3643254322724
+  Duration (T14) : 2.487 h
+  Depth          : 0.000768
+  Detection stat : SDE = 2.4
+  R★             : 1.021 R_Sun
+  M★             : 1.0 M_Sun
+  Teff           : 5627.0 K
+  ρ★             : 1.3246239465440768 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 2.588 ± 0.1441
+    a_au           : 0.05357 ± 0.004264
+    a_r_star       : 11.38 ± 0.6906
+    t_eq           : 1184 ± 47.66
+    rp_r_star      : 0.02316 ± 0.0006158
+    b              : 0.3262 ± 0.1615
+    t14_hr         : 3.045 ± 0.02864
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.0119
+  ESS (min)      : 443
+============================================================
+
+Saving results and diagnostic plots...
+09:46:27  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064
+09:46:27  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/TIC391903064_summary.csv
+09:46:27  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/TIC391903064_metadata.json
+09:46:43  DEBUG     tess_pipeline.io.export  Saved posterior: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/TIC391903064_posterior.nc
+09:46:44  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/TIC391903064_lightcurve.fits
+09:46:44  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/01_raw.png
+09:46:44  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/02_flat.png
+09:46:44  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/03_tls_periodogram.png
+09:46:45  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/03_tls_periodogram_coarse_p0.png
+09:46:45  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/03_tls_periodogram_fine_p0.png
+09:46:45  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/03_tls_periodogram_coarse_p1.png
+09:46:45  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/03_tls_periodogram_fine_p1.png
+09:46:45  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/04_phase_p0.png
+09:46:45  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/04_phase_p1.png
+09:46:46  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/05_residuals.png
+09:46:46  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/06_bayesian_fit.png
+09:46:47  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/10_gp_acf.png
+09:46:47  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/11_transit_stack_p0.png
+09:46:47  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/04_mcmc_phase_p0.png
+09:46:48  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/07_corner.png
+09:46:49  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/08_trace.png
+09:46:49  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/plots/09_posterior_predictive.png
+09:46:49  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/data_for_plots/periodogram_data.npz
+09:47:12  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/data_for_plots/lightcurve_model_data.npz
+09:47:23  DEBUG     tess_pipeline.io.export  Saved MCMC posterior NetCDF: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/data_for_plots/mcmc_posterior.nc
+09:47:23  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/recreate_plots.py
+09:47:23  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/report.html
+09:47:35  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064/TIC391903064_report.pdf
+09:47:35  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_500_draws_5_chains/TIC 391903064
+Done! Bayesian test completed successfully.
+
+Completed analysis for TIC 391903064. Moving to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+09:47:35  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 75650448
+09:47:35  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 75650448' to TIC 75650448
+09:47:36  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 75650448 (matched 1 row(s))
+09:47:36  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 75650448 from local archive
+09:47:36  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 75650448
+2. Checking archival orbital period...
+09:47:36  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 75650448
+09:47:36  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 18.184189 d)
+3. Downloading TESS light curves from MAST...
+09:47:36  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 75650448
+09:47:36  INFO      tess_pipeline.data.download  [download] Starting download for TIC 75650448 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+Error while processing TIC 75650448: No TESS data found for TIC 75650448.
+Skipping to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+09:47:45  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 183120439
+09:47:45  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 183120439' to TIC 183120439
+09:47:45  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 183120439 (matched 1 row(s))
+09:47:45  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 183120439 from local archive
+09:47:45  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 183120439
+2. Checking archival orbital period...
+09:47:45  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 183120439
+09:47:45  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 2.255446 d)
+3. Downloading TESS light curves from MAST...
+09:47:45  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 183120439
+09:47:45  INFO      tess_pipeline.data.download  [download] Starting download for TIC 183120439 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+09:48:06  INFO      tess_pipeline.data.download  [download] Found 6 available sector(s): [13, 27, 28, 67, 68, 95]
+09:48:06  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [27, 28]
+09:48:06  INFO      tess_pipeline.data.download  [download] Downloading 2 selected sector(s) from MAST
+09:48:13  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+09:48:13  INFO      tess_pipeline.data.download  [fits] Step 2/4: 2 FITS file(s) queued
+09:48:13  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/2: data/fits/tess2020186164531-s0027-0000000183120439-0189-s_lc.fits
+09:48:13  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/2: data/fits/tess2020212050318-s0028-0000000183120439-0190-s_lc.fits
+09:48:13  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 2 light curve(s) from local FITS in 0.1s
+09:48:13  INFO      tess_pipeline.data.download  [download] Completed TIC 183120439 download in 27.7s (2 sector file(s))
+09:48:13  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [27, 28]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+09:48:13  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+09:48:13  DEBUG     tess_pipeline.data.preprocess  Stitched 2 sectors → 31860 cadences
+09:48:13  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 31860 cadences remain
+09:48:14  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/01_raw.png
+09:48:14  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/02_flat.png
+5. Searching for transit signals...
+09:48:14  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 2.255446 d; refining...
+09:48:14  INFO      tess_pipeline.transit.detection  Running TLS (period 2.3–2.3 d)
+09:48:14  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=34, dur_step=1.10)
+09:48:14  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 2.2509350082, 'period_max': 2.2599567917999996, 'duration_grid_step': 1.1, 'oversampling_factor': 34}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 25 durations
+Searching 31860 data points, 68 periods from 2.251 to 2.26 days
+Using all 32 CPU threads
+09:48:23  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+09:48:23  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2037.8984...
+09:48:24  INFO      tess_pipeline.transit.tls  TLS: period=2.255475 d, epoch=2037.9076, duration=1.27 h, depth=0.005163, SDE=1.51
+09:48:24  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 1 planet candidate(s).
+09:48:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/03_tls_periodogram.png
+09:48:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/tls_periodogram_coarse_p0.png
+09:48:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/tls_periodogram_fine_p0.png
+09:48:25  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+09:48:25  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+09:48:27  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+09:48:27  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+09:48:27  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 183120439 (matched 1 row(s))
+09:48:27  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 1.2966100 from local NASA archive
+7. Characterizing host star properties...
+09:48:27  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+09:48:27  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+09:48:28  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+09:48:28  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=5817.0, logg=4.23360013961792, feh=None, r_star=1.297, m_star=1.0499999523162842, parallax=None
+09:48:28  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 183120439 measurements
+09:48:29  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=5880.0, logg=4.28000020980835, feh=0.23999999463558197, parallax=2.4398
+8. Skipping SDSS checking (disabled in this version)...
+09:48:29  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+09:48:29  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+09:48:29  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=31860 points, 1 planets)
+09:48:29  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+09:48:29  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.080   127     1.53 s/draw    0:25…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.081   127     1.81 s/draw    0:30…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.067   63      2.35 s/draw    0:39…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.076   127     1.79 s/draw    0:29…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.077   63      2.42 s/draw    0:40…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+10:30:04  INFO      tess_pipeline.inference.bayesian  Sampling complete
+10:30:10  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/06_bayesian_fit.png
+10:30:12  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/07_corner.png
+10:30:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/08_trace.png
+10:30:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/09_posterior_predictive.png
+10:30:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+10:30:15  INFO      tess_pipeline.inference.diagnostics  Convergence OK (R̂_max=1.0087, ESS_min=867, divergences=0)
+12. Generating figures...
+10:30:15  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 183120439
+============================================================
+  Period         : 2.255475 d  [archive]
+  Epoch (t0)     : 2037.907577233688
+  Duration (T14) : 1.273 h
+  Depth          : 0.005163
+  Detection stat : SDE = 1.5
+  R★             : 1.297 R_Sun
+  M★             : 1.0499999523162842 M_Sun
+  Teff           : 5817.0 K
+  ρ★             : 0.6784833262265797 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 11.76 ± 1.234
+    a_au           : 0.03516 ± 0.002384
+    a_r_star       : 5.845 ± 0.2774
+    t_eq           : 1703 ± 62.26
+    rp_r_star      : 0.08252 ± 0.007835
+    b              : 0.9104 ± 0.02085
+    t14_hr         : 1.756 ± 0.05959
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.0087
+  ESS (min)      : 867
+============================================================
+
+Saving results and diagnostic plots...
+10:30:20  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439
+10:30:20  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/TIC183120439_summary.csv
+10:30:20  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/TIC183120439_metadata.json
+10:30:25  DEBUG     tess_pipeline.io.export  Saved posterior: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/TIC183120439_posterior.nc
+10:30:25  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/TIC183120439_lightcurve.fits
+10:30:25  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/01_raw.png
+10:30:25  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/02_flat.png
+10:30:26  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/03_tls_periodogram.png
+10:30:26  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/03_tls_periodogram_coarse_p0.png
+10:30:26  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/03_tls_periodogram_fine_p0.png
+10:30:26  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/04_phase.png
+10:30:26  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/05_residuals.png
+10:30:27  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/06_bayesian_fit.png
+10:30:27  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/10_gp_acf.png
+10:30:27  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/11_transit_stack_p0.png
+10:30:28  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/04_mcmc_phase_p0.png
+10:30:29  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/07_corner.png
+10:30:29  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/08_trace.png
+10:30:29  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/plots/09_posterior_predictive.png
+10:30:29  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/data_for_plots/periodogram_data.npz
+10:30:32  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/data_for_plots/lightcurve_model_data.npz
+10:30:33  DEBUG     tess_pipeline.io.export  Saved MCMC posterior NetCDF: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/data_for_plots/mcmc_posterior.nc
+10:30:33  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/recreate_plots.py
+10:30:33  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/report.html
+10:30:41  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439/TIC183120439_report.pdf
+10:30:41  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_500_draws_5_chains/TIC 183120439
+Done! Bayesian test completed successfully.
+
+Completed analysis for TIC 183120439. Moving to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+10:30:41  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 94986319
+10:30:41  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 94986319' to TIC 94986319
+10:30:41  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 94986319 (matched 2 row(s))
+10:30:41  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 94986319 from local archive
+10:30:41  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 94986319
+2. Checking archival orbital period...
+10:30:41  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 94986319
+10:30:41  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 2 planets (Primary: 16.067522 d)
+10:30:41  INFO      tess_pipeline.analysis.stages.period  No max_planets provided; defaulting to number of literature entries (2)
+3. Downloading TESS light curves from MAST...
+10:30:41  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 94986319
+10:30:41  INFO      tess_pipeline.data.download  [download] Starting download for TIC 94986319 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+10:30:45  INFO      tess_pipeline.data.download  [download] Found 4 available sector(s): [5, 6, 32, 98]
+10:30:45  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [5, 6]
+10:30:45  INFO      tess_pipeline.data.download  [download] Downloading 2 selected sector(s) from MAST
+10:30:51  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+10:30:51  INFO      tess_pipeline.data.download  [fits] Step 2/4: 2 FITS file(s) queued
+10:30:51  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/2: data/fits/tess2018319095959-s0005-0000000094986319-0125-s_lc.fits
+10:30:52  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/2: data/fits/tess2018349182500-s0006-0000000094986319-0126-s_lc.fits
+10:30:52  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 2 light curve(s) from local FITS in 0.1s
+10:30:52  INFO      tess_pipeline.data.download  [download] Completed TIC 94986319 download in 10.8s (2 sector file(s))
+10:30:52  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [5, 6]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+10:30:52  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+10:30:52  DEBUG     tess_pipeline.data.preprocess  Stitched 2 sectors → 31932 cadences
+10:30:52  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 31932 cadences remain
+10:30:52  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/01_raw.png
+10:30:53  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/02_flat.png
+5. Searching for transit signals...
+10:30:53  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 16.067522 d; refining...
+10:30:53  INFO      tess_pipeline.transit.detection  Running TLS (period 16.1–16.1 d)
+10:30:53  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=300, dur_step=1.10)
+10:30:53  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 16.057522, 'period_max': 16.077522000000002, 'duration_grid_step': 1.1, 'oversampling_factor': 300}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 31932 data points, 101 periods from 16.058 to 16.077 days
+Using all 32 CPU threads
+10:31:02  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 128 points...
+10:31:02  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1440.1438...
+10:31:03  INFO      tess_pipeline.transit.tls  TLS: period=16.068881 d, epoch=1440.1316, duration=2.52 h, depth=0.003085, SDE=1.23
+10:31:03  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 2: 5.197686 d; refining...
+10:31:03  INFO      tess_pipeline.transit.detection  Running TLS (period 5.2–5.2 d)
+10:31:03  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=77, dur_step=1.10)
+10:31:03  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 5.187685800000001, 'period_max': 5.2076858, 'duration_grid_step': 1.1, 'oversampling_factor': 77}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 31483 data points, 118 periods from 5.188 to 5.208 days
+Using all 32 CPU threads
+10:31:12  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+10:31:12  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1441.3002...
+10:31:12  INFO      tess_pipeline.transit.tls  TLS: period=5.197355 d, epoch=1441.2847, duration=0.81 h, depth=0.000512, SDE=1.82
+10:31:12  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+10:31:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/03_tls_periodogram.png
+10:31:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/tls_periodogram_coarse_p0.png
+10:31:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/tls_periodogram_fine_p0.png
+10:31:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/tls_periodogram_coarse_p1.png
+10:31:13  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/tls_periodogram_fine_p1.png
+10:31:14  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+10:31:14  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+10:31:16  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+10:31:16  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+10:31:16  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 94986319 (matched 2 row(s))
+10:31:16  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 0.8601240 from local NASA archive
+7. Characterizing host star properties...
+10:31:16  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+10:31:16  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+10:31:17  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+10:31:17  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=5320.0, logg=4.532700061798096, feh=None, r_star=0.86, m_star=0.9200000166893005, parallax=None
+10:31:17  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 94986319 measurements
+10:31:18  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=5466.0, logg=4.489999771118164, feh=-0.05999999865889549, parallax=13.3337
+8. Skipping SDSS checking (disabled in this version)...
+10:31:18  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+10:31:18  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+10:31:18  INFO      tess_pipeline.analysis.stages.inference  Second candidate probability (7.0%) is below 75% threshold. Skipping multi-planet MCMC fit and proceeding with 1-planet model.
+10:31:18  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=31932 points, 1 planets)
+10:31:18  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+10:31:18  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.239   63      2.34 s/draw    0:38…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.184   63      1.76 s/draw    0:29…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.044   255     3.82 s/draw    1:03…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.178   63      2.63 s/draw    0:43…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.202   31      1.75 s/draw    0:29…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+11:36:13  INFO      tess_pipeline.inference.bayesian  Sampling complete
+11:36:19  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/06_bayesian_fit.png
+11:36:21  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/07_corner.png
+11:36:22  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/08_trace.png
+11:36:22  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/09_posterior_predictive.png
+11:36:23  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+11:36:24  INFO      tess_pipeline.inference.diagnostics  Convergence OK (R̂_max=1.0092, ESS_min=954, divergences=0)
+12. Generating figures...
+11:36:24  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 94986319
+============================================================
+  Period         : 16.068881 d  [archive]
+  Epoch (t0)     : 1440.1315856044846
+  Duration (T14) : 2.524 h
+  Depth          : 0.003085
+  Detection stat : SDE = 1.2
+  R★             : 0.86 R_Sun
+  M★             : 0.9200000166893005 M_Sun
+  Teff           : 5320.0 K
+  ρ★             : 2.0392116787346453 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 5.167 ± 0.2905
+    a_au           : 0.1269 ± 0.008978
+    a_r_star       : 31.77 ± 1.426
+    t_eq           : 667.8 ± 22.32
+    rp_r_star      : 0.05483 ± 0.000916
+    b              : 0.7806 ± 0.02397
+    t14_hr         : 2.745 ± 0.0396
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.0092
+  ESS (min)      : 954
+============================================================
+
+Saving results and diagnostic plots...
+11:36:32  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319
+11:36:32  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/TIC94986319_summary.csv
+11:36:32  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/TIC94986319_metadata.json
+11:36:37  DEBUG     tess_pipeline.io.export  Saved posterior: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/TIC94986319_posterior.nc
+11:36:37  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/TIC94986319_lightcurve.fits
+11:36:37  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/01_raw.png
+11:36:37  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/02_flat.png
+11:36:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/03_tls_periodogram.png
+11:36:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/03_tls_periodogram_coarse_p0.png
+11:36:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/03_tls_periodogram_fine_p0.png
+11:36:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/03_tls_periodogram_coarse_p1.png
+11:36:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/03_tls_periodogram_fine_p1.png
+11:36:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/04_phase_p0.png
+11:36:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/04_phase_p1.png
+11:36:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/05_residuals.png
+11:36:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/06_bayesian_fit.png
+11:36:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/10_gp_acf.png
+11:36:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/11_transit_stack_p0.png
+11:36:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/04_mcmc_phase_p0.png
+11:36:41  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/07_corner.png
+11:36:41  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/08_trace.png
+11:36:42  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/plots/09_posterior_predictive.png
+11:36:42  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/data_for_plots/periodogram_data.npz
+11:36:44  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/data_for_plots/lightcurve_model_data.npz
+11:36:45  DEBUG     tess_pipeline.io.export  Saved MCMC posterior NetCDF: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/data_for_plots/mcmc_posterior.nc
+11:36:45  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/recreate_plots.py
+11:36:45  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/report.html
+11:36:53  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319/TIC94986319_report.pdf
+11:36:53  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_500_draws_5_chains/TIC 94986319
+Done! Bayesian test completed successfully.
+
+Completed analysis for TIC 94986319. Moving to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+11:36:53  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 178819686
+11:36:53  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 178819686' to TIC 178819686
+11:36:53  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 178819686 (matched 2 row(s))
+11:36:53  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 178819686 from local archive
+11:36:53  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 178819686
+2. Checking archival orbital period...
+11:36:53  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 178819686
+11:36:53  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 2 planets (Primary: 5.605775 d)
+11:36:53  INFO      tess_pipeline.analysis.stages.period  No max_planets provided; defaulting to number of literature entries (2)
+3. Downloading TESS light curves from MAST...
+11:36:53  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 178819686
+11:36:53  INFO      tess_pipeline.data.download  [download] Starting download for TIC 178819686 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+11:36:56  INFO      tess_pipeline.data.download  [download] Found 5 available sector(s): [10, 37, 64, 101, 102]
+11:36:56  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [101, 102]
+11:36:56  INFO      tess_pipeline.data.download  [download] Downloading 2 selected sector(s) from MAST
+11:37:03  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+11:37:03  INFO      tess_pipeline.data.download  [fits] Step 2/4: 2 FITS file(s) queued
+11:37:03  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/2: data/fits/tess2026060005000-s0101-0000000178819686-0303-s_lc.fits
+11:37:03  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/2: data/fits/tess2026086090000-s0102-0000000178819686-0304-s_lc.fits
+11:37:03  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 2 light curve(s) from local FITS in 0.2s
+11:37:03  INFO      tess_pipeline.data.download  [download] Completed TIC 178819686 download in 9.6s (2 sector file(s))
+11:37:03  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [101, 102]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+11:37:03  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+11:37:03  DEBUG     tess_pipeline.data.preprocess  Stitched 2 sectors → 31469 cadences
+11:37:04  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 31469 cadences remain
+11:37:04  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/01_raw.png
+11:37:04  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/02_flat.png
+5. Searching for transit signals...
+11:37:04  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 5.605775 d; refining...
+11:37:04  INFO      tess_pipeline.transit.detection  Running TLS (period 5.6–5.6 d)
+11:37:04  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=94, dur_step=1.10)
+11:37:04  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 5.5957748, 'period_max': 5.6157748, 'duration_grid_step': 1.1, 'oversampling_factor': 94}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 31469 data points, 125 periods from 5.596 to 5.616 days
+Using all 32 CPU threads
+11:37:14  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+11:37:14  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=4105.8942...
+11:37:15  INFO      tess_pipeline.transit.tls  TLS: period=5.605662 d, epoch=4105.9202, duration=2.70 h, depth=0.000582, SDE=1.54
+11:37:15  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 2: 12.277244 d; refining...
+11:37:15  INFO      tess_pipeline.transit.detection  Running TLS (period 12.3–12.3 d)
+11:37:15  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=300, dur_step=1.10)
+11:37:15  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 12.267244400000001, 'period_max': 12.2872444, 'duration_grid_step': 1.1, 'oversampling_factor': 300}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 30508 data points, 140 periods from 12.267 to 12.287 days
+Using all 32 CPU threads
+11:37:24  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 114 points...
+11:37:24  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=4102.0634...
+11:37:25  INFO      tess_pipeline.transit.tls  TLS: period=12.273337 d, epoch=4102.1026, duration=1.73 h, depth=0.000606, SDE=1.37
+11:37:25  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+11:37:25  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/03_tls_periodogram.png
+11:37:26  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/tls_periodogram_coarse_p0.png
+11:37:26  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/tls_periodogram_fine_p0.png
+11:37:26  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/tls_periodogram_coarse_p1.png
+11:37:26  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/tls_periodogram_fine_p1.png
+11:37:26  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+11:37:26  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+11:37:28  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+11:37:28  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+11:37:28  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 178819686 (matched 2 row(s))
+11:37:28  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 0.9067610 from local NASA archive
+7. Characterizing host star properties...
+11:37:28  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+11:37:28  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+11:37:31  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+11:37:31  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=5521.0, logg=4.509900093078613, feh=None, r_star=0.907, m_star=0.9700000286102295, parallax=None
+11:37:31  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 178819686 measurements
+11:37:32  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=5550.0, logg=4.458000183105469, feh=-0.10999999940395355, parallax=10.4655
+8. Skipping SDSS checking (disabled in this version)...
+11:37:32  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+11:37:32  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+11:37:32  INFO      tess_pipeline.analysis.stages.inference  Second candidate probability (5.7%) is below 75% threshold. Skipping multi-planet MCMC fit and proceeding with 1-planet model.
+11:37:32  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=31469 points, 1 planets)
+11:37:32  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+11:37:32  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.025   127     2.94 s/draw    0:49…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.001   1023    7.57 s/draw    2:06…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.147   63      2.01 s/draw    0:33…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.027   127     2.68 s/draw    0:44…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.041   255     2.85 s/draw    0:47…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+13:45:11  INFO      tess_pipeline.inference.bayesian  Sampling complete
+13:45:17  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/06_bayesian_fit.png
+13:45:23  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/07_corner.png
+13:45:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/08_trace.png
+13:45:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/09_posterior_predictive.png
+13:45:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+13:45:27  WARNING   tess_pipeline.inference.diagnostics  Convergence issues detected (see ConvergenceWarning)
+12. Generating figures...
+13:45:27  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 178819686
+============================================================
+  Period         : 5.605662 d  [archive]
+  Epoch (t0)     : 4105.9202419780695
+  Duration (T14) : 2.697 h
+  Depth          : 0.000582
+  Detection stat : SDE = 1.5
+  R★             : 0.907 R_Sun
+  M★             : 0.9700000286102295 M_Sun
+  Teff           : 5521.0 K
+  ρ★             : 1.8328195729939614 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 1.355 ± 0.4173
+    a_au           : 0.05883 ± 0.006138
+    a_r_star       : 14.08 ± 1.167
+    t_eq           : 1041 ± 49
+    rp_r_star      : 0.01365 ± 0.004097
+    b              : 0.2196 ± 0.252
+    t14_hr         : 2.951 ± 0.4323
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.9009
+  ESS (min)      : 7
+============================================================
+
+Saving results and diagnostic plots...
+13:45:32  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686
+13:45:32  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/TIC178819686_summary.csv
+13:45:32  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/TIC178819686_metadata.json
+13:45:38  DEBUG     tess_pipeline.io.export  Saved posterior: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/TIC178819686_posterior.nc
+13:45:38  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/TIC178819686_lightcurve.fits
+13:45:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/01_raw.png
+13:45:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/02_flat.png
+13:45:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/03_tls_periodogram.png
+13:45:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/03_tls_periodogram_coarse_p0.png
+13:45:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/03_tls_periodogram_fine_p0.png
+13:45:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/03_tls_periodogram_coarse_p1.png
+13:45:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/03_tls_periodogram_fine_p1.png
+13:45:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/04_phase_p0.png
+13:45:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/04_phase_p1.png
+13:45:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/05_residuals.png
+13:45:41  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/06_bayesian_fit.png
+13:45:41  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/10_gp_acf.png
+13:45:41  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/11_transit_stack_p0.png
+13:45:41  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/04_mcmc_phase_p0.png
+13:45:42  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/07_corner.png
+13:45:43  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/08_trace.png
+13:45:43  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/plots/09_posterior_predictive.png
+13:45:43  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/data_for_plots/periodogram_data.npz
+13:45:45  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/data_for_plots/lightcurve_model_data.npz
+13:45:47  DEBUG     tess_pipeline.io.export  Saved MCMC posterior NetCDF: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/data_for_plots/mcmc_posterior.nc
+13:45:47  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/recreate_plots.py
+13:45:47  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/report.html
+13:45:55  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686/TIC178819686_report.pdf
+13:45:55  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_500_draws_5_chains/TIC 178819686
+Done! Bayesian test completed successfully.
+
+Completed analysis for TIC 178819686. Moving to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+13:45:55  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 258510872
+13:45:55  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 258510872' to TIC 258510872
+13:45:55  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 258510872 (matched 1 row(s))
+13:45:55  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 258510872 from local archive
+13:45:55  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 258510872
+2. Checking archival orbital period...
+13:45:55  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 258510872
+13:45:56  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 6.544066 d)
+3. Downloading TESS light curves from MAST...
+13:45:56  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 258510872
+13:45:56  INFO      tess_pipeline.data.download  [download] Starting download for TIC 258510872 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+13:46:00  INFO      tess_pipeline.data.download  [download] Found 20 available sector(s): [24, 25, 48, 51, 52, 55, 56, 57, 58, 59, 75, 76, 77, 78, 79, 82, 83, 84, 85, 86]
+13:46:00  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [55, 56, 57, 58, 59]
+13:46:00  INFO      tess_pipeline.data.download  [download] Downloading 5 selected sector(s) from MAST
+13:46:16  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+13:46:16  INFO      tess_pipeline.data.download  [fits] Step 2/4: 5 FITS file(s) queued
+13:46:16  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/5: data/fits/tess2022217014003-s0055-0000000258510872-0242-s_lc.fits
+13:46:16  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/5: data/fits/tess2022244194134-s0056-0000000258510872-0243-s_lc.fits
+13:46:16  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 3/5: data/fits/tess2022273165103-s0057-0000000258510872-0245-s_lc.fits
+13:46:17  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 4/5: data/fits/tess2022302161335-s0058-0000000258510872-0247-s_lc.fits
+13:46:17  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 5/5: data/fits/tess2022330142927-s0059-0000000258510872-0248-s_lc.fits
+13:46:17  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 5 light curve(s) from local FITS in 0.4s
+13:46:17  INFO      tess_pipeline.data.download  [download] Completed TIC 258510872 download in 21.2s (5 sector file(s))
+13:46:17  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [55, 56, 57, 58, 59]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+13:46:17  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+13:46:17  DEBUG     tess_pipeline.data.preprocess  Stitched 5 sectors → 88567 cadences
+13:46:18  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 88567 cadences remain
+13:46:18  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/01_raw.png
+13:46:19  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/02_flat.png
+5. Searching for transit signals...
+13:46:19  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 6.544066 d; refining...
+13:46:19  INFO      tess_pipeline.transit.detection  Running TLS (period 6.5–6.6 d)
+13:46:19  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=46, dur_step=1.10)
+13:46:19  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 6.5340665, 'period_max': 6.554066499999999, 'duration_grid_step': 1.1, 'oversampling_factor': 46}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 88567 data points, 139 periods from 6.534 to 6.554 days
+Using all 32 CPU threads
+13:46:30  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+13:46:31  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2802.4556...
+13:46:33  INFO      tess_pipeline.transit.tls  TLS: period=6.544205 d, epoch=2802.4370, duration=3.91 h, depth=0.006573, SDE=1.55
+13:46:33  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 1 planet candidate(s).
+13:46:33  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/03_tls_periodogram.png
+13:46:33  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/tls_periodogram_coarse_p0.png
+13:46:33  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/tls_periodogram_fine_p0.png
+13:46:34  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+13:46:34  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+13:46:36  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+13:46:36  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+13:46:36  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 258510872 (matched 1 row(s))
+13:46:36  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 1.7600000 from local NASA archive
+7. Characterizing host star properties...
+13:46:36  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+13:46:36  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+13:46:38  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+13:46:38  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=6232.0, logg=4.027299880981445, feh=None, r_star=1.758, m_star=1.2000000476837158, parallax=None
+13:46:38  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 258510872 measurements
+13:46:40  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP at coordinates RA=304.66522338755215, DEC=66.15595365649796 for measurements
+13:46:40  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=None, logg=None, feh=None, parallax=1.7541
+8. Skipping SDSS checking (disabled in this version)...
+13:46:40  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+13:46:40  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+13:46:40  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=88567 points, 1 planets)
+13:46:40  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+13:46:41  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.247   63      4.89 s/draw    1:21…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.174   63      3.92 s/draw    1:05…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.230   63      3.01 s/draw    0:50…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.238   63      3.99 s/draw    1:06…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.194   63      5.04 s/draw    1:23…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+15:12:26  INFO      tess_pipeline.inference.bayesian  Sampling complete
+15:12:41  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/06_bayesian_fit.png
+15:12:43  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/07_corner.png
+15:12:44  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/08_trace.png
+15:12:44  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/09_posterior_predictive.png
+15:12:45  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+15:12:46  INFO      tess_pipeline.inference.diagnostics  Convergence OK (R̂_max=1.0054, ESS_min=1208, divergences=0)
+12. Generating figures...
+15:12:46  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 258510872
+============================================================
+  Period         : 6.544205 d  [archive]
+  Epoch (t0)     : 2802.437039326553
+  Duration (T14) : 3.906 h
+  Depth          : 0.006573
+  Detection stat : SDE = 1.6
+  R★             : 1.758 R_Sun
+  M★             : 1.2000000476837158 M_Sun
+  Teff           : 6232.0 K
+  ρ★             : 0.3113826994384109 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 15.24 ± 0.8985
+    a_au           : 0.07841 ± 0.005327
+    a_r_star       : 9.603 ± 0.3549
+    t_eq           : 1421 ± 42.49
+    rp_r_star      : 0.07941 ± 0.000771
+    b              : 0.722 ± 0.02748
+    t14_hr         : 4.195 ± 0.04812
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.0054
+  ESS (min)      : 1208
+============================================================
+
+Saving results and diagnostic plots...
+15:12:59  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872
+15:12:59  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/TIC258510872_summary.csv
+15:12:59  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/TIC258510872_metadata.json
+15:13:06  DEBUG     tess_pipeline.io.export  Saved posterior: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/TIC258510872_posterior.nc
+15:13:06  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/TIC258510872_lightcurve.fits
+15:13:06  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/01_raw.png
+15:13:06  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/02_flat.png
+15:13:07  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/03_tls_periodogram.png
+15:13:07  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/03_tls_periodogram_coarse_p0.png
+15:13:07  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/03_tls_periodogram_fine_p0.png
+15:13:07  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/04_phase.png
+15:13:07  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/05_residuals.png
+15:13:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/06_bayesian_fit.png
+15:13:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/10_gp_acf.png
+15:13:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/11_transit_stack_p0.png
+15:13:09  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/04_mcmc_phase_p0.png
+15:13:10  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/07_corner.png
+15:13:10  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/08_trace.png
+15:13:11  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/plots/09_posterior_predictive.png
+15:13:11  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/data_for_plots/periodogram_data.npz
+15:13:17  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/data_for_plots/lightcurve_model_data.npz
+15:13:21  DEBUG     tess_pipeline.io.export  Saved MCMC posterior NetCDF: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/data_for_plots/mcmc_posterior.nc
+15:13:21  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/recreate_plots.py
+15:13:21  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/report.html
+15:13:30  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872/TIC258510872_report.pdf
+15:13:30  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_500_draws_5_chains/TIC 258510872
+Done! Bayesian test completed successfully.
+
+Completed analysis for TIC 258510872. Moving to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+15:13:30  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 147977348
+15:13:30  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 147977348' to TIC 147977348
+15:13:30  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 147977348 (matched 1 row(s))
+15:13:30  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 147977348 from local archive
+15:13:30  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 147977348
+2. Checking archival orbital period...
+15:13:30  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 147977348
+15:13:30  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 5.003776 d)
+3. Downloading TESS light curves from MAST...
+15:13:30  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 147977348
+15:13:30  INFO      tess_pipeline.data.download  [download] Starting download for TIC 147977348 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+15:13:37  INFO      tess_pipeline.data.download  [download] Found 3 available sector(s): [33, 34, 87]
+15:13:37  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [33, 34]
+15:13:37  INFO      tess_pipeline.data.download  [download] Downloading 2 selected sector(s) from MAST
+15:13:44  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+15:13:44  INFO      tess_pipeline.data.download  [fits] Step 2/4: 2 FITS file(s) queued
+15:13:44  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/2: data/fits/tess2020351194500-s0033-0000000147977348-0203-s_lc.fits
+15:13:44  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/2: data/fits/tess2021014023720-s0034-0000000147977348-0204-s_lc.fits
+15:13:44  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 2 light curve(s) from local FITS in 0.2s
+15:13:44  INFO      tess_pipeline.data.download  [download] Completed TIC 147977348 download in 14.8s (2 sector file(s))
+15:13:44  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [33, 34]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+15:13:44  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+15:13:45  DEBUG     tess_pipeline.data.preprocess  Stitched 2 sectors → 34362 cadences
+15:13:45  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 34361 cadences remain
+15:13:45  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/01_raw.png
+15:13:46  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/02_flat.png
+5. Searching for transit signals...
+15:13:46  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 5.003776 d; refining...
+15:13:46  INFO      tess_pipeline.transit.detection  Running TLS (period 5.0–5.0 d)
+15:13:46  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=71, dur_step=1.10)
+15:13:46  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 4.9937758, 'period_max': 5.0137757999999994, 'duration_grid_step': 1.1, 'oversampling_factor': 71}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 34361 data points, 115 periods from 4.994 to 5.014 days
+Using all 32 CPU threads
+15:13:58  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+15:13:58  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2205.3243...
+15:13:59  INFO      tess_pipeline.transit.tls  TLS: period=5.003997 d, epoch=2205.3034, duration=2.60 h, depth=0.006552, SDE=1.34
+15:13:59  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 1 planet candidate(s).
+15:13:59  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/03_tls_periodogram.png
+15:13:59  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/tls_periodogram_coarse_p0.png
+15:14:00  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/tls_periodogram_fine_p0.png
+15:14:00  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+15:14:00  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+15:14:02  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+15:14:02  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+15:14:02  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 147977348 (matched 1 row(s))
+15:14:02  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 2.0900000 from local NASA archive
+7. Characterizing host star properties...
+15:14:02  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+15:14:02  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+15:14:04  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+15:14:04  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=6442.0, logg=3.912600040435791, feh=None, r_star=2.088, m_star=1.2999999523162842, parallax=None
+15:14:04  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 147977348 measurements
+15:14:05  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=6342.0, logg=4.14300012588501, feh=0.12700000405311584, parallax=2.9493
+8. Skipping SDSS checking (disabled in this version)...
+15:14:05  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+15:14:05  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+15:14:05  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=34361 points, 1 planets)
+15:14:05  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+15:14:05  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.044   127     2.89 s/draw    0:48…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.028   127     2.72 s/draw    0:45…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.049   511     4.32 s/draw    1:11…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.034   127     2.68 s/draw    0:44…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.045   63      3.50 s/draw    0:58…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+16:27:38  INFO      tess_pipeline.inference.bayesian  Sampling complete
+16:27:44  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/06_bayesian_fit.png
+16:27:46  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/07_corner.png
+16:27:47  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/08_trace.png
+16:27:47  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/09_posterior_predictive.png
+16:27:48  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+16:27:49  INFO      tess_pipeline.inference.diagnostics  Convergence OK (R̂_max=1.0080, ESS_min=710, divergences=0)
+12. Generating figures...
+16:27:49  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 147977348
+============================================================
+  Period         : 5.003997 d  [archive]
+  Epoch (t0)     : 2205.3033959981844
+  Duration (T14) : 2.599 h
+  Depth          : 0.006552
+  Detection stat : SDE = 1.3
+  R★             : 2.088 R_Sun
+  M★             : 1.2999999523162842 M_Sun
+  Teff           : 6442.0 K
+  ρ★             : 0.20133611380934216 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 20.14 ± 1.184
+    a_au           : 0.0654 ± 0.003894
+    a_r_star       : 6.715 ± 0.1939
+    t_eq           : 1759 ± 44.96
+    rp_r_star      : 0.08803 ± 0.002462
+    b              : 0.8873 ± 0.01346
+    t14_hr         : 3.627 ± 0.0472
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.0080
+  ESS (min)      : 710
+============================================================
+
+Saving results and diagnostic plots...
+16:34:05  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348
+16:34:05  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/TIC147977348_summary.csv
+16:34:05  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/TIC147977348_metadata.json
+16:34:11  DEBUG     tess_pipeline.io.export  Saved posterior: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/TIC147977348_posterior.nc
+16:34:11  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/TIC147977348_lightcurve.fits
+16:34:11  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/01_raw.png
+16:34:11  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/02_flat.png
+16:34:12  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/03_tls_periodogram.png
+16:34:12  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/03_tls_periodogram_coarse_p0.png
+16:34:12  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/03_tls_periodogram_fine_p0.png
+16:34:12  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/04_phase.png
+16:34:12  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/05_residuals.png
+16:34:13  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/06_bayesian_fit.png
+16:34:13  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/10_gp_acf.png
+16:34:13  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/11_transit_stack_p0.png
+16:34:13  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/04_mcmc_phase_p0.png
+16:34:15  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/07_corner.png
+16:34:15  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/08_trace.png
+16:34:15  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/plots/09_posterior_predictive.png
+16:34:15  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/data_for_plots/periodogram_data.npz
+16:34:18  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/data_for_plots/lightcurve_model_data.npz
+16:34:19  DEBUG     tess_pipeline.io.export  Saved MCMC posterior NetCDF: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/data_for_plots/mcmc_posterior.nc
+16:34:19  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/recreate_plots.py
+16:34:19  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/report.html
+16:34:27  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348/TIC147977348_report.pdf
+16:34:27  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_500_draws_5_chains/TIC 147977348
+Done! Bayesian test completed successfully.
+
+Completed analysis for TIC 147977348. Moving to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+16:34:27  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 12421862
+16:34:27  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 12421862' to TIC 12421862
+16:34:27  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 12421862 (matched 1 row(s))
+16:34:27  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 12421862 from local archive
+16:34:27  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 12421862
+2. Checking archival orbital period...
+16:34:27  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 12421862
+16:34:27  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 10.215203 d)
+3. Downloading TESS light curves from MAST...
+16:34:27  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 12421862
+16:34:27  INFO      tess_pipeline.data.download  [download] Starting download for TIC 12421862 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+16:34:29  INFO      tess_pipeline.data.download  [download] Found 4 available sector(s): [2, 29, 69, 96]
+16:34:29  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [2]
+16:34:29  INFO      tess_pipeline.data.download  [download] Downloading 1 selected sector(s) from MAST
+16:34:33  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+16:34:33  INFO      tess_pipeline.data.download  [fits] Step 2/4: 1 FITS file(s) queued
+16:34:33  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/1: data/fits/tess2018234235059-s0002-0000000012421862-0121-s_lc.fits
+16:34:33  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 1 light curve(s) from local FITS in 0.1s
+16:34:33  INFO      tess_pipeline.data.download  [download] Completed TIC 12421862 download in 6.1s (1 sector file(s))
+16:34:33  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [2]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+16:34:33  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+16:34:33  DEBUG     tess_pipeline.data.preprocess  Stitched 1 sectors → 18297 cadences
+16:34:34  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 18297 cadences remain
+16:34:34  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/01_raw.png
+16:34:34  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/02_flat.png
+5. Searching for transit signals...
+16:34:34  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 10.215203 d; refining...
+16:34:34  INFO      tess_pipeline.transit.detection  Running TLS (period 10.2–10.2 d)
+16:34:34  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=300, dur_step=1.10)
+16:34:34  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 10.2052025, 'period_max': 10.2252025, 'duration_grid_step': 1.1, 'oversampling_factor': 300}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 18297 data points, 98 periods from 10.205 to 10.225 days
+Using all 32 CPU threads
+16:34:44  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 128 points...
+16:34:44  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1356.3657...
+16:34:45  INFO      tess_pipeline.transit.tls  TLS: period=10.216759 d, epoch=1356.3702, duration=2.15 h, depth=0.001011, SDE=0.93
+16:34:45  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 1 planet candidate(s).
+16:34:45  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/03_tls_periodogram.png
+16:34:45  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/tls_periodogram_coarse_p0.png
+16:34:45  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/tls_periodogram_fine_p0.png
+16:34:46  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+16:34:46  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+16:34:48  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+16:34:48  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: teff not available for this source
+16:34:48  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star', 'teff', 'logg'] missing in Gaia DR3; checking local NASA TOI archive
+16:34:48  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 12421862 (matched 1 row(s))
+16:34:48  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 0.4473360 from local NASA archive
+16:34:48  INFO      tess_pipeline.analysis.stages.stellar  Retrieved teff = 3763.0000000 from local NASA archive
+16:34:48  INFO      tess_pipeline.analysis.stages.stellar  Retrieved logg = 4.8373900 from local NASA archive
+7. Characterizing host star properties...
+16:34:48  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+16:34:48  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+16:34:49  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+16:34:49  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=3782.0, logg=4.783899784088135, feh=None, r_star=0.447, m_star=0.4440000057220459, parallax=None
+16:34:49  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 12421862 measurements
+16:34:51  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=3801.0, logg=4.710000038146973, feh=-0.6600000262260437, parallax=42.0592
+8. Skipping SDSS checking (disabled in this version)...
+16:34:51  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+16:34:51  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+16:34:51  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=18297 points, 1 planets)
+16:34:51  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+16:34:51  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.111   63      1.20 draws/s   0:13…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.087   63      1.04 s/draw    0:17…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.148   63      1.32 draws/s   0:12…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.109   31      1.06 s/draw    0:17…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.067   63      1.03 s/draw    0:17…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+16:53:48  INFO      tess_pipeline.inference.bayesian  Sampling complete
+16:53:51  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/06_bayesian_fit.png
+16:53:53  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/07_corner.png
+16:53:54  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/08_trace.png
+16:53:54  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/09_posterior_predictive.png
+16:53:54  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+16:53:55  WARNING   tess_pipeline.inference.diagnostics  Convergence issues detected (see ConvergenceWarning)
+12. Generating figures...
+16:53:55  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 12421862
+============================================================
+  Period         : 10.216759 d  [archive]
+  Epoch (t0)     : 1356.3701936546704
+  Duration (T14) : 2.155 h
+  Depth          : 0.001011
+  Detection stat : SDE = 0.9
+  R★             : 0.447 R_Sun
+  M★             : 0.4440000057220459 M_Sun
+  Teff           : 3782.0 K
+  ρ★             : 7.008583220097891 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 1.398 ± 0.0951
+    a_au           : 0.07026 ± 0.002254
+    a_r_star       : 33.8 ± 1.084
+    t_eq           : 459.6 ± 14.38
+    rp_r_star      : 0.02863 ± 0.001948
+    b              : 0.3724 ± 0.1729
+    t14_hr         : 2.208 ± 0.1491
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.0148
+  ESS (min)      : 340
+============================================================
+
+Saving results and diagnostic plots...
+16:53:59  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862
+16:53:59  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/TIC12421862_summary.csv
+16:53:59  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/TIC12421862_metadata.json
+16:54:00  DEBUG     tess_pipeline.io.export  Saved posterior: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/TIC12421862_posterior.nc
+16:54:00  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/TIC12421862_lightcurve.fits
+16:54:00  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/01_raw.png
+16:54:00  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/02_flat.png
+16:54:00  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/03_tls_periodogram.png
+16:54:00  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/03_tls_periodogram_coarse_p0.png
+16:54:01  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/03_tls_periodogram_fine_p0.png
+16:54:01  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/04_phase.png
+16:54:01  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/05_residuals.png
+16:54:01  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/06_bayesian_fit.png
+16:54:02  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/10_gp_acf.png
+16:54:02  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/11_transit_stack_p0.png
+16:54:02  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/04_mcmc_phase_p0.png
+16:54:03  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/07_corner.png
+16:54:04  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/08_trace.png
+16:54:04  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/plots/09_posterior_predictive.png
+16:54:04  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/data_for_plots/periodogram_data.npz
+16:54:05  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/data_for_plots/lightcurve_model_data.npz
+16:54:06  DEBUG     tess_pipeline.io.export  Saved MCMC posterior NetCDF: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/data_for_plots/mcmc_posterior.nc
+16:54:06  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/recreate_plots.py
+16:54:06  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/report.html
+16:54:13  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862/TIC12421862_report.pdf
+16:54:13  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_500_draws_5_chains/TIC 12421862
+Done! Bayesian test completed successfully.
+
+Completed analysis for TIC 12421862. Moving to the next target...
+
+Initializing TESS Analysis for TIC 52368076 using Bayesian MCMC...
+1. Resolving target coordinates...
+16:54:13  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 258920431
+16:54:13  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 258920431' to TIC 258920431
+16:54:13  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 258920431 (matched 1 row(s))
+16:54:13  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 258920431 from local archive
+16:54:13  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 258920431
+2. Checking archival orbital period...
+16:54:13  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 258920431
+16:54:13  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 5.983945 d)
+3. Downloading TESS light curves from MAST...
+16:54:13  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 258920431
+16:54:13  INFO      tess_pipeline.data.download  [download] Starting download for TIC 258920431 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+16:54:15  INFO      tess_pipeline.data.download  [download] Found 28 available sector(s): [40, 41, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 73, 74, 76, 77, 79, 80, 81, 82, 83, 84, 85, 86]
+16:54:15  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+16:54:15  INFO      tess_pipeline.data.download  [download] Downloading 14 selected sector(s) from MAST
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 2/4: 14 FITS file(s) queued
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/14: data/fits/tess2021364111932-s0047-0000000258920431-0218-s_lc.fits
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/14: data/fits/tess2022027120115-s0048-0000000258920431-0219-s_lc.fits
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 3/14: data/fits/tess2022057073128-s0049-0000000258920431-0221-s_lc.fits
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 4/14: data/fits/tess2022085151738-s0050-0000000258920431-0222-s_lc.fits
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 5/14: data/fits/tess2022112184951-s0051-0000000258920431-0223-s_lc.fits
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 6/14: data/fits/tess2022138205153-s0052-0000000258920431-0224-s_lc.fits
+16:55:01  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 7/14: data/fits/tess2022164095748-s0053-0000000258920431-0226-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 8/14: data/fits/tess2022190063128-s0054-0000000258920431-0227-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 9/14: data/fits/tess2022217014003-s0055-0000000258920431-0242-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 10/14: data/fits/tess2022244194134-s0056-0000000258920431-0243-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 11/14: data/fits/tess2022273165103-s0057-0000000258920431-0245-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 12/14: data/fits/tess2022302161335-s0058-0000000258920431-0247-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 13/14: data/fits/tess2022330142927-s0059-0000000258920431-0248-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 14/14: data/fits/tess2022357055054-s0060-0000000258920431-0249-s_lc.fits
+16:55:02  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 14 light curve(s) from local FITS in 1.1s
+16:55:02  INFO      tess_pipeline.data.download  [download] Completed TIC 258920431 download in 49.0s (14 sector file(s))
+16:55:02  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
+4. Preprocessing light curves (stitching, cleaning, detrending)...
+16:55:02  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+16:55:03  DEBUG     tess_pipeline.data.preprocess  Stitched 14 sectors → 207436 cadences
+16:55:05  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 207435 cadences remain
+16:55:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/01_raw.png
+16:55:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/02_flat.png
+5. Searching for transit signals...
+16:55:05  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 5.983945 d; refining...
+16:55:05  INFO      tess_pipeline.transit.detection  Running TLS (period 6.0–6.0 d)
+16:55:05  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=14, dur_step=1.10)
+16:55:05  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 5.9739451, 'period_max': 5.9939450999999995, 'duration_grid_step': 1.1, 'oversampling_factor': 14}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 207435 data points, 130 periods from 5.974 to 5.994 days
+Using all 32 CPU threads
+16:55:22  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+16:55:23  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2582.2577...
+16:55:28  INFO      tess_pipeline.transit.tls  TLS: period=5.983969 d, epoch=2582.2395, duration=4.24 h, depth=0.003976, SDE=1.96
+16:55:29  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 1 planet candidate(s).
+16:55:29  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/03_tls_periodogram.png
+16:55:29  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/tls_periodogram_coarse_p0.png
+16:55:29  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/tls_periodogram_fine_p0.png
+16:55:29  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/04_phase.png
+6. Querying Gaia DR3 for stellar properties...
+16:55:29  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+16:55:31  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+16:55:31  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+16:55:31  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 258920431 (matched 1 row(s))
+16:55:31  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 1.7176100 from local NASA archive
+7. Characterizing host star properties...
+16:55:31  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+16:55:31  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+16:55:33  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+16:55:33  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=5609.0, logg=3.963900089263916, feh=None, r_star=1.718, m_star=0.9900000095367432, parallax=None
+16:55:33  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 258920431 measurements
+16:55:34  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=5609.0, logg=4.039999961853027, feh=0.23999999463558197, parallax=1.9405
+8. Skipping SDSS checking (disabled in this version)...
+16:55:34  INFO      tess_pipeline.analysis.stages.stellar  SDSS checking is disabled in this pipeline version
+9. Running Bayesian MCMC fit...
+16:55:34  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+16:55:34  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=207435 points, 1 planets)
+16:55:34  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+16:55:34  INFO      tess_pipeline.inference.bayesian  Sampling: 5 chains × 500 draws (tune=500, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   1000    0       0.124   255     17.93 s/draw   4:58…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.084   63      15.23 s/draw   4:13…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.117   31      11.35 s/draw   3:08…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.120   127     15.04 s/draw   4:10…   0:00…  
+  ━━━━━━━━━━━━━   1000    0       0.136   63      11.30 s/draw   3:08…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+21:57:00  INFO      tess_pipeline.inference.bayesian  Sampling complete
+21:57:46  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/06_bayesian_fit.png
+21:57:54  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/07_corner.png
+21:57:54  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/08_trace.png
+21:57:55  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/09_posterior_predictive.png
+21:57:56  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/05_residuals.png
+10. Deriving physical planetary parameters with uncertainty propagation...
+11. Checking MCMC sampler convergence...
+21:57:57  WARNING   tess_pipeline.inference.diagnostics  Convergence issues detected (see ConvergenceWarning)
+12. Generating figures...
+21:57:57  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+
+==================================================
+BAYESIAN FIT RESULTS SUMMARY
+==================================================
+============================================================
+  TESS Pipeline Results — TIC 258920431
+============================================================
+  Period         : 5.983969 d  [archive]
+  Epoch (t0)     : 2582.239507879725
+  Duration (T14) : 4.241 h
+  Depth          : 0.003976
+  Detection stat : SDE = 2.0
+  R★             : 1.718 R_Sun
+  M★             : 0.9900000095367432 M_Sun
+  Teff           : 5609.0 K
+  ρ★             : 0.2752552103244695 g/cm³
+------------------------------------------------------------
+  Bayesian planet 1 parameters:
+    rp_earth       : 11.19 ± 0.546
+    a_au           : 0.06653 ± 0.004176
+    a_r_star       : 8.36 ± 0.3396
+    t_eq           : 1373 ± 47.13
+    rp_r_star      : 0.05976 ± 0.0007776
+    b              : 0.3587 ± 0.1222
+    t14_hr         : 5.47 ± 0.04453
+------------------------------------------------------------
+  Divergences    : 0
+  R-hat (max)    : 1.0118
+  ESS (min)      : 782
+============================================================
+
+Saving results and diagnostic plots...
+21:58:27  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431
+21:58:27  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/TIC258920431_summary.csv
+21:58:27  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/TIC258920431_metadata.json
+21:58:37  WARNING   tess_pipeline.io.export  Could not save posterior: NetCDF: HDF error
+21:58:37  WARNING   tess_pipeline.io.export  Could not save light curve FITS: 65520 requested and 3968 written
+21:58:37  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/01_raw.png
+21:58:38  WARNING   tess_pipeline.io.export  Could not save figure 'flat': [Errno 122] Disk quota exceeded
+21:58:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/03_tls_periodogram.png
+21:58:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/03_tls_periodogram_coarse_p0.png
+21:58:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/03_tls_periodogram_fine_p0.png
+21:58:38  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/04_phase.png
+21:58:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/05_residuals.png
+21:58:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/06_bayesian_fit.png
+21:58:39  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/10_gp_acf.png
+21:58:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/11_transit_stack_p0.png
+21:58:40  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/04_mcmc_phase_p0.png
+21:58:41  WARNING   tess_pipeline.io.export  Could not save figure 'corner': [Errno 122] Disk quota exceeded
+21:58:42  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/08_trace.png
+21:58:42  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/plots/09_posterior_predictive.png
+21:58:42  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_500_draws_5_chains/TIC 258920431/data_for_plots/periodogram_data.npz
+21:59:05  WARNING   tess_pipeline.io.export  Could not save lightcurve model data: [Errno 122] Disk quota exceeded
+There are 1 HDF5 objects open!
+
+Report: open objects on 72057594037927951
+
+============================================================
+Finished at : Sat Jul 18 21:59:11 IST 2026
+Elapsed     : 27h 53m 40s
+Exit Status : 139
+============================================================
