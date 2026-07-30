@@ -104,6 +104,10 @@ class LightCurveStage:
             if epoch is None:
                 epoch = self.results.detection.get("epoch")
 
+        import os
+        tic_id = str(self.results.target.get("tic_id", "unknown"))
+        plots_dir = os.path.join(cfg.output_dir, f"TIC {tic_id}", "plots")
+
         lc = preprocess(
             self.raw_collection,
             period=period,
@@ -113,6 +117,8 @@ class LightCurveStage:
             flatten_window_length=cfg.flatten_window_length,
             flatten_polyorder=cfg.flatten_polyorder,
             flatten_break_tolerance=cfg.flatten_break_tolerance,
+            save_plots=cfg.plots,
+            output_dir=plots_dir,
         )
         self.results.lightcurve = lc
         return lc

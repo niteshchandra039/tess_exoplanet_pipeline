@@ -56,7 +56,7 @@ def search_period(
     bls_result: dict[str, Any] | None = None
 
     if method in ("tls", "both"):
-        log.info("Running TLS (period %.1f–%.1f d)", period_min, period_max)
+        log.info("Running TLS (period %.1f-%.1f d)", period_min, period_max)
         from tess_pipeline.transit.tls import run_tls
 
         tls_result = run_tls(
@@ -68,7 +68,7 @@ def search_period(
         )
 
     if method in ("bls", "both"):
-        log.info("Running BLS (period %.1f–%.1f d)", period_min, period_max)
+        log.info("Running BLS (period %.1f-%.1f d)", period_min, period_max)
         from tess_pipeline.transit.bls import run_bls
 
         bls_result = run_bls(lc, period_min=period_min, period_max=period_max)

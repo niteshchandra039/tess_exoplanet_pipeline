@@ -3,7 +3,7 @@ transit/tls.py — Transit Least Squares period search.
 
 Wraps the ``transitleastsquares`` package (Hippke et al. 2019).
 TLS uses realistic limb-darkened transit templates and achieves
-~10–17% higher recovery rates for small planets vs BLS.
+~10-17% higher recovery rates for small planets vs BLS.
 
 Reference: Hippke et al. 2019, A&A 623, A39
            https://doi.org/10.1051/0004-6361/201834672
