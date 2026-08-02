@@ -13,7 +13,7 @@ if str(SRC) not in sys.path:
 project = "TESS Exoplanet Pipeline"
 author = "Siya"
 copyright = f"2026, {author}"
-release = "0.1.0"
+release = "2.0.0"
 
 extensions = [
     "myst_parser",

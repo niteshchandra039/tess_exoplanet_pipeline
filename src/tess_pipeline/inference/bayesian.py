@@ -23,6 +23,69 @@ from tess_pipeline.utils.logging import get_logger
 log = get_logger(__name__)
 
 
+def _run_sampling_with_fallback(
+    sample_fn: Any,
+    *,
+    model: Any | None,
+    init_dict: dict[str, Any],
+    draws: int,
+    tune: int,
+    chains: int,
+    target_accept: float,
+    progressbar: bool = True,
+) -> Any:
+    """Run PyMC sampling with robust initialization fallbacks.
+
+    Strategy:
+    1) ``adapt_diag`` with curated initvals (no jitter)
+    2) ``prior`` without initvals
+
+    We explicitly avoid jitter-based init because constrained variables
+    (notably truncated GP hyperparameters) can be perturbed out of bounds,
+    producing NaN transformed values at startup.
+    """
+    try:
+        return sample_fn(
+            draws=draws,
+            tune=tune,
+            chains=chains,
+            cores=min(chains, 8),
+            target_accept=target_accept,
+            initvals=init_dict,
+            init="adapt_diag",
+            return_inferencedata=True,
+            progressbar=progressbar,
+        )
+    except Exception as exc:  # noqa: BLE001
+        # Catch initialization failures and retry with prior-based starts.
+        exc_str = str(exc)
+        if "SamplingError" not in exc_str and "initial" not in exc_str.lower():
+            raise
+
+        if model is not None and hasattr(model, "debug"):
+            try:
+                log.warning("Running model.debug() to inspect failing initialization")
+                model.debug()
+            except Exception as debug_exc:  # noqa: BLE001
+                log.warning("model.debug() failed: %s", debug_exc)
+
+        log.warning(
+            "PyMC sampling initialization failed; retrying with safer initialization: %s",
+            exc,
+        )
+        # Retry with prior-based initialization (no initvals).
+        return sample_fn(
+            draws=draws,
+            tune=tune,
+            chains=chains,
+            cores=min(chains, 8),
+            target_accept=target_accept,
+            init="prior",
+            return_inferencedata=True,
+            progressbar=progressbar,
+        )
+
+
 def run_bayesian_fit(
     lc: Any,
     *,
@@ -234,6 +297,8 @@ def run_bayesian_fit(
 
         # ── NUTS initialization and sampling ──────────────────────────────────
         rp_inits = np.array([math.sqrt(max(d, 1e-5)) for d in depths])
+        # Use conservative initvals: let PyMC draw constrained hyperparameters (log_sigma_gp, log_rho_gp)
+        # from the prior to avoid jitter-induced NaN values outside prior bounds.
         init_dict = {
             "period": periods,
             "t0": epochs,
@@ -242,8 +307,9 @@ def run_bayesian_fit(
             "q2": 0.3,
             "mean_flux": np.array([0.0]),
             "log_jitter": -6.0,
-            "log_sigma_gp": -3.0,
-            "log_rho_gp": np.log(10.0),
+            # NOTE: log_sigma_gp and log_rho_gp are NOT included here.
+            # PyMC will draw them from TruncatedNormal priors, which is more robust
+            # than providing explicit values that can be pushed out of bounds by jitter.
             "log_rp": np.log(rp_inits),
         }
         if fit_duration:
@@ -258,15 +324,14 @@ def run_bayesian_fit(
             "Sampling: %d chains × %d draws (tune=%d, target_accept=%.2f)",
             chains, draws, tune, target_accept,
         )
-        trace = pm.sample(
+        trace = _run_sampling_with_fallback(
+            pm.sample,
+            model=model,
+            init_dict=init_dict,
             draws=draws,
             tune=tune,
             chains=chains,
-            cores=min(chains, 8),
             target_accept=target_accept,
-            initvals=init_dict,
-            init="adapt_diag",
-            return_inferencedata=True,
             progressbar=True,
         )
         pm.compute_log_likelihood(trace)

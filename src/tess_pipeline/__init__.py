@@ -12,5 +12,5 @@ from tess_pipeline.analysis import TESSAnalysis
 from tess_pipeline.pipeline import Pipeline
 from tess_pipeline.results import PipelineResults
 
-__version__ = "0.1.0"
+__version__ = "2.0.0"
 __all__ = ["TESSAnalysis", "Pipeline", "PipelineResults", "__version__"]

@@ -1681,7 +1681,7 @@ def _save_html_report(results: "PipelineResults", target_dir: Path) -> None:
             <div class="subtitle">Target: {target_name} | Coordinates: RA={ra:.6f}&deg;, Dec={dec:.6f}&deg;</div>
         </div>
         <div>
-            <span class="badge badge-fits">Pipeline: v{data.get('metadata', {}).get('tess_pipeline_version', '0.1.0')}</span>
+            <span class="badge badge-fits">Pipeline: v{data.get('metadata', {}).get('tess_pipeline_version', '2.0.0')}</span>
         </div>
     </header>
 

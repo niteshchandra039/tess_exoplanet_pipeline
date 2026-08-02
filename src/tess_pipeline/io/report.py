@@ -188,7 +188,7 @@ def generate_pdf_report(results: "PipelineResults", output_dir: Path) -> Path:
         d = pdf.infodict()
         d["Title"] = f"TESS Pipeline Report — TIC {tic}"
         d["Subject"] = "Exoplanet transit characterization & validation"
-        d["Creator"] = f"tess_pipeline v{results.metadata.get('tess_pipeline_version', '0.1.0')}"
+        d["Creator"] = f"tess_pipeline v{results.metadata.get('tess_pipeline_version', '2.0.0')}"
 
     log.info("PDF report saved: %s", pdf_path)
     return pdf_path
