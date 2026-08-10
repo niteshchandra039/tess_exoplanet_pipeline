@@ -1,0 +1,62 @@
+exo_model
+============================================================
+                PBS JOB INFORMATION
+============================================================
+Job ID          : 30937.hn1
+Job Name        : run_1
+Queue           : regular
+Host            : hpc078
+Working Dir     : /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline
+Start Time      : Mon Aug 10 21:30:20 IST 2026
+Allocated CPUs  : Unknown
+============================================================
+
+Python executable:
+/mnt/home/project/cnitesh/.conda/envs/exo_model/bin/python
+
+Python 3.12.11
+
+Package versions:
+
+============================================================
+Starting Bayesian analysis...
+============================================================
+
+
+================================================================================
+TESS EXOPLANET PIPELINE
+================================================================================
+Target      : TIC 381979901
+Mode        : science
+Search      : TLS
+Backend     : exoplanet/PyMC
+Output      : output_bayesian_sector_longest_3000_draws_4_chains
+================================================================================
+
+======================================================================
+Step 1: Resolve Target
+======================================================================
+21:30:23  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 381979901
+21:30:23  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 381979901' to TIC 381979901
+21:30:23  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 381979901 (matched 1 row(s))
+21:30:23  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 381979901 from local archive
+21:30:23  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 381979901
+✓ Completed in 0.26 s
+
+======================================================================
+Step 2: Query NASA Exoplanet Archive
+======================================================================
+21:30:23  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 381979901
+21:30:23  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 3.254118 d)
+✓ Completed in 0.01 s
+
+======================================================================
+Step 3: Query Gaia DR3
+======================================================================
+21:30:23  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+
+============================================================
+Finished at : Mon Aug 10 21:33:44 IST 2026
+Elapsed     : 0h 3m 24s
+Exit Status : 1
+============================================================
