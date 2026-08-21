@@ -122,7 +122,7 @@ def main():
     #
     # These should ideally happen BEFORE TLS.
     #
-    run_step(3, "Query Gaia DR3", analysis.query_gaia)
+    # run_step(3, "Query Gaia DR3", analysis.query_gaia)
 
     run_step(4, "Characterize Host Star", analysis.characterize_star)
 

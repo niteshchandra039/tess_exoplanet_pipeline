@@ -21,13 +21,15 @@ The above exception was the direct cause of the following exception:
 Traceback (most recent call last):
   File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_1.py", line 183, in <module>
     main()
-  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_1.py", line 125, in main
-    run_step(3, "Query Gaia DR3", analysis.query_gaia)
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_1.py", line 127, in main
+    run_step(4, "Characterize Host Star", analysis.characterize_star)
   File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_1.py", line 72, in run_step
     result = func()
              ^^^^^^
-  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/session.py", line 213, in query_gaia
-    self._stellar.query_gaia()
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/session.py", line 218, in characterize_star
+    self._stellar.characterize()
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/stages/stellar.py", line 103, in characterize
+    self.query_gaia()
   File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/stages/stellar.py", line 32, in query_gaia
     self.gaia_params = query_gaia(
                        ^^^^^^^^^^^
@@ -40,23 +42,23 @@ tess_pipeline.exceptions.GaiaQueryError: Gaia cone search failed: Error 500:
 SQL exception: ERROR: canceling statement due to statement timeout
 Command exited with non-zero status 1
 	Command being timed: "python -u /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_1.py"
-	User time (seconds): 1.58
-	System time (seconds): 0.65
-	Percent of CPU this job got: 1%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:24.00
+	User time (seconds): 1.31
+	System time (seconds): 0.18
+	Percent of CPU this job got: 0%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 3:07.92
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 120808
+	Maximum resident set size (kbytes): 117148
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 34805
-	Voluntary context switches: 7187
-	Involuntary context switches: 18
+	Minor (reclaiming a frame) page faults: 27869
+	Voluntary context switches: 1975
+	Involuntary context switches: 5
 	Swaps: 0
-	File system inputs: 125216
-	File system outputs: 80
+	File system inputs: 16
+	File system outputs: 16
 	Socket messages sent: 0
 	Socket messages received: 0
 	Signals delivered: 0
