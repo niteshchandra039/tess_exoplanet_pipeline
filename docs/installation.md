@@ -15,7 +15,7 @@ pip install -e .
 To avoid library version conflicts, it is recommended to install the package inside a dedicated Conda environment:
 
 ```bash
-conda create -n tess_pipeline python=3.10
+conda create -n tess_pipeline python=3.12
 conda activate tess_pipeline
 pip install -e .
 ```

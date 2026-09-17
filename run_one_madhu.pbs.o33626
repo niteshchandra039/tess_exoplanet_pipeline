@@ -1,0 +1,35 @@
+exo_model
+
+
+================================================================================
+TESS EXOPLANET PIPELINE
+================================================================================
+Target      : TIC 427508467
+Mode        : test
+Search      : TLS
+Backend     : exoplanet/PyMC
+Output      : output_bayesian_sector_longest_2_draws_2_chains
+================================================================================
+
+======================================================================
+Step 1: Resolve Target
+======================================================================
+17:03:13  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 427508467
+17:03:13  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 427508467' to TIC 427508467
+17:03:13  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /home/madhumita.25722/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 427508467 (matched 1 row(s))
+17:03:13  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 427508467 from local archive
+17:03:13  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 427508467
+✓ Completed in 0.16 s
+
+======================================================================
+Step 2: Query NASA Exoplanet Archive
+======================================================================
+17:03:13  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 427508467
+17:03:13  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 0.884182 d)
+✓ Completed in 0.00 s
+
+======================================================================
+Step 4: Characterize Host Star
+======================================================================
+17:03:13  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+Status messages could not be retrieved

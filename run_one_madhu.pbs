@@ -1,0 +1,23 @@
+#!/bin/bash
+# PBS -l nodes=02:ppn=12
+# PBS -N HELLO_OUT
+# PBS -o run_1_madhu.out
+# PBS -e run_1_madhu.err 
+# PBS -l select=1:ncpus=5
+
+
+#------------------------------------------------------------------------------
+# Load software
+#------------------------------------------------------------------------------
+source /home/soft/anaconda3/bin/activate
+
+# Initialize conda for the bash shell script
+eval "$(conda shell.bash hook)"
+
+# Now activate the environment
+conda activate exo_model
+
+# check if the environment is activated
+echo $CONDA_DEFAULT_ENV
+
+python /home/madhumita.25722/tess_exoplanet_pipeline/run_1_madhu.py

@@ -30,7 +30,7 @@ from tess_pipeline import TESSAnalysis
 # Configuration
 # =============================================================================
 
-tic_id_adopted = 381979901
+tic_id_adopted = 427508467
 TIC = tic_id_adopted  # <-- Change this
 
 MODE = "test"  # Options: "test", "development", "science"
