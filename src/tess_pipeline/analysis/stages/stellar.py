@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from tess_pipeline.exceptions import GaiaQueryError
 from tess_pipeline.utils.logging import get_logger
 
 if TYPE_CHECKING:
@@ -29,9 +30,19 @@ class StellarStage:
         log.info("Querying Gaia DR3")
         from tess_pipeline.catalogs.gaia import query_gaia
 
-        self.gaia_params = query_gaia(
-            ra=target_info.get("ra"), dec=target_info.get("dec"), tic_id=tic_id
-        )
+        try:
+            self.gaia_params = query_gaia(
+                ra=target_info.get("ra"), dec=target_info.get("dec"), tic_id=tic_id
+            )
+        except GaiaQueryError as exc:
+            log.warning("Gaia query failed; continuing with TIC/coordinate metadata only: %s", exc)
+            self.gaia_params = {
+                "tic_id": tic_id,
+                "ra": target_info.get("ra"),
+                "dec": target_info.get("dec"),
+            }
+            return self.gaia_params
+
         self.gaia_params["tic_id"] = tic_id
 
         # 1. Supplement missing parameters from local NASA archive

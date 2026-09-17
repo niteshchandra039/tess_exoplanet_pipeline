@@ -1,0 +1,56 @@
+exo_model
+
+
+================================================================================
+TESS EXOPLANET PIPELINE
+================================================================================
+Target      : TIC 427508467
+Mode        : test
+Search      : TLS
+Backend     : exoplanet/PyMC
+Output      : output_bayesian_sector_longest_2_draws_2_chains
+================================================================================
+
+======================================================================
+Step 1: Resolve Target
+======================================================================
+19:04:54  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 427508467
+19:04:54  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 427508467' to TIC 427508467
+19:04:54  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /home/madhumita.25722/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 427508467 (matched 1 row(s))
+19:04:54  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 427508467 from local archive
+19:04:54  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 427508467
+✓ Completed in 0.14 s
+
+======================================================================
+Step 2: Query NASA Exoplanet Archive
+======================================================================
+19:04:54  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 427508467
+19:04:54  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 0.884182 d)
+✓ Completed in 0.01 s
+
+======================================================================
+Step 4: Characterize Host Star
+======================================================================
+19:04:54  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+Status messages could not be retrieved
+19:04:56  WARNING   tess_pipeline.analysis.stages.stellar  Gaia query failed; continuing with TIC/coordinate metadata only: Gaia cone search failed: [Errno 101] Network is unreachable
+19:04:56  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+19:04:56  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+19:04:56  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+19:04:56  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=8928.0, logg=3.920599937438965, feh=None, r_star=2.722, m_star=2.250999927520752, parallax=None
+19:04:57  WARNING   tess_pipeline.catalogs.stellar  SIMBAD query failed: Unable to access the capabilities endpoint at:
+- https://simbad.cds.unistra.fr/simbad/sim-tap/capabilities: Connection failed (Possible causes: incorrect URL, DNS issue, or service is down)
+
+This could mean:
+1. The service URL is incorrect
+2. The service is temporarily unavailable
+3. The service doesn't support this protocol
+4. If a 503 was encountered, retry after the suggested delay.
+
+✓ Completed in 2.57 s
+
+======================================================================
+Step 5: Download TESS Light Curves
+======================================================================
+19:04:57  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 427508467
+19:05:01  INFO      tess_pipeline.data.download  [download] Starting download for TIC 427508467 (author=SPOC, cadence=120, sectors=longest, force_download=False)

@@ -60,8 +60,8 @@ echo "============================================================"
 
 SECONDS=0
 
-/usr/bin/time -v python -u \
-/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_1.py
+/usr/bin/time -v python -u \ 
+/home/madhumita.25722/tess_exoplanet_pipeline/run_1_madhu.py
 
 status=$?
 

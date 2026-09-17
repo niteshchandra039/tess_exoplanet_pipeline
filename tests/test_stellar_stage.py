@@ -6,6 +6,7 @@ from astropy.table import Table
 
 from tess_pipeline.analysis.stages.stellar import StellarStage
 from tess_pipeline.catalogs.stellar import characterize_star, _query_simbad
+from tess_pipeline.exceptions import GaiaQueryError
 
 
 class DummyConfig:
@@ -43,6 +44,21 @@ def test_stellar_stage_query_gaia(mock_query_gaia: MagicMock) -> None:
     assert params["r_star"] == 1.15
     assert params["teff"] == 5855.0
     assert params["tic_id"] == 261136679
+    assert stage.gaia_params["tic_id"] == 261136679
+
+
+@patch("tess_pipeline.catalogs.gaia.query_gaia")
+def test_stellar_stage_query_gaia_network_failure_is_nonfatal(mock_query_gaia: MagicMock) -> None:
+    mock_query_gaia.side_effect = GaiaQueryError("[Errno 101] Network is unreachable")
+
+    config = DummyConfig()
+    results = DummyResults()
+    stage = StellarStage(config, results)
+
+    params = stage.query_gaia()
+    assert params["tic_id"] == 261136679
+    assert params["ra"] == 100.0
+    assert params["dec"] == -50.0
     assert stage.gaia_params["tic_id"] == 261136679
 
 

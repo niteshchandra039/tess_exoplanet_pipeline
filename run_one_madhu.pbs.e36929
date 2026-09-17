@@ -1,0 +1,120 @@
+/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/lightkurve/prf/__init__.py:7: UserWarning: Warning: the tpfmodel submodule is not available without oktopus installed, which requires a current version of autograd. See #1452 for details.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connection.py", line 204, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/util/connection.py", line 85, in create_connection
+    raise err
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    sock.connect(sa)
+OSError: [Errno 101] Network is unreachable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connectionpool.py", line 788, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connectionpool.py", line 1106, in _validate_conn
+    conn.connect()
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connection.py", line 759, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connection.py", line 219, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: HTTPSConnection(host='mast.stsci.edu', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/requests/adapters.py", line 696, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/connectionpool.py", line 842, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/urllib3/util/retry.py", line 543, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='mast.stsci.edu', port=443): Max retries exceeded with url: /portal/Mashup/Mashup.asmx/columnsconfig (Caused by NewConnectionError("HTTPSConnection(host='mast.stsci.edu', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable"))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/madhumita.25722/tess_exoplanet_pipeline/src/tess_pipeline/data/download.py", line 277, in download_lightcurves
+    mast_search = lk.search_lightcurve(
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/memoization/caching/plain_cache.py", line 42, in wrapper
+    result = user_function(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/lightkurve/search.py", line 833, in search_lightcurve
+    return _search_products(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/lightkurve/search.py", line 997, in _search_products
+    observations = _query_mast(
+                   ^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/lightkurve/search.py", line 1196, in _query_mast
+    obs = Observations.query_criteria(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/utils/class_or_instance.py", line 25, in f
+    return self.fn(obj, *args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/utils/process_asyncs.py", line 28, in newmethod
+    response = getattr(self, async_method_name)(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/utils/class_or_instance.py", line 25, in f
+    return self.fn(obj, *args, **kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/mast/observations.py", line 324, in query_criteria_async
+    position, mashup_filters = self._parse_caom_criteria(resolver=resolver, **criteria)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/mast/observations.py", line 167, in _parse_caom_criteria
+    mashup_filters = self._portal_api_connection.build_filter_set(self._caom_cone,
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/mast/discovery_portal.py", line 397, in build_filter_set
+    self._get_col_config(service_name, fetch_name=column_config_name)
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/mast/discovery_portal.py", line 235, in _get_col_config
+    response = self._request("POST", self.COLUMNS_CONFIG_URL,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/mast/discovery_portal.py", line 183, in _request
+    response = super(PortalAPI, self)._request(method, url, params=params, data=data,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/query.py", line 372, in _request
+    response = query.request(self._session, stream=stream,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/astroquery/query.py", line 77, in request
+    return session.request(self.method, self.url, params=self.params,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/requests/sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/.conda/envs/exo_model/lib/python3.12/site-packages/requests/adapters.py", line 729, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='mast.stsci.edu', port=443): Max retries exceeded with url: /portal/Mashup/Mashup.asmx/columnsconfig (Caused by NewConnectionError("HTTPSConnection(host='mast.stsci.edu', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable"))
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/madhumita.25722/tess_exoplanet_pipeline/run_1_madhu.py", line 183, in <module>
+    main()
+  File "/home/madhumita.25722/tess_exoplanet_pipeline/run_1_madhu.py", line 129, in main
+    run_step(5, "Download TESS Light Curves", analysis.load_lightcurves)
+  File "/home/madhumita.25722/tess_exoplanet_pipeline/run_1_madhu.py", line 72, in run_step
+    result = func()
+             ^^^^^^
+  File "/home/madhumita.25722/tess_exoplanet_pipeline/src/tess_pipeline/analysis/session.py", line 132, in load_lightcurves
+    self._lightcurve.load()
+  File "/home/madhumita.25722/tess_exoplanet_pipeline/src/tess_pipeline/analysis/stages/lightcurve.py", line 41, in load
+    self.raw_collection = download_lightcurves(
+                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/madhumita.25722/tess_exoplanet_pipeline/src/tess_pipeline/data/download.py", line 291, in download_lightcurves
+    raise DataDownloadError(
+tess_pipeline.exceptions.DataDownloadError: MAST search failed for TIC 427508467: HTTPSConnectionPool(host='mast.stsci.edu', port=443): Max retries exceeded with url: /portal/Mashup/Mashup.asmx/columnsconfig (Caused by NewConnectionError("HTTPSConnection(host='mast.stsci.edu', port=443): Failed to establish a new connection: [Errno 101] Network is unreachable")). Check connection.

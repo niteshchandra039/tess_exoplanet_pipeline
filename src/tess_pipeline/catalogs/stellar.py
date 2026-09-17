@@ -28,22 +28,27 @@ _L_SUN = 3.828e33    # erg/s
 
 
 def characterize_star(
-    gaia_params: dict[str, Any],
+    gaia_params: dict[str, Any] | None,
     *,
     method: str = "gaia_only",
 ) -> dict[str, Any]:
     """
     Derive stellar parameters from Gaia DR3, VizieR (TIC v8.2), and SIMBAD.
 
+    Gaia inputs are optional when catalogs are unavailable; the function still
+    falls back to VizieR and SIMBAD measurements as needed.
+
     Priority order:
         1. VizieR (TIC v8.2)
         2. Gaia DR3
         3. SIMBAD (latest value)
     """
+    gaia_data = gaia_params or {}
+
     # 1. Fetch parameters from all three sources
-    tic_id = gaia_params.get("tic_id")
-    ra = gaia_params.get("ra")
-    dec = gaia_params.get("dec")
+    tic_id = gaia_data.get("tic_id")
+    ra = gaia_data.get("ra")
+    dec = gaia_data.get("dec")
 
     # Query VizieR
     vizier_params = _query_vizier_tic(tic_id) if tic_id is not None else None
@@ -73,9 +78,9 @@ def characterize_star(
             adopted_sources[k] = "VizieR (TIC8.2)"
 
         # Priority 2: Gaia DR3
-        elif gaia_params.get(k) is not None:
-            merged_params[k] = gaia_params[k]
-            merged_params[f"{k}_err"] = gaia_params.get(f"{k}_err")
+        elif gaia_data.get(k) is not None:
+            merged_params[k] = gaia_data[k]
+            merged_params[f"{k}_err"] = gaia_data.get(f"{k}_err")
             merged_params[f"{k}_ref"] = "Gaia DR3"
             # Set default units
             if k == "teff":
@@ -116,9 +121,9 @@ def characterize_star(
         merged_params["feh_ref"] = vizier_params.get("feh_ref") or "TIC v8.2"
         merged_params["feh_unit"] = vizier_params.get("feh_unit") or "dex"
         adopted_sources["feh"] = "VizieR (TIC8.2)"
-    elif gaia_params.get("feh") is not None:
-        merged_params["feh"] = gaia_params["feh"]
-        merged_params["feh_err"] = gaia_params.get("feh_err")
+    elif gaia_data.get("feh") is not None:
+        merged_params["feh"] = gaia_data["feh"]
+        merged_params["feh_err"] = gaia_data.get("feh_err")
         merged_params["feh_ref"] = "Gaia DR3"
         merged_params["feh_unit"] = "dex"
         adopted_sources["feh"] = "Gaia"
