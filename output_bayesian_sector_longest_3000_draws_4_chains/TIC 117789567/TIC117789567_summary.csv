@@ -1,0 +1,82 @@
+parameter,value
+planet_1_rp_r_star,0.06881980555620185
+planet_1_rp_r_star_err,0.010311200333714115
+planet_1_rp_r_star_16,0.04727071958266353
+planet_1_rp_r_star_84,0.07080245638390062
+planet_1_b,0.7620172181738172
+planet_1_b_err,0.22026122357120237
+planet_1_b_16,0.3676379460920867
+planet_1_b_84,0.830454637899692
+planet_1_period,2.3201877755083493
+planet_1_period_err,0.00014548340749894812
+planet_1_period_16,2.320083117306586
+planet_1_period_84,2.3203242960608446
+planet_1_t0,2770.2735124409937
+planet_1_t0_err,0.12015506880179322
+planet_1_t0_16,2770.223457430514
+planet_1_t0_84,2770.517726956693
+planet_1_rho_star,0.020697352420433898
+planet_1_rho_star_err,0.011746119940146828
+planet_1_rho_star_16,0.01244701694688224
+planet_1_rho_star_84,0.04219905670805212
+planet_1_a_r_star,1.806543200655853
+planet_1_a_r_star_err,0.2871145560454747
+planet_1_a_r_star_16,1.5248165725047076
+planet_1_a_r_star_84,2.2908281432126394
+planet_1_t14_hr,7.781374425481953
+planet_1_t14_hr_err,1.6384658834829051
+planet_1_t14_hr_16,7.68885848948032
+planet_1_t14_hr_84,11.538862246468412
+planet_1_rp_earth,35.31128359251457
+planet_1_rp_earth_err,12.339766819304621
+planet_1_rp_earth_16,23.23402307804192
+planet_1_rp_earth_84,48.47031630266418
+planet_1_a_au,0.0434878574003245
+planet_1_a_au_err,0.015097428233706744
+planet_1_a_au_16,0.029821381869313823
+planet_1_a_au_84,0.059410693180172856
+planet_1_t_eq,6881.693135583779
+planet_1_t_eq_err,506.52946503781357
+planet_1_t_eq_16,6115.027360111664
+planet_1_t_eq_84,7476.232802366152
+stellar_r_star,5.134479623954675
+stellar_r_star_err,1.5403438871864026
+stellar_m_star,4.0119720781066155
+stellar_m_star_err,
+stellar_teff,13079.0
+stellar_teff_err,
+stellar_logg,3.2348999977111816
+stellar_logg_err,0.016100049018859863
+stellar_feh,-0.9988999962806702
+stellar_feh_err,0.0032499730587005615
+stellar_lum,
+stellar_lum_err,
+stellar_parallax,1.585720368632841
+stellar_parallax_err,0.03338479995727539
+stellar_age,
+stellar_age_err,
+stellar_method,gaia_only
+stellar_r_star_unit,R_sun
+stellar_m_star_unit,M_sun
+stellar_rho_star_unit,g/cm^3
+stellar_rho_star,0.041786733746230625
+stellar_rho_star_err,
+stellar_reference,Main-sequence Teff scaling+TIC v8.2+Gaia DR3
+stellar_teff_source,VizieR (TIC8.2)
+stellar_teff_ref,TIC v8.2
+stellar_teff_unit,K
+stellar_logg_source,Gaia
+stellar_logg_ref,Gaia DR3
+stellar_logg_unit,dex
+stellar_parallax_source,Gaia
+stellar_parallax_ref,Gaia DR3
+stellar_parallax_unit,mas
+stellar_feh_source,Gaia
+stellar_feh_ref,Gaia DR3
+stellar_feh_unit,dex
+stellar_r_star_source,Derived (Teff scaling)
+stellar_r_star_ref,Main-sequence Teff scaling
+stellar_m_star_source,Torres et al. 2010
+stellar_m_star_ref,Torres et al. (2010)
+period_d,2.320705874054227
+period_source,archive

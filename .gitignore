@@ -81,6 +81,10 @@ output_*/*
 output_*/*/*
 output_bayesian_sector_all_500_2/*
 
+# Track this published output tree
+!output_bayesian_sector_longest_3000_draws_4_chains/
+!output_bayesian_sector_longest_3000_draws_4_chains/**
+
 
 # pipeline_1
 tess_exoplanet_pipeline_1/*

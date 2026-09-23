@@ -1,0 +1,2705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TESS Exoplanet Pipeline Report - TIC 287196418</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --card-border: #d1d9e0;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --accent: #2563eb;
+            --accent-glow: rgba(37, 99, 235, 0.10);
+            --success: #059669;
+            --success-glow: rgba(5, 150, 105, 0.10);
+            --warning: #d97706;
+            --warning-glow: rgba(217, 119, 6, 0.10);
+            --danger: #dc2626;
+            --font-family-body: 'Inter', sans-serif;
+            --font-family-heading: 'Outfit', sans-serif;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: var(--font-family-body);
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.04) 0%, transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.04) 0%, transparent 40%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2.5rem;
+        }
+        header {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            font-family: var(--font-family-heading);
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-top: 0.25rem;
+        }
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+        }
+        .kpi-title {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .kpi-value {
+            font-family: var(--font-family-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+        }
+        .card h2 {
+            font-family: var(--font-family-heading);
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px solid var(--accent-glow);
+            padding-bottom: 0.6rem;
+            color: var(--accent);
+        }
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+        }
+        .param-row:last-child {
+            border-bottom: none;
+        }
+        .param-label {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .param-value {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            display: inline-block;
+        }
+        .badge-derived {
+            background-color: var(--success-glow);
+            color: var(--success);
+            border: 1px solid rgba(5, 150, 105, 0.3);
+        }
+        .badge-literature {
+            background-color: var(--accent-glow);
+            color: var(--accent);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+        }
+        .badge-fits {
+            background-color: rgba(124, 58, 237, 0.10);
+            color: #7c3aed;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+        .badge-warning {
+            background-color: var(--warning-glow);
+            color: var(--warning);
+            border: 1px solid rgba(217, 119, 6, 0.3);
+        }
+        .confidence-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        .confidence-table th, .confidence-table td {
+            text-align: left;
+            padding: 0.85rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .confidence-table tr:last-child td {
+            border-bottom: none;
+        }
+        .confidence-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            background-color: #f8fafc;
+        }
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.75rem;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 0.75rem;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: var(--text-primary);
+        }
+        .tab-btn.active {
+            background: var(--accent-glow);
+            color: var(--accent);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+            gap: 1.5rem;
+        }
+        .image-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease;
+        }
+        .image-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.10);
+        }
+        .image-card img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid var(--card-border);
+            background: #f8fafc;
+        }
+        .image-caption {
+            padding: 1.25rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: #f8fafc;
+            line-height: 1.5;
+        }
+        pre {
+            background: #f1f5f9;
+            border: 1px solid var(--card-border);
+            padding: 1.75rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            color: #0f766e;
+            font-family: monospace;
+            font-size: 0.9rem;
+            box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>TESS Planet Candidate Dashboard</h1>
+            <div class="subtitle">Target: TIC 287196418 | Coordinates: RA=292.734132&deg;, Dec=59.403853&deg;</div>
+        </div>
+        <div>
+            <span class="badge badge-fits">Pipeline: v0.1.0</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- Top KPI Cards -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-title">TIC Target</div>
+                <div class="kpi-value">287196418</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-title">Sectors Used</div>
+                <div class="kpi-value">53, 54, 55, 56, 57, 58, 59, 60</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-title">Primary Period</div>
+                <div class="kpi-value">3.69501 d</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-title">Effective Temp</div>
+                <div class="kpi-value">6982.0 K</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-title">Stellar Radius</div>
+                <div class="kpi-value">1.63 R<sub>&sub;</sub></div>
+            </div>
+        </div>
+
+        <!-- Diagnostic Figures Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab(event, 'tab-dash')">Dashboard Summary</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-lcs')">Light Curves</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-search')">Period Search</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-mcmc')">MCMC Fit & Corner</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-json')">JSON Metadata</button>
+        </div>
+
+        <!-- Dashboard Summary Tab -->
+        <div id="tab-dash" class="tab-content active">
+            <div class="grid">
+                <!-- Confidence Comparison Table (if exists) -->
+                
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>Planet Candidate Confidence & Verdict Comparison</h2>
+            <table class="confidence-table">
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Period</th>
+                        <th>Search SDE/SNR</th>
+                        <th>False Alarm Prob (FAP)</th>
+                        <th>Search Confidence</th>
+                        <th>Bayesian Probability & Verdict</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td><strong>Planet 1</strong></td>
+                <td>3.69500 d</td>
+                <td>2.41</td>
+                <td>0.0000%</td>
+                <td><span class="badge badge-derived">Confirmed</span></td>
+                <td><strong>100.0%</strong> (Confirmed)</td>
+            </tr>
+            
+            <tr>
+                <td><strong>Planet 2</strong></td>
+                <td>63.92298 d</td>
+                <td>1.84</td>
+                <td>99.2270%</td>
+                <td><span class="badge badge-derived">Low</span></td>
+                <td><strong>7.0%</strong> (Not Justified)</td>
+            </tr>
+            
+                </tbody>
+            </table>
+            
+        </div>
+        
+
+                <!-- Planet Parameters Cards -->
+                
+            <div class="card">
+                <h2>Planet 1 Parameters</h2>
+                
+                <div class="param-row">
+                    <span class="param-label">Planet 1 Detection Probability</span>
+                    <span class="param-value">
+                        <strong>100.0%</strong>
+                        <span class="badge badge-derived">Confirmed</span>
+                    </span>
+                </div>
+                
+                
+                <div class="param-row">
+                    <span class="param-label">Period (P)</span>
+                    <span class="param-value">
+                        3.695015 &plusmn; 0.000004 d
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+                
+                <div class="param-row">
+                    <span class="param-label">Transit Epoch (t₀)</span>
+                    <span class="param-value">
+                        2744.6776 &plusmn; 0.0001 BTJD
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Radius Ratio (Rₚ/Rₛ)</span>
+                    <span class="param-value">
+                        0.08233 &plusmn; 0.00026
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Planet Radius (Rₚ)</span>
+                    <span class="param-value">
+                        14.69 &plusmn; 0.42 R<sub>&oplus;</sub>
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Transit Duration (T₁₄)</span>
+                    <span class="param-value">
+                        4.473 &plusmn; 0.009 hr
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Impact Parameter (b)</span>
+                    <span class="param-value">
+                        0.281 &plusmn; 0.043
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Semi-major Axis (a)</span>
+                    <span class="param-value">
+                        0.0504 &plusmn; 0.0015 AU
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+
+                <div class="param-row">
+                    <span class="param-label">Equilibrium Temp (T<sub>eq</sub>)</span>
+                    <span class="param-value">
+                        1917 &plusmn; 32 K
+                        <span class="badge badge-derived">Derived (MCMC)</span>
+                    </span>
+                </div>
+            </div>
+            
+
+                <!-- Stellar Parameters Card -->
+                <div class="card">
+                    <h2>Stellar Parameters</h2>
+                    
+                    <div class="param-row">
+                        <span class="param-label">Stellar Radius (Rₛ)</span>
+                        <span class="param-value">
+                            1.63 R<sub>&sub;</sub>
+                            <span class="badge badge-literature" title="TIC v8.2">VizieR (TIC v8.2)</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Stellar Mass (Mₛ)</span>
+                        <span class="param-value">
+                            1.53 M<sub>&sub;</sub>
+                            <span class="badge badge-literature" title="TIC v8.2">VizieR (TIC v8.2)</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Effective Temp (T<sub>eff</sub>)</span>
+                        <span class="param-value">
+                            6982.0 K
+                            <span class="badge badge-literature" title="TIC v8.2">VizieR (TIC v8.2)</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Surface Gravity (log g)</span>
+                        <span class="param-value">
+                            4.20
+                            <span class="badge badge-literature" title="TIC v8.2">VizieR (TIC v8.2)</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Metallicity ([Fe/H])</span>
+                        <span class="param-value">
+                            -0.52
+                            <span class="badge badge-literature" title="Gaia DR3">Gaia DR3</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Stellar Density (ρₛ)</span>
+                        <span class="param-value">
+                            0.495 g/cm&sup3;
+                            <span class="badge badge-derived">Derived</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Diagnostics & Metadata Card -->
+                <div class="card">
+                    <h2>MCMC Fit Diagnostics</h2>
+                    
+                    <div class="param-row">
+                        <span class="param-label">R-hat Convergence</span>
+                        <span class="param-value">
+                            Passed (max R̂ = 1.001)
+                            <span class="badge badge-derived">Derived (MCMC)</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Min Effective Sample Size</span>
+                        <span class="param-value">
+                            7144
+                            <span class="badge badge-derived">Derived (MCMC)</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">Divergent Transitions</span>
+                        <span class="param-value">
+                            0
+                            <span class="badge badge-derived">Derived (MCMC)</span>
+                        </span>
+                    </div>
+
+                    <div class="param-row">
+                        <span class="param-label">TLS SDE / SNR</span>
+                        <span class="param-value">
+                            2.41 / 410.27
+                            <span class="badge badge-derived">Derived (TLS)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Light Curves Tab -->
+        <div id="tab-lcs" class="tab-content">
+            <div class="image-gallery">
+                <div class="image-card">
+                    <img src="plots/01_raw.png" alt="Raw Light Curve" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Raw TESS SAP/PDCSAP Light Curve before flat-fielding and outlier rejection.</div>
+                </div>
+                <div class="image-card">
+                    <img src="plots/02_flat.png" alt="Flattened Light Curve" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Flattened Light Curve: detrended using a spline or high-pass filter, ready for transit search.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Period Search Tab -->
+        <div id="tab-search" class="tab-content">
+            <div class="image-gallery">
+                <div class="image-card">
+                    <img src="plots/03_tls_periodogram.png" alt="TLS Periodogram" onerror="this.src='plots/03_bls_periodogram.png'; this.onerror=function(){this.parentNode.style.display='none';}">
+                    <div class="image-caption">TLS / BLS Periodogram: power vs trial period (days). The peak indicates the best-fit orbital period. Subplots show subsequent searches if multi-planet mode is enabled.</div>
+                </div>
+                
+                <div class="image-card">
+                    <img src="plots/04_phase_p0.png" alt="Phase-Folded Light Curve Planet 1" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Phase-Folded Light Curve Planet 1: folded at the search period of 3.69500 d.</div>
+                </div>
+            
+                <div class="image-card">
+                    <img src="plots/04_phase_p1.png" alt="Phase-Folded Light Curve Planet 2" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Phase-Folded Light Curve Planet 2: folded at the search period of 63.92298 d.</div>
+                </div>
+            
+            </div>
+        </div>
+
+        <!-- MCMC Fit Tab -->
+        <div id="tab-mcmc" class="tab-content">
+            <div class="image-gallery">
+                <div class="image-card" style="grid-column: 1 / -1;">
+                    <img src="plots/06_bayesian_fit.png" alt="Bayesian Transit Fit & Residuals" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Bayesian Transit Fit: Full GP systematics + Keplerian transit model trend (top), phase-folded de-trended data fit (middle), and phase-folded model residuals (bottom) showing the excellent goodness-of-fit.</div>
+                </div>
+                <div class="image-card">
+                    <img src="plots/10_gp_acf.png" alt="GP Residuals Autocorrelation Function" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">GP Autocorrelation Function (ACF) of Residuals: plots the autocorrelation of the residuals before GP detrending (light gray) and after GP detrending (green). This mathematically validates that the GP successfully removed red noise without affecting the transit profile.</div>
+                </div>
+                <div class="image-card">
+                    <img src="plots/11_transit_stack.png" alt="Stacked Transits" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Stacked Individual Transits: overlays individual transit events vertically. This visually confirms that the transit is consistently present in every orbit and is not caused by a single spurious artifact or flare.</div>
+                </div>
+                <div class="image-card">
+                    <img src="plots/09_posterior_predictive.png" alt="Posterior Predictive Check" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Posterior Predictive Check: draws from the MCMC posterior overlaid on the transit data.</div>
+                </div>
+                
+                <div class="image-card">
+                    <img src="plots/04_mcmc_phase.png" alt="MCMC Phase-Folded Light Curve" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">MCMC Phase-Folded Light Curve: data folded at the MCMC period. GP model has been subtracted.</div>
+                </div>
+        
+                <div class="image-card">
+                    <img src="plots/07_corner.png" alt="Corner Plot" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">Corner Plot showing covariance and 1D/2D posterior probability distributions for the key transit parameters, with parameter guide definitions.</div>
+                </div>
+                <div class="image-card" style="grid-column: 1 / -1;">
+                    <img src="plots/08_trace.png" alt="MCMC Trace Plots" onerror="this.parentNode.style.display='none';">
+                    <div class="image-caption">MCMC Trace Plots: Parameter values over chain steps to verify proper mixing, convergence, and parameter stationarity.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JSON Metadata Tab -->
+        <div id="tab-json" class="tab-content">
+            <pre><code>{
+  "target": {
+    "tic_id": 287196418,
+    "name": "TIC 287196418",
+    "ra": 292.734132,
+    "dec": 59.403853
+  },
+  "period": {
+    "value": 3.6950033715406656,
+    "source": "archive"
+  },
+  "detection": {
+    "period": 3.6950033715406656,
+    "epoch": 2744.6774442476544,
+    "duration_hr": 3.7712722722254703,
+    "depth": 0.007690331671473705,
+    "method": "tls",
+    "sde": 2.4127301073920524,
+    "snr": 410.27498987826294,
+    "fap": 0.0,
+    "confidence": "Confirmed",
+    "existence_probability_search": 1.0,
+    "tls_periods": [
+      3.6877670975488783,
+      3.6879313483854426,
+      3.6880956089763224,
+      3.6882598793222443,
+      3.6884241594239313,
+      3.6885884492821086,
+      3.6887527488975005,
+      3.6889170582708304,
+      3.6890813774028235,
+      3.6892457062942037,
+      3.6894100449456952,
+      3.6895743933580216,
+      3.689738751531912,
+      3.689903119468088,
+      3.690067497167275,
+      3.690231884630198,
+      3.6903962818575815,
+      3.6905606888501508,
+      3.6907251056086303,
+      3.690889532133746,
+      3.691053968426223,
+      3.691218414486787,
+      3.691382870316162,
+      3.6915473359150712,
+      3.691711811284246,
+      3.691876296424409,
+      3.6920407913362854,
+      3.6922052960206013,
+      3.692369810478082,
+      3.6925343347094546,
+      3.6926988687154427,
+      3.692863412496774,
+      3.6930279660541734,
+      3.693192529388368,
+      3.693357102500081,
+      3.6935216853900434,
+      3.6936862780589785,
+      3.6938508805076133,
+      3.694015492736674,
+      3.694180114746887,
+      3.6943447465389787,
+      3.694509388113676,
+      3.6946740394717046,
+      3.6948387006137926,
+      3.6950033715406656,
+      3.695168052253051,
+      3.695332742751673,
+      3.6954974430372634,
+      3.6956621531105474,
+      3.695826872972251,
+      3.6959916026231023,
+      3.6961563420638277,
+      3.6963210912951556,
+      3.6964858503178126,
+      3.696650619132525,
+      3.6968153977400227,
+      3.696980186141032,
+      3.697144984336277,
+      3.697309792326492,
+      3.697474610112401,
+      3.6976394376947326,
+      3.6978042750742146,
+      3.6979691222515747,
+      3.6981339792275407,
+      3.6982988460028414,
+      3.6984637225782038,
+      3.698628608954357,
+      3.6987935051320284,
+      3.6989584111119473,
+      3.69912332689484,
+      3.6992882524814377,
+      3.699453187872468,
+      3.6996181330686597,
+      3.69978308807074,
+      3.69994805287944,
+      3.700113027495486,
+      3.7002780119196084,
+      3.7004430061525353,
+      3.7006080101949967,
+      3.70077302404772,
+      3.700938047711433,
+      3.7011030811868695,
+      3.701268124474756,
+      3.7014331775758222,
+      3.701598240490797,
+      3.701763313220411,
+      3.7019283957653926,
+      3.702093488126471,
+      3.702258590304376
+    ],
+    "tls_power": [
+      -1.0149248955434096,
+      -0.9989796010160574,
+      -0.9826798038298553,
+      -0.9662153790648121,
+      -0.949559549244729,
+      -0.9328475706741288,
+      -0.9159240747609465,
+      -0.8985846320958767,
+      -0.8802457161432798,
+      -0.8587292463271385,
+      -0.8369364426827219,
+      -0.8150915472592409,
+      -0.7909483713619043,
+      -0.7639347109677456,
+      -0.7361531385220621,
+      -0.7054078985923794,
+      -0.6719924968947106,
+      -0.6372131519457442,
+      -0.6004389872026176,
+      -0.5580331935198551,
+      -0.5140242347370466,
+      -0.46636430141657315,
+      -0.41209795303482516,
+      -0.35591924339426084,
+      -0.2935957381814247,
+      -0.22379562402759698,
+      -0.15075472369453832,
+      -0.07480627537365227,
+      0.014273011966280577,
+      0.10940217103273074,
+      0.2094510010234045,
+      0.3199915499032181,
+      0.4460232028727379,
+      0.5809663292786997,
+      0.7261310708074465,
+      0.878401867124717,
+      1.0374187004452595,
+      1.2064711801703885,
+      1.4044113851766729,
+      1.6063443727670832,
+      1.8091348175801898,
+      2.0178707814490213,
+      2.2034653069771344,
+      2.34916662216256,
+      2.4127301073920524,
+      2.367369451368011,
+      2.229841635866324,
+      2.0438816879635358,
+      1.8380182050970413,
+      1.6314111556662692,
+      1.432468003720188,
+      1.2385862658122908,
+      1.0678688204271123,
+      0.9123424134444603,
+      0.7639382669388858,
+      0.6247387460414363,
+      0.49229553501268414,
+      0.3712647350671702,
+      0.26626581445846714,
+      0.16834743742124614,
+      0.07497921139838827,
+      -0.013793542133960796,
+      -0.09320481373977839,
+      -0.16525668776569064,
+      -0.234298801958164,
+      -0.29765817085011775,
+      -0.3525981195315578,
+      -0.40667976332897493,
+      -0.45874573863912604,
+      -0.50479503240751,
+      -0.5471491452563464,
+      -0.5887025861380106,
+      -0.6267343519757117,
+      -0.6607125446369586,
+      -0.6942251152352259,
+      -0.724599663261407,
+      -0.7521840677884781,
+      -0.779225879131056,
+      -0.8042415072693326,
+      -0.8262419304662991,
+      -0.8481884846210971,
+      -0.8699698119292362,
+      -0.8907213243347265,
+      -0.9084782982583495,
+      -0.9260821322235939,
+      -0.9431154990280974,
+      -0.9602445490235083,
+      -0.9772789811204332,
+      -0.9939458202712319
+    ],
+    "note": "refined archive period",
+    "existence_probability_bayesian": 1.0,
+    "bayesian_confidence": "Confirmed"
+  },
+  "stellar": {
+    "r_star": 1.634,
+    "r_star_err": 0.04600000008940697,
+    "m_star": 1.531999945640564,
+    "m_star_err": 0.1860000044107437,
+    "teff": 6982.0,
+    "teff_err": 107.5999984741211,
+    "logg": 4.196700096130371,
+    "logg_err": 0.09160000085830688,
+    "feh": -0.5239999890327454,
+    "feh_err": 0.015749990940093994,
+    "lum": null,
+    "lum_err": null,
+    "parallax": 3.4851630169981087,
+    "parallax_err": 0.013139043003320694,
+    "age": null,
+    "age_err": null,
+    "method": "gaia_only",
+    "r_star_unit": "solRad",
+    "m_star_unit": "solMass",
+    "rho_star_unit": "g/cm^3",
+    "rho_star": 0.49507662485637915,
+    "rho_star_err": 0.07321959450239199,
+    "reference": "TIC v8.2+Gaia DR3",
+    "r_star_source": "VizieR (TIC8.2)",
+    "r_star_ref": "TIC v8.2",
+    "m_star_source": "VizieR (TIC8.2)",
+    "m_star_ref": "TIC v8.2",
+    "teff_source": "VizieR (TIC8.2)",
+    "teff_ref": "TIC v8.2",
+    "teff_unit": "K",
+    "logg_source": "VizieR (TIC8.2)",
+    "logg_ref": "TIC v8.2",
+    "logg_unit": "log(cm.s-2)",
+    "parallax_source": "Gaia",
+    "parallax_ref": "Gaia DR3",
+    "parallax_unit": "mas",
+    "feh_source": "Gaia",
+    "feh_ref": "Gaia DR3",
+    "feh_unit": "dex"
+  },
+  "planet": {
+    "rp_r_star": 0.08232991313017622,
+    "rp_r_star_err": 0.0002649648847747256,
+    "rp_r_star_16": 0.08206379838357952,
+    "rp_r_star_84": 0.08259064965803768,
+    "b": 0.281414440014109,
+    "b_err": 0.04339675592144291,
+    "b_16": 0.23643426688902472,
+    "b_84": 0.31808917980465334,
+    "period": 3.695014602074891,
+    "period_err": 4.303498928414922e-06,
+    "period_16": 3.695010292628944,
+    "period_84": 3.6950189079295153,
+    "t0": 2744.677566581591,
+    "t0_err": 0.0001397599721773205,
+    "t0_16": 2744.677430381123,
+    "t0_84": 2744.677705859387,
+    "rho_star": 0.40317664918950724,
+    "rho_star_err": 0.013859635463121118,
+    "rho_star_16": 0.38980745947198403,
+    "rho_star_84": 0.41715201889617426,
+    "a_r_star": 6.6288355532478995,
+    "a_r_star_err": 0.07583840781274587,
+    "a_r_star_16": 6.554749478867124,
+    "a_r_star_84": 6.704561927620201,
+    "t14_hr": 4.473239408420327,
+    "t14_hr_err": 0.00897497098346428,
+    "t14_hr_16": 4.464417040960654,
+    "t14_hr_84": 4.482304975610892,
+    "rp_earth": 14.686044214107735,
+    "rp_earth_err": 0.4206578971478699,
+    "rp_earth_16": 14.277698395628477,
+    "rp_earth_84": 15.111899830700727,
+    "a_au": 0.05037396619957929,
+    "a_au_err": 0.0015445748964709161,
+    "a_au_16": 0.04886323785867616,
+    "a_au_84": 0.05189837572736424,
+    "t_eq": 1917.0982772774541,
+    "t_eq_err": 31.787385669806948,
+    "t_eq_16": 1885.4342733036235,
+    "t_eq_84": 1948.91196543649
+  },
+  "planets": [
+    {
+      "rp_r_star": 0.08232991313017622,
+      "rp_r_star_err": 0.0002649648847747256,
+      "rp_r_star_16": 0.08206379838357952,
+      "rp_r_star_84": 0.08259064965803768,
+      "b": 0.281414440014109,
+      "b_err": 0.04339675592144291,
+      "b_16": 0.23643426688902472,
+      "b_84": 0.31808917980465334,
+      "period": 3.695014602074891,
+      "period_err": 4.303498928414922e-06,
+      "period_16": 3.695010292628944,
+      "period_84": 3.6950189079295153,
+      "t0": 2744.677566581591,
+      "t0_err": 0.0001397599721773205,
+      "t0_16": 2744.677430381123,
+      "t0_84": 2744.677705859387,
+      "rho_star": 0.40317664918950724,
+      "rho_star_err": 0.013859635463121118,
+      "rho_star_16": 0.38980745947198403,
+      "rho_star_84": 0.41715201889617426,
+      "a_r_star": 6.6288355532478995,
+      "a_r_star_err": 0.07583840781274587,
+      "a_r_star_16": 6.554749478867124,
+      "a_r_star_84": 6.704561927620201,
+      "t14_hr": 4.473239408420327,
+      "t14_hr_err": 0.00897497098346428,
+      "t14_hr_16": 4.464417040960654,
+      "t14_hr_84": 4.482304975610892,
+      "rp_earth": 14.686044214107735,
+      "rp_earth_err": 0.4206578971478699,
+      "rp_earth_16": 14.277698395628477,
+      "rp_earth_84": 15.111899830700727,
+      "a_au": 0.05037396619957929,
+      "a_au_err": 0.0015445748964709161,
+      "a_au_16": 0.04886323785867616,
+      "a_au_84": 0.05189837572736424,
+      "t_eq": 1917.0982772774541,
+      "t_eq_err": 31.787385669806948,
+      "t_eq_16": 1885.4342733036235,
+      "t_eq_84": 1948.91196543649
+    }
+  ],
+  "diagnostics": {
+    "rhat_max": 1.000828,
+    "rhat_dict": {
+      "period[0]": 1.000138,
+      "t0[0]": 1.000379,
+      "mean_flux[0]": 1.000069,
+      "log_jitter": 1.000111,
+      "log_rp[0]": 1.00078,
+      "b[0]": 1.000734,
+      "log_t14[0]": 1.000826,
+      "q1": 1.000064,
+      "q2": 1.000054,
+      "log_sigma_gp": 1.000451,
+      "log_rho_gp": 0.999957,
+      "rp_r_star[0]": 1.000779,
+      "t14[0]": 1.000828,
+      "u1": 1.000124,
+      "u2": 1.000042,
+      "jitter": 1.000084,
+      "rho_star": 1.000624,
+      "sigma_gp": 1.000435,
+      "rho_gp": 0.999957,
+      "lc_pred_p0[0]": 1.000069,
+      "lc_pred_p0[1]": 1.000069,
+      "lc_pred_p0[2]": 1.000069,
+      "lc_pred_p0[3]": 1.000069,
+      "lc_pred_p0[4]": 1.000069,
+      "lc_pred_p0[5]": 1.000069,
+      "lc_pred_p0[6]": 1.000069,
+      "lc_pred_p0[7]": 1.000069,
+      "lc_pred_p0[8]": 1.000069,
+      "lc_pred_p0[9]": 1.000069,
+      "lc_pred_p0[10]": 1.000069,
+      "lc_pred_p0[11]": 1.000069,
+      "lc_pred_p0[12]": 1.000069,
+      "lc_pred_p0[13]": 1.000069,
+      "lc_pred_p0[14]": 1.000069,
+      "lc_pred_p0[15]": 1.000069,
+      "lc_pred_p0[16]": 1.000069,
+      "lc_pred_p0[17]": 1.000069,
+      "lc_pred_p0[18]": 1.000069,
+      "lc_pred_p0[19]": 1.000069,
+      "lc_pred_p0[20]": 1.000069,
+      "lc_pred_p0[21]": 1.000069,
+      "lc_pred_p0[22]": 1.000069,
+      "lc_pred_p0[23]": 1.000069,
+      "lc_pred_p0[24]": 1.000069,
+      "lc_pred_p0[25]": 1.000069,
+      "lc_pred_p0[26]": 1.000069,
+      "lc_pred_p0[27]": 1.000069,
+      "lc_pred_p0[28]": 1.000069,
+      "lc_pred_p0[29]": 1.000069,
+      "lc_pred_p0[30]": 1.000069,
+      "lc_pred_p0[31]": 1.000069,
+      "lc_pred_p0[32]": 1.000069,
+      "lc_pred_p0[33]": 1.000069,
+      "lc_pred_p0[34]": 1.000069,
+      "lc_pred_p0[35]": 1.000069,
+      "lc_pred_p0[36]": 1.000069,
+      "lc_pred_p0[37]": 1.000069,
+      "lc_pred_p0[38]": 1.000069,
+      "lc_pred_p0[39]": 1.000069,
+      "lc_pred_p0[40]": 1.000069,
+      "lc_pred_p0[41]": 1.000069,
+      "lc_pred_p0[42]": 1.000069,
+      "lc_pred_p0[43]": 1.000069,
+      "lc_pred_p0[44]": 1.000069,
+      "lc_pred_p0[45]": 1.000069,
+      "lc_pred_p0[46]": 1.000069,
+      "lc_pred_p0[47]": 1.000069,
+      "lc_pred_p0[48]": 1.000069,
+      "lc_pred_p0[49]": 1.000069,
+      "lc_pred_p0[50]": 1.000069,
+      "lc_pred_p0[51]": 1.000069,
+      "lc_pred_p0[52]": 1.000069,
+      "lc_pred_p0[53]": 1.000069,
+      "lc_pred_p0[54]": 1.000069,
+      "lc_pred_p0[55]": 1.000069,
+      "lc_pred_p0[56]": 1.000069,
+      "lc_pred_p0[57]": 1.000069,
+      "lc_pred_p0[58]": 1.000069,
+      "lc_pred_p0[59]": 1.000069,
+      "lc_pred_p0[60]": 1.000069,
+      "lc_pred_p0[61]": 1.000069,
+      "lc_pred_p0[62]": 1.000069,
+      "lc_pred_p0[63]": 1.000069,
+      "lc_pred_p0[64]": 1.000069,
+      "lc_pred_p0[65]": 1.000069,
+      "lc_pred_p0[66]": 1.000069,
+      "lc_pred_p0[67]": 1.000069,
+      "lc_pred_p0[68]": 1.000069,
+      "lc_pred_p0[69]": 1.000361,
+      "lc_pred_p0[70]": 1.000286,
+      "lc_pred_p0[71]": 1.000072,
+      "lc_pred_p0[72]": 0.999978,
+      "lc_pred_p0[73]": 1.000121,
+      "lc_pred_p0[74]": 1.000169,
+      "lc_pred_p0[75]": 1.000239,
+      "lc_pred_p0[76]": 1.000138,
+      "lc_pred_p0[77]": 1.000131,
+      "lc_pred_p0[78]": 1.000117,
+      "lc_pred_p0[79]": 1.000021,
+      "lc_pred_p0[80]": 1.000044,
+      "lc_pred_p0[81]": 1.000017,
+      "lc_pred_p0[82]": 1.000026,
+      "lc_pred_p0[83]": 1.000068,
+      "lc_pred_p0[84]": 1.000057,
+      "lc_pred_p0[85]": 1.00006,
+      "lc_pred_p0[86]": 1.00007,
+      "lc_pred_p0[87]": 1.000101,
+      "lc_pred_p0[88]": 1.000147,
+      "lc_pred_p0[89]": 1.000154,
+      "lc_pred_p0[90]": 1.000169,
+      "lc_pred_p0[91]": 1.000201,
+      "lc_pred_p0[92]": 1.000222,
+      "lc_pred_p0[93]": 1.000226,
+      "lc_pred_p0[94]": 1.000209,
+      "lc_pred_p0[95]": 1.000192,
+      "lc_pred_p0[96]": 1.000223,
+      "lc_pred_p0[97]": 1.000212,
+      "lc_pred_p0[98]": 1.000248,
+      "lc_pred_p0[99]": 1.000273,
+      "lc_pred_p0[100]": 1.000273,
+      "lc_pred_p0[101]": 1.000248,
+      "lc_pred_p0[102]": 1.000212,
+      "lc_pred_p0[103]": 1.000223,
+      "lc_pred_p0[104]": 1.000192,
+      "lc_pred_p0[105]": 1.000209,
+      "lc_pred_p0[106]": 1.000226,
+      "lc_pred_p0[107]": 1.000222,
+      "lc_pred_p0[108]": 1.000201,
+      "lc_pred_p0[109]": 1.000169,
+      "lc_pred_p0[110]": 1.000155,
+      "lc_pred_p0[111]": 1.000147,
+      "lc_pred_p0[112]": 1.000101,
+      "lc_pred_p0[113]": 1.00007,
+      "lc_pred_p0[114]": 1.00006,
+      "lc_pred_p0[115]": 1.000057,
+      "lc_pred_p0[116]": 1.000067,
+      "lc_pred_p0[117]": 1.000026,
+      "lc_pred_p0[118]": 1.000017,
+      "lc_pred_p0[119]": 1.000044,
+      "lc_pred_p0[120]": 1.000021,
+      "lc_pred_p0[121]": 1.000117,
+      "lc_pred_p0[122]": 1.000131,
+      "lc_pred_p0[123]": 1.000139,
+      "lc_pred_p0[124]": 1.000239,
+      "lc_pred_p0[125]": 1.000169,
+      "lc_pred_p0[126]": 1.000121,
+      "lc_pred_p0[127]": 0.999978,
+      "lc_pred_p0[128]": 1.000072,
+      "lc_pred_p0[129]": 1.000285,
+      "lc_pred_p0[130]": 1.000361,
+      "lc_pred_p0[131]": 1.000069,
+      "lc_pred_p0[132]": 1.000069,
+      "lc_pred_p0[133]": 1.000069,
+      "lc_pred_p0[134]": 1.000069,
+      "lc_pred_p0[135]": 1.000069,
+      "lc_pred_p0[136]": 1.000069,
+      "lc_pred_p0[137]": 1.000069,
+      "lc_pred_p0[138]": 1.000069,
+      "lc_pred_p0[139]": 1.000069,
+      "lc_pred_p0[140]": 1.000069,
+      "lc_pred_p0[141]": 1.000069,
+      "lc_pred_p0[142]": 1.000069,
+      "lc_pred_p0[143]": 1.000069,
+      "lc_pred_p0[144]": 1.000069,
+      "lc_pred_p0[145]": 1.000069,
+      "lc_pred_p0[146]": 1.000069,
+      "lc_pred_p0[147]": 1.000069,
+      "lc_pred_p0[148]": 1.000069,
+      "lc_pred_p0[149]": 1.000069,
+      "lc_pred_p0[150]": 1.000069,
+      "lc_pred_p0[151]": 1.000069,
+      "lc_pred_p0[152]": 1.000069,
+      "lc_pred_p0[153]": 1.000069,
+      "lc_pred_p0[154]": 1.000069,
+      "lc_pred_p0[155]": 1.000069,
+      "lc_pred_p0[156]": 1.000069,
+      "lc_pred_p0[157]": 1.000069,
+      "lc_pred_p0[158]": 1.000069,
+      "lc_pred_p0[159]": 1.000069,
+      "lc_pred_p0[160]": 1.000069,
+      "lc_pred_p0[161]": 1.000069,
+      "lc_pred_p0[162]": 1.000069,
+      "lc_pred_p0[163]": 1.000069,
+      "lc_pred_p0[164]": 1.000069,
+      "lc_pred_p0[165]": 1.000069,
+      "lc_pred_p0[166]": 1.000069,
+      "lc_pred_p0[167]": 1.000069,
+      "lc_pred_p0[168]": 1.000069,
+      "lc_pred_p0[169]": 1.000069,
+      "lc_pred_p0[170]": 1.000069,
+      "lc_pred_p0[171]": 1.000069,
+      "lc_pred_p0[172]": 1.000069,
+      "lc_pred_p0[173]": 1.000069,
+      "lc_pred_p0[174]": 1.000069,
+      "lc_pred_p0[175]": 1.000069,
+      "lc_pred_p0[176]": 1.000069,
+      "lc_pred_p0[177]": 1.000069,
+      "lc_pred_p0[178]": 1.000069,
+      "lc_pred_p0[179]": 1.000069,
+      "lc_pred_p0[180]": 1.000069,
+      "lc_pred_p0[181]": 1.000069,
+      "lc_pred_p0[182]": 1.000069,
+      "lc_pred_p0[183]": 1.000069,
+      "lc_pred_p0[184]": 1.000069,
+      "lc_pred_p0[185]": 1.000069,
+      "lc_pred_p0[186]": 1.000069,
+      "lc_pred_p0[187]": 1.000069,
+      "lc_pred_p0[188]": 1.000069,
+      "lc_pred_p0[189]": 1.000069,
+      "lc_pred_p0[190]": 1.000069,
+      "lc_pred_p0[191]": 1.000069,
+      "lc_pred_p0[192]": 1.000069,
+      "lc_pred_p0[193]": 1.000069,
+      "lc_pred_p0[194]": 1.000069,
+      "lc_pred_p0[195]": 1.000069,
+      "lc_pred_p0[196]": 1.000069,
+      "lc_pred_p0[197]": 1.000069,
+      "lc_pred_p0[198]": 1.000069,
+      "lc_pred_p0[199]": 1.000069
+    },
+    "ess_min": 7143.91767,
+    "ess_dict": {
+      "period[0]": 12009.523318,
+      "t0[0]": 12368.810114,
+      "mean_flux[0]": 17044.146371,
+      "log_jitter": 13406.681043,
+      "log_rp[0]": 7301.900876,
+      "b[0]": 7143.91767,
+      "log_t14[0]": 10248.979958,
+      "q1": 8368.894615,
+      "q2": 8689.625877,
+      "log_sigma_gp": 15104.056257,
+      "log_rho_gp": 8595.818356,
+      "rp_r_star[0]": 7301.900876,
+      "t14[0]": 10248.979958,
+      "u1": 9325.394591,
+      "u2": 8600.814566,
+      "jitter": 13406.681043,
+      "rho_star": 7386.977928,
+      "sigma_gp": 15104.056257,
+      "rho_gp": 8595.818356,
+      "lc_pred_p0[0]": 17044.146371,
+      "lc_pred_p0[1]": 17044.146371,
+      "lc_pred_p0[2]": 17044.146371,
+      "lc_pred_p0[3]": 17044.146371,
+      "lc_pred_p0[4]": 17044.146371,
+      "lc_pred_p0[5]": 17044.146371,
+      "lc_pred_p0[6]": 17044.146371,
+      "lc_pred_p0[7]": 17044.146371,
+      "lc_pred_p0[8]": 17044.146371,
+      "lc_pred_p0[9]": 17044.146371,
+      "lc_pred_p0[10]": 17044.146371,
+      "lc_pred_p0[11]": 17044.146371,
+      "lc_pred_p0[12]": 17044.146371,
+      "lc_pred_p0[13]": 17044.146371,
+      "lc_pred_p0[14]": 17044.146371,
+      "lc_pred_p0[15]": 17044.146371,
+      "lc_pred_p0[16]": 17044.146371,
+      "lc_pred_p0[17]": 17044.146371,
+      "lc_pred_p0[18]": 17044.146371,
+      "lc_pred_p0[19]": 17044.146371,
+      "lc_pred_p0[20]": 17044.146371,
+      "lc_pred_p0[21]": 17044.146371,
+      "lc_pred_p0[22]": 17044.146371,
+      "lc_pred_p0[23]": 17044.146371,
+      "lc_pred_p0[24]": 17044.146371,
+      "lc_pred_p0[25]": 17044.146371,
+      "lc_pred_p0[26]": 17044.146371,
+      "lc_pred_p0[27]": 17044.146371,
+      "lc_pred_p0[28]": 17044.146371,
+      "lc_pred_p0[29]": 17044.146371,
+      "lc_pred_p0[30]": 17044.146371,
+      "lc_pred_p0[31]": 17044.146371,
+      "lc_pred_p0[32]": 17044.146371,
+      "lc_pred_p0[33]": 17044.146371,
+      "lc_pred_p0[34]": 17044.146371,
+      "lc_pred_p0[35]": 17044.146371,
+      "lc_pred_p0[36]": 17044.146371,
+      "lc_pred_p0[37]": 17044.146371,
+      "lc_pred_p0[38]": 17044.146371,
+      "lc_pred_p0[39]": 17044.146371,
+      "lc_pred_p0[40]": 17044.146371,
+      "lc_pred_p0[41]": 17044.146371,
+      "lc_pred_p0[42]": 17044.146371,
+      "lc_pred_p0[43]": 17044.146371,
+      "lc_pred_p0[44]": 17044.146371,
+      "lc_pred_p0[45]": 17044.146371,
+      "lc_pred_p0[46]": 17044.146371,
+      "lc_pred_p0[47]": 17044.146371,
+      "lc_pred_p0[48]": 17044.146371,
+      "lc_pred_p0[49]": 17044.146371,
+      "lc_pred_p0[50]": 17044.146371,
+      "lc_pred_p0[51]": 17044.146371,
+      "lc_pred_p0[52]": 17044.146371,
+      "lc_pred_p0[53]": 17044.146371,
+      "lc_pred_p0[54]": 17044.146371,
+      "lc_pred_p0[55]": 17044.146371,
+      "lc_pred_p0[56]": 17044.146371,
+      "lc_pred_p0[57]": 17044.146371,
+      "lc_pred_p0[58]": 17044.146371,
+      "lc_pred_p0[59]": 17044.146371,
+      "lc_pred_p0[60]": 17044.146371,
+      "lc_pred_p0[61]": 17044.146371,
+      "lc_pred_p0[62]": 17044.146371,
+      "lc_pred_p0[63]": 17044.146371,
+      "lc_pred_p0[64]": 17044.146371,
+      "lc_pred_p0[65]": 17044.146371,
+      "lc_pred_p0[66]": 17044.146371,
+      "lc_pred_p0[67]": 17044.146371,
+      "lc_pred_p0[68]": 17044.146371,
+      "lc_pred_p0[69]": 14450.657028,
+      "lc_pred_p0[70]": 14290.644606,
+      "lc_pred_p0[71]": 16545.550325,
+      "lc_pred_p0[72]": 16238.94699,
+      "lc_pred_p0[73]": 15271.329019,
+      "lc_pred_p0[74]": 12569.419112,
+      "lc_pred_p0[75]": 14556.052744,
+      "lc_pred_p0[76]": 15901.117075,
+      "lc_pred_p0[77]": 16595.836312,
+      "lc_pred_p0[78]": 16937.253774,
+      "lc_pred_p0[79]": 17054.90753,
+      "lc_pred_p0[80]": 17110.717062,
+      "lc_pred_p0[81]": 17146.587946,
+      "lc_pred_p0[82]": 17185.256563,
+      "lc_pred_p0[83]": 17222.265912,
+      "lc_pred_p0[84]": 17258.948298,
+      "lc_pred_p0[85]": 17272.526748,
+      "lc_pred_p0[86]": 17263.509434,
+      "lc_pred_p0[87]": 17238.727522,
+      "lc_pred_p0[88]": 17185.313153,
+      "lc_pred_p0[89]": 17108.595765,
+      "lc_pred_p0[90]": 17010.836638,
+      "lc_pred_p0[91]": 16893.682777,
+      "lc_pred_p0[92]": 16758.957626,
+      "lc_pred_p0[93]": 16648.567157,
+      "lc_pred_p0[94]": 16539.679293,
+      "lc_pred_p0[95]": 16455.217031,
+      "lc_pred_p0[96]": 16367.482055,
+      "lc_pred_p0[97]": 16303.127941,
+      "lc_pred_p0[98]": 16260.923507,
+      "lc_pred_p0[99]": 16234.872063,
+      "lc_pred_p0[100]": 16234.872063,
+      "lc_pred_p0[101]": 16260.923507,
+      "lc_pred_p0[102]": 16303.127941,
+      "lc_pred_p0[103]": 16367.482055,
+      "lc_pred_p0[104]": 16455.217031,
+      "lc_pred_p0[105]": 16539.679293,
+      "lc_pred_p0[106]": 16648.567157,
+      "lc_pred_p0[107]": 16758.957626,
+      "lc_pred_p0[108]": 16893.682777,
+      "lc_pred_p0[109]": 17010.836638,
+      "lc_pred_p0[110]": 17108.595765,
+      "lc_pred_p0[111]": 17185.313153,
+      "lc_pred_p0[112]": 17238.727522,
+      "lc_pred_p0[113]": 17263.509434,
+      "lc_pred_p0[114]": 17272.526748,
+      "lc_pred_p0[115]": 17258.948298,
+      "lc_pred_p0[116]": 17222.265912,
+      "lc_pred_p0[117]": 17185.256563,
+      "lc_pred_p0[118]": 17146.587946,
+      "lc_pred_p0[119]": 17110.717062,
+      "lc_pred_p0[120]": 17054.90753,
+      "lc_pred_p0[121]": 16937.253774,
+      "lc_pred_p0[122]": 16595.836312,
+      "lc_pred_p0[123]": 15901.117075,
+      "lc_pred_p0[124]": 14556.052744,
+      "lc_pred_p0[125]": 12569.419112,
+      "lc_pred_p0[126]": 15271.329019,
+      "lc_pred_p0[127]": 16238.94699,
+      "lc_pred_p0[128]": 16545.550325,
+      "lc_pred_p0[129]": 14290.644606,
+      "lc_pred_p0[130]": 14450.657028,
+      "lc_pred_p0[131]": 17044.146371,
+      "lc_pred_p0[132]": 17044.146371,
+      "lc_pred_p0[133]": 17044.146371,
+      "lc_pred_p0[134]": 17044.146371,
+      "lc_pred_p0[135]": 17044.146371,
+      "lc_pred_p0[136]": 17044.146371,
+      "lc_pred_p0[137]": 17044.146371,
+      "lc_pred_p0[138]": 17044.146371,
+      "lc_pred_p0[139]": 17044.146371,
+      "lc_pred_p0[140]": 17044.146371,
+      "lc_pred_p0[141]": 17044.146371,
+      "lc_pred_p0[142]": 17044.146371,
+      "lc_pred_p0[143]": 17044.146371,
+      "lc_pred_p0[144]": 17044.146371,
+      "lc_pred_p0[145]": 17044.146371,
+      "lc_pred_p0[146]": 17044.146371,
+      "lc_pred_p0[147]": 17044.146371,
+      "lc_pred_p0[148]": 17044.146371,
+      "lc_pred_p0[149]": 17044.146371,
+      "lc_pred_p0[150]": 17044.146371,
+      "lc_pred_p0[151]": 17044.146371,
+      "lc_pred_p0[152]": 17044.146371,
+      "lc_pred_p0[153]": 17044.146371,
+      "lc_pred_p0[154]": 17044.146371,
+      "lc_pred_p0[155]": 17044.146371,
+      "lc_pred_p0[156]": 17044.146371,
+      "lc_pred_p0[157]": 17044.146371,
+      "lc_pred_p0[158]": 17044.146371,
+      "lc_pred_p0[159]": 17044.146371,
+      "lc_pred_p0[160]": 17044.146371,
+      "lc_pred_p0[161]": 17044.146371,
+      "lc_pred_p0[162]": 17044.146371,
+      "lc_pred_p0[163]": 17044.146371,
+      "lc_pred_p0[164]": 17044.146371,
+      "lc_pred_p0[165]": 17044.146371,
+      "lc_pred_p0[166]": 17044.146371,
+      "lc_pred_p0[167]": 17044.146371,
+      "lc_pred_p0[168]": 17044.146371,
+      "lc_pred_p0[169]": 17044.146371,
+      "lc_pred_p0[170]": 17044.146371,
+      "lc_pred_p0[171]": 17044.146371,
+      "lc_pred_p0[172]": 17044.146371,
+      "lc_pred_p0[173]": 17044.146371,
+      "lc_pred_p0[174]": 17044.146371,
+      "lc_pred_p0[175]": 17044.146371,
+      "lc_pred_p0[176]": 17044.146371,
+      "lc_pred_p0[177]": 17044.146371,
+      "lc_pred_p0[178]": 17044.146371,
+      "lc_pred_p0[179]": 17044.146371,
+      "lc_pred_p0[180]": 17044.146371,
+      "lc_pred_p0[181]": 17044.146371,
+      "lc_pred_p0[182]": 17044.146371,
+      "lc_pred_p0[183]": 17044.146371,
+      "lc_pred_p0[184]": 17044.146371,
+      "lc_pred_p0[185]": 17044.146371,
+      "lc_pred_p0[186]": 17044.146371,
+      "lc_pred_p0[187]": 17044.146371,
+      "lc_pred_p0[188]": 17044.146371,
+      "lc_pred_p0[189]": 17044.146371,
+      "lc_pred_p0[190]": 17044.146371,
+      "lc_pred_p0[191]": 17044.146371,
+      "lc_pred_p0[192]": 17044.146371,
+      "lc_pred_p0[193]": 17044.146371,
+      "lc_pred_p0[194]": 17044.146371,
+      "lc_pred_p0[195]": 17044.146371,
+      "lc_pred_p0[196]": 17044.146371,
+      "lc_pred_p0[197]": 17044.146371,
+      "lc_pred_p0[198]": 17044.146371,
+      "lc_pred_p0[199]": 17044.146371
+    },
+    "divergences": 0,
+    "converged": true
+  },
+  "metadata": {
+    "tess_pipeline_version": "0.1.0",
+    "run_start": "2026-09-20T13:09:43.636853",
+    "sectors_used": [
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60
+    ],
+    "config": {
+      "target": "TIC 287196418",
+      "author": "SPOC",
+      "cadence": 120,
+      "sectors": "longest",
+      "lightcurve_source": "download",
+      "lightcurve_fits": [],
+      "search_method": "tls",
+      "inference": true,
+      "inference_backend": "exoplanet",
+      "chains": 4,
+      "draws": 3000,
+      "gp_kernel": "SHO",
+      "verbose": true
+    },
+    "detections": [
+      {
+        "period": 3.6950033715406656,
+        "epoch": 2744.6774442476544,
+        "duration_hr": 3.7712722722254703,
+        "depth": 0.007690331671473705,
+        "method": "tls",
+        "sde": 2.4127301073920524,
+        "snr": 410.27498987826294,
+        "fap": 0.0,
+        "confidence": "Confirmed",
+        "existence_probability_search": 1.0,
+        "tls_periods": [
+          3.6877670975488783,
+          3.6879313483854426,
+          3.6880956089763224,
+          3.6882598793222443,
+          3.6884241594239313,
+          3.6885884492821086,
+          3.6887527488975005,
+          3.6889170582708304,
+          3.6890813774028235,
+          3.6892457062942037,
+          3.6894100449456952,
+          3.6895743933580216,
+          3.689738751531912,
+          3.689903119468088,
+          3.690067497167275,
+          3.690231884630198,
+          3.6903962818575815,
+          3.6905606888501508,
+          3.6907251056086303,
+          3.690889532133746,
+          3.691053968426223,
+          3.691218414486787,
+          3.691382870316162,
+          3.6915473359150712,
+          3.691711811284246,
+          3.691876296424409,
+          3.6920407913362854,
+          3.6922052960206013,
+          3.692369810478082,
+          3.6925343347094546,
+          3.6926988687154427,
+          3.692863412496774,
+          3.6930279660541734,
+          3.693192529388368,
+          3.693357102500081,
+          3.6935216853900434,
+          3.6936862780589785,
+          3.6938508805076133,
+          3.694015492736674,
+          3.694180114746887,
+          3.6943447465389787,
+          3.694509388113676,
+          3.6946740394717046,
+          3.6948387006137926,
+          3.6950033715406656,
+          3.695168052253051,
+          3.695332742751673,
+          3.6954974430372634,
+          3.6956621531105474,
+          3.695826872972251,
+          3.6959916026231023,
+          3.6961563420638277,
+          3.6963210912951556,
+          3.6964858503178126,
+          3.696650619132525,
+          3.6968153977400227,
+          3.696980186141032,
+          3.697144984336277,
+          3.697309792326492,
+          3.697474610112401,
+          3.6976394376947326,
+          3.6978042750742146,
+          3.6979691222515747,
+          3.6981339792275407,
+          3.6982988460028414,
+          3.6984637225782038,
+          3.698628608954357,
+          3.6987935051320284,
+          3.6989584111119473,
+          3.69912332689484,
+          3.6992882524814377,
+          3.699453187872468,
+          3.6996181330686597,
+          3.69978308807074,
+          3.69994805287944,
+          3.700113027495486,
+          3.7002780119196084,
+          3.7004430061525353,
+          3.7006080101949967,
+          3.70077302404772,
+          3.700938047711433,
+          3.7011030811868695,
+          3.701268124474756,
+          3.7014331775758222,
+          3.701598240490797,
+          3.701763313220411,
+          3.7019283957653926,
+          3.702093488126471,
+          3.702258590304376
+        ],
+        "tls_power": [
+          -1.0149248955434096,
+          -0.9989796010160574,
+          -0.9826798038298553,
+          -0.9662153790648121,
+          -0.949559549244729,
+          -0.9328475706741288,
+          -0.9159240747609465,
+          -0.8985846320958767,
+          -0.8802457161432798,
+          -0.8587292463271385,
+          -0.8369364426827219,
+          -0.8150915472592409,
+          -0.7909483713619043,
+          -0.7639347109677456,
+          -0.7361531385220621,
+          -0.7054078985923794,
+          -0.6719924968947106,
+          -0.6372131519457442,
+          -0.6004389872026176,
+          -0.5580331935198551,
+          -0.5140242347370466,
+          -0.46636430141657315,
+          -0.41209795303482516,
+          -0.35591924339426084,
+          -0.2935957381814247,
+          -0.22379562402759698,
+          -0.15075472369453832,
+          -0.07480627537365227,
+          0.014273011966280577,
+          0.10940217103273074,
+          0.2094510010234045,
+          0.3199915499032181,
+          0.4460232028727379,
+          0.5809663292786997,
+          0.7261310708074465,
+          0.878401867124717,
+          1.0374187004452595,
+          1.2064711801703885,
+          1.4044113851766729,
+          1.6063443727670832,
+          1.8091348175801898,
+          2.0178707814490213,
+          2.2034653069771344,
+          2.34916662216256,
+          2.4127301073920524,
+          2.367369451368011,
+          2.229841635866324,
+          2.0438816879635358,
+          1.8380182050970413,
+          1.6314111556662692,
+          1.432468003720188,
+          1.2385862658122908,
+          1.0678688204271123,
+          0.9123424134444603,
+          0.7639382669388858,
+          0.6247387460414363,
+          0.49229553501268414,
+          0.3712647350671702,
+          0.26626581445846714,
+          0.16834743742124614,
+          0.07497921139838827,
+          -0.013793542133960796,
+          -0.09320481373977839,
+          -0.16525668776569064,
+          -0.234298801958164,
+          -0.29765817085011775,
+          -0.3525981195315578,
+          -0.40667976332897493,
+          -0.45874573863912604,
+          -0.50479503240751,
+          -0.5471491452563464,
+          -0.5887025861380106,
+          -0.6267343519757117,
+          -0.6607125446369586,
+          -0.6942251152352259,
+          -0.724599663261407,
+          -0.7521840677884781,
+          -0.779225879131056,
+          -0.8042415072693326,
+          -0.8262419304662991,
+          -0.8481884846210971,
+          -0.8699698119292362,
+          -0.8907213243347265,
+          -0.9084782982583495,
+          -0.9260821322235939,
+          -0.9431154990280974,
+          -0.9602445490235083,
+          -0.9772789811204332,
+          -0.9939458202712319
+        ],
+        "note": "refined archive period",
+        "existence_probability_bayesian": 1.0,
+        "bayesian_confidence": "Confirmed"
+      },
+      {
+        "period": 63.922983510109084,
+        "epoch": 2782.272066186217,
+        "duration_hr": 2.23236515279181,
+        "depth": 0.0011845144888210646,
+        "method": "tls",
+        "sde": 1.83620689488483,
+        "snr": 14.343495321595162,
+        "fap": 0.9922696478719996,
+        "existence_probability_search": 0.0077303521280004395,
+        "confidence": "Low",
+        "tls_periods": [
+          62.78711670093108,
+          62.8735311025438,
+          62.96010415402708,
+          63.04683621963349,
+          63.13372766461979,
+          63.220778855249776,
+          63.307990158797956,
+          63.395361943552466,
+          63.48289457881851,
+          63.570588434921575,
+          63.658443883210744,
+          63.74646129606201,
+          63.83464104688155,
+          63.922983510109084,
+          64.01148906122118,
+          64.10015807673467,
+          64.18899093420994,
+          64.27798801225438,
+          64.36714969052571,
+          64.45647634973538,
+          64.54596837165205,
+          64.63562613910491,
+          64.72545003598728,
+          64.81544044725985,
+          64.90559775895436,
+          64.99592235817691,
+          65.08641463311156,
+          65.17707497302372
+        ],
+        "tls_power": [
+          -0.2980562430714554,
+          -0.6096946757080467,
+          -0.8862987687349992,
+          -1.89095223518153,
+          -1.4983128297094321,
+          -1.2880537636086862,
+          -0.46613370008703636,
+          -1.1282409401283386,
+          -1.1672298417951357,
+          -0.7717009003149674,
+          0.7751759847007984,
+          -0.3332976781526554,
+          0.27699659424082274,
+          1.83620689488483,
+          0.9896017021301409,
+          -0.39391787693963953,
+          0.24822730311362878,
+          0.7330658572688895,
+          1.3610420753823864,
+          1.1379112542520675,
+          0.4369632668293727,
+          0.8921491362356881,
+          1.029276197944531,
+          1.2338850426995736,
+          1.1645484247857802,
+          -0.3290336552489994,
+          -1.300407346502319,
+          0.2462807207117248
+        ],
+        "tls_periods_broad": [
+          0.5,
+          0.5050166083348802,
+          0.5100835493881315,
+          0.515201328158823,
+          0.5203704547127888,
+          0.5255914442334639,
+          0.5308648170732304,
+          0.5361910988052788,
+          0.5415708202759891,
+          0.5470045176578379,
+          0.5524927325028367,
+          0.5580360117965056,
+          0.5636349080123889,
+          0.5692899791671175,
+          0.5750017888760246,
+          0.5807709064093176,
+          0.5865979067488153,
+          0.592483370645254,
+          0.5984278846761678,
+          0.6044320413043501,
+          0.6104964389369022,
+          0.6166216819848732,
+          0.6228083809234995,
+          0.6290571523530476,
+          0.6353686190602682,
+          0.6417434100804662,
+          0.6481821607601944,
+          0.6546855128205749,
+          0.6612541144212568,
+          0.6678886202250158,
+          0.6745896914630006,
+          0.6813579960006357,
+          0.6881942084041838,
+          0.6950990100079771,
+          0.702073088982323,
+          0.7091171404020906,
+          0.7162318663159857,
+          0.7234179758165207,
+          0.7306761851106873,
+          0.7380072175913368,
+          0.7454118039092775,
+          0.7528906820460962,
+          0.7604445973877084,
+          0.7680743027986479,
+          0.7757805586971018,
+          0.7835641331306976,
+          0.7914258018530508,
+          0.7993663484010812,
+          0.8073865641731044,
+          0.8154872485077065,
+          0.823669208763411,
+          0.8319332603991443,
+          0.8402802270555091,
+          0.8487109406368725,
+          0.8572262413942782,
+          0.8658269780091913,
+          0.8745140076780813,
+          0.8832881961978559,
+          0.8921504180521508,
+          0.9011015564984852,
+          0.9101425036562929,
+          0.9192741605958346,
+          0.9284974374280046,
+          0.9378132533950371,
+          0.9472225369621222,
+          0.9567262259099433,
+          0.9663252674281398,
+          0.9760206182097104,
+          0.9858132445463618,
+          0.995704122424815,
+          1.0056942376240767,
+          1.0157845858136885,
+          1.02597617265296,
+          1.0362700138911984,
+          1.0466671354689443,
+          1.0571685736202217,
+          1.0677753749758148,
+          1.0784885966675817,
+          1.0893093064338133,
+          1.1002385827256502,
+          1.1112775148145666,
+          1.122427202900934,
+          1.133688758223672,
+          1.1450633031710016,
+          1.1565519713923078,
+          1.1681559079111252,
+          1.1798762692392581,
+          1.1917142234920441,
+          1.203670950504775,
+          1.2157476419502857,
+          1.2279455014577232,
+          1.2402657447325058,
+          1.2527095996774888,
+          1.265278306515342,
+          1.2779731179121576,
+          1.2907952991022993,
+          1.3037461280145008,
+          1.3168268953992315,
+          1.3300389049573398,
+          1.3433834734699874,
+          1.356861930929887,
+          1.370475620673856,
+          1.384225899516701,
+          1.398114137886446,
+          1.4121417199609159,
+          1.4263100438056917,
+          1.4406205215134495,
+          1.455074579344697,
+          1.4696736578699228,
+          1.484419212113171,
+          1.4993127116970573,
+          1.5143556409892396,
+          1.5295494992503587,
+          1.5448958007834608,
+          1.560396075084924,
+          1.5760518669968948,
+          1.5918647368612548,
+          1.6078362606751349,
+          1.6239680302479855,
+          1.640261653360228,
+          1.6567187539234902,
+          1.67334097214246,
+          1.6901299646783525,
+          1.7070874048140245,
+          1.7242149826207425,
+          1.7415144051266238,
+          1.758987396486768,
+          1.7766356981550973,
+          1.7944610690579181,
+          1.8124652857692258,
+          1.8306501426877675,
+          1.8490174522158813,
+          1.8675690449401319,
+          1.8863067698137534,
+          1.9052324943409304,
+          1.924348104762921,
+          1.9436555062460499,
+          1.9631566230715891,
+          1.9828533988275416,
+          2.0027477966023493,
+          2.0228417991805454,
+          2.0431374092403716,
+          2.0636366495533727,
+          2.084341563186,
+          2.1052542137032324,
+          2.1263766853742427,
+          2.147711083380129,
+          2.1692595340237277,
+          2.191024184941531,
+          2.213007205317734,
+          2.2352107861004282,
+          2.257637140219959,
+          2.280288502809484,
+          2.3031671314277347,
+          2.3262753062840194,
+          2.34961533046548,
+          2.373189530166631,
+          2.3970002549211995,
+          2.4210498778362948,
+          2.4453407958289226,
+          2.4698754298648784,
+          2.49465622520003,
+          2.519685651624029,
+          2.544966203706459,
+          2.570500401045463,
+          2.596290788518858,
+          2.62233993653777,
+          2.648650441302819,
+          2.6752249250628672,
+          2.702066036376366,
+          2.7291764503753306,
+          2.7565588690319536,
+          2.7842160214279006,
+          2.8121506640263045,
+          2.8403655809464916,
+          2.868863584241457,
+          2.8976475141781366,
+          2.926720239520478,
+          2.9560846578153597,
+          2.9857436956813754,
+          3.0157003091005183,
+          3.0459574837127867,
+          3.076518235113755,
+          3.10738560915512,
+          3.1385626822482684,
+          3.1700525616708886,
+          3.2018583858766627,
+          3.2339833248080523,
+          3.2664305802122433,
+          3.2992033859602437,
+          3.332305008369189,
+          3.3657387465278847,
+          3.3995079326256064,
+          3.433615932284208,
+          3.468066144893556,
+          3.5028620039503338,
+          3.538006977400238,
+          3.573504567983618,
+          3.609358313584576,
+          3.6455717875835725,
+          3.682148599213564,
+          3.719092393919728,
+          3.756406853722782,
+          3.7940956975859548,
+          3.8321626817856402,
+          3.870611600285765,
+          3.9094462851159197,
+          3.9486706067532773,
+          3.9882884745083467,
+          4.0283038369145965,
+          4.068720682121987,
+          4.109543038294454,
+          4.150774974011368,
+          4.192420598673042,
+          4.234484062910295,
+          4.276969558998121,
+          4.319881321273518,
+          4.363223626557505,
+          4.407000794581374,
+          4.451217188417214,
+          4.495877214912766,
+          4.540985325130624,
+          4.586546014791861,
+          4.6325638247240954,
+          4.6790433413140455,
+          4.725989196964649,
+          4.773406070556741,
+          4.8212986879153865,
+          4.869671822280872,
+          4.918530294784443,
+          4.967878974928795,
+          5.017722781073402,
+          5.068066680924703,
+          5.118915692031214,
+          5.170274882283599,
+          5.2221493704197695,
+          5.274544326535043,
+          5.327464972597425,
+          5.380916582968055,
+          5.43490448492688,
+          5.489434059203603,
+          5.544510740513955,
+          5.600140018101344,
+          5.65632743628395,
+          5.713078595007297,
+          5.770399150402374,
+          5.828294815349363,
+          5.886771360047003,
+          5.945834612587694,
+          6.005490459538347,
+          6.0657448465270765,
+          6.126603778835764,
+          6.188073321998595,
+          6.250159602406571,
+          6.312868807918099,
+          6.376207188475712,
+          6.440181056728972,
+          6.5047967886636195,
+          6.570060824237042,
+          6.635979668020116,
+          6.702559889845486,
+          6.76980812546235,
+          6.837731077197818,
+          6.9063355146249,
+          6.9756282752371925,
+          7.045616265130353,
+          7.116306459690393,
+          7.187705904288881,
+          7.259821714985127,
+          7.332661079235404,
+          7.40623125660929,
+          7.480539579513202,
+          7.555593453921176,
+          7.631400360112989,
+          7.70796785341969,
+          7.7853035649766005,
+          7.863415202483868,
+          7.942310550974676,
+          8.021997473591128,
+          8.102483912367937,
+          8.183777889023972,
+          8.265887505761743,
+          8.348820946074914,
+          8.432586475563916,
+          8.51719244275974,
+          8.602647279955994,
+          8.688959504049315,
+          8.776137717388218,
+          8.86419060863043,
+          8.953126953608875,
+          9.042955616206303,
+          9.133685549238725,
+          9.225325795347697,
+          9.317885487901549,
+          9.41137385190568,
+          9.505800204921966,
+          9.6011739579974,
+          9.697504616602048,
+          9.794801781576416,
+          9.89307515008833,
+          9.992334516599389,
+          10.092589773841155,
+          10.19385091380111,
+          10.29612802871851,
+          10.399431312090234,
+          10.503771059686725,
+          10.60915767057812,
+          10.71560164817068,
+          10.823113601253617,
+          10.931704245056423,
+          11.041384402316812,
+          11.152165004359375,
+          11.26405709218503,
+          11.377071817571473,
+          11.49122044418459,
+          11.606514348701074,
+          11.722965021942272,
+          11.84058407001944,
+          11.959383215490458,
+          12.079374298528167,
+          12.200569278100435,
+          12.322980233162037,
+          12.446619363858524,
+          12.571498992742152,
+          12.697631566000013,
+          12.825029654694479,
+          12.95370595601613,
+          13.083673294549202,
+          13.214944623549771,
+          13.34753302623673,
+          13.481451717095744,
+          13.616714043196277,
+          13.753333485521832,
+          13.891323660313542,
+          14.030698320427236,
+          14.171471356704124,
+          14.313656799355245,
+          14.457268819359765,
+          14.60232172987737,
+          14.748829987674778,
+          14.896808194566576,
+          15.046271098870523,
+          15.197233596877444,
+          15.349710734335876,
+          15.503717707951612,
+          15.65926986690229,
+          15.816382714367169,
+          15.975071909072266,
+          16.135353266851,
+          16.29724276222044,
+          16.460756529973477,
+          16.625910866786874,
+          16.792722232845467,
+          16.96120725348271,
+          17.13138272083761,
+          17.30326559552836,
+          17.476873008342704,
+          17.65222226194529,
+          17.829330832602153,
+          18.00821637192249,
+          18.18889670861792,
+          18.371389850279375,
+          18.555713985171863,
+          18.741887484047194,
+          18.929928901974908,
+          19.119856980191578,
+          19.311690647968668,
+          19.50544902449912,
+          19.701151420802884,
+          19.898817341651558,
+          20.09846648751233,
+          20.300118756511456,
+          20.50379424641741,
+          20.709513256643902,
+          20.917296290273082,
+          21.127164056098966,
+          21.339137470691377,
+          21.553237660480622,
+          21.769485963863062,
+          21.987903933327807,
+          22.20851333760476,
+          22.431336163834207,
+          22.656394619758185,
+          22.88371113593381,
+          23.113308367968852,
+          23.345209198779667,
+          23.579436740871905,
+          23.816014338643978,
+          24.054965570713712,
+          24.296314252268306,
+          24.540084437437898,
+          24.786300421692925,
+          25.03498674426554,
+          25.286168190595333,
+          25.539869794799575,
+          25.796116842168267,
+          26.054934871684193,
+          26.316349678568308,
+          26.580387316850558,
+          26.84707410196667,
+          27.11643661338081,
+          27.38850169723468,
+          27.663296469023134,
+          27.940848316296655,
+          28.221184901390966,
+          28.50433416418399,
+          28.790324324880498,
+          29.079183886824694,
+          29.37094163934101,
+          29.665626660603415,
+          29.963268320533466,
+          30.263896283727544,
+          30.567540512413334,
+          30.874231269436052,
+          31.183999121274592,
+          31.496874941087956,
+          31.812889911792233,
+          32.132075529168475,
+          32.45446360500173,
+          32.78008627025156,
+          33.10897597825442,
+          33.441165507958154,
+          33.77668796718881,
+          34.1155767959505,
+          34.45786576975812,
+          34.80358900300362,
+          35.15278095235604,
+          35.50547642019565,
+          35.86171055808254,
+          36.22151887026001,
+          36.58493721719314,
+          36.952001819142815,
+          37.322749259775655,
+          37.69721648981014,
+          38.07544083069926,
+          38.4574599783503,
+          38.843312006881725,
+          39.23303537241787,
+          39.62666891692171,
+          40.02425187206604,
+          40.425823863143535,
+          40.83142491301602,
+          41.24109544610336,
+          41.654876292412375,
+          42.07280869160621,
+          42.49493429711449,
+          42.921295180284666,
+          43.3519338345752,
+          43.78689317979061,
+          44.22621656635909,
+          44.669947779653114,
+          45.118131044353255,
+          45.570811028855886,
+          46.0280328497251,
+          46.489842076189234,
+          46.956284734682576,
+          47.42740731343261,
+          47.90325676709325,
+          48.38388052142468,
+          48.86932647801993,
+          49.35964301907916,
+          49.8548790122316,
+          50.355083815406,
+          50.86030728174991,
+          51.37059976459829,
+          51.88601212249204,
+          52.40659572424681,
+          52.932402454072715,
+          53.46348471674538,
+          53.9998954428289,
+          54.5416880939512,
+          55.0889166681323,
+          55.64163570516604,
+          56.19990029205584,
+          56.763766068504964,
+          57.33328923246186,
+          57.90852654572124,
+          58.489535339581025,
+          59.07637352055664,
+          59.66909957615208,
+          60.26777258068911,
+          60.872452201195,
+          61.48319870334922,
+          62.10007295748984,
+          62.723136444680264,
+          63.352451262836674,
+          63.98808013291715,
+          64.63008640517269,
+          65.27853406546112,
+          65.9334877416242,
+          66.59501270992891,
+          67.26317490157307,
+          67.93804090925653,
+          68.61967799381814,
+          69.3081540909393,
+          70.00353781791482,
+          70.70589848049171,
+          71.41530607977657,
+          72.13183131921221,
+          72.85554561162446
+        ],
+        "tls_power_broad": [
+          -6.377035580009795,
+          0.15649550242776242,
+          0.15651763201738253,
+          0.15637541567602212,
+          -6.377035580009795,
+          0.15635002008569332,
+          0.15655184753489873,
+          0.15666803796209497,
+          -6.377035580009795,
+          -6.377035580009795,
+          -6.377035580009795,
+          0.15638353990828094,
+          -6.377035580009795,
+          0.15635207705470908,
+          0.15662473004356575,
+          -6.377035580009795,
+          0.15653613130040525,
+          -6.377035580009795,
+          0.1566426835553867,
+          0.1564591648020733,
+          0.15666740511120647,
+          0.15636069049320991,
+          0.15635642945653744,
+          0.1566457749461375,
+          0.1563404465702381,
+          -6.377035580009795,
+          0.15652605886614543,
+          0.15647570848738843,
+          -6.377035580009795,
+          0.1565432020767059,
+          -6.377035580009795,
+          0.15651640679909562,
+          0.15670019087351497,
+          0.15640196408612272,
+          0.15720185963241945,
+          -6.377035580009795,
+          0.1563593653691217,
+          0.15666991541450434,
+          0.15668543530590268,
+          0.15637797607930387,
+          0.1563717007822043,
+          0.1565132574337734,
+          0.15660841698414302,
+          0.1563885952841925,
+          0.1565205121707367,
+          0.1575998736453565,
+          0.15645155873962238,
+          0.15707677950820478,
+          0.1567779808946979,
+          0.1568531437480579,
+          0.15645937168756516,
+          0.15645683334585894,
+          0.156427203181258,
+          0.15658625683866018,
+          0.15640002633969785,
+          0.1566992928583181,
+          0.15664045232504356,
+          0.15627417470851315,
+          0.15669730062798778,
+          0.1565294345854339,
+          0.15725219109205818,
+          0.15662019165611712,
+          0.15675050453511633,
+          0.15634164675079185,
+          0.15629638507154328,
+          0.15661677867194362,
+          0.15653227912058754,
+          0.1562992445538067,
+          0.1564607347411463,
+          0.15637928668047088,
+          0.15651117526773703,
+          0.15710296795789455,
+          0.15643931634508326,
+          0.15675104090221892,
+          0.15640872410149667,
+          0.1572250723698991,
+          0.15667638485969898,
+          0.15628767148395603,
+          0.15663723868415536,
+          0.15635225109544296,
+          0.1569465230707597,
+          0.15633758910525772,
+          0.15625799569731325,
+          0.15622817684874585,
+          0.15638605702942832,
+          0.15664015724897104,
+          0.15681993790075316,
+          0.15646336339195455,
+          0.1570896151475564,
+          0.1564454805156049,
+          0.156505351247812,
+          0.15622383133687023,
+          0.15650805543996418,
+          0.15673269309409216,
+          0.15626260335551673,
+          0.1564365444302461,
+          0.15657402494603512,
+          0.15643038631545017,
+          0.15644774960187172,
+          0.15720881119489827,
+          0.15666245177517987,
+          0.15716267260715172,
+          0.15618808737119352,
+          0.15688125099943656,
+          0.1565675393615195,
+          0.1563844369896552,
+          0.15617047313423707,
+          0.15639510678579402,
+          0.15633752536715267,
+          0.15649152940211056,
+          0.15617225264513154,
+          0.15648356167998434,
+          0.15635085092788203,
+          0.15661088331620807,
+          0.15624833917653647,
+          0.15718778069506936,
+          0.15628509828386208,
+          0.15628134070383157,
+          0.1566447167126557,
+          0.15699090662729473,
+          0.15720231139242935,
+          0.1576573837457952,
+          0.1565153908247031,
+          0.15673198471971775,
+          0.15648073194252665,
+          0.15626440026912744,
+          0.1564617420333127,
+          0.1563122548578152,
+          0.156424380718557,
+          0.156499228533875,
+          0.15655800084203314,
+          0.15665030753939257,
+          0.15636405837847925,
+          0.1569241367666406,
+          0.1561785614517693,
+          0.15623641125009902,
+          0.15654817467391635,
+          0.15656944991993763,
+          0.15633205585115753,
+          0.15736407376841308,
+          0.15657091679875873,
+          0.15639579234637913,
+          0.15750018941158822,
+          0.156298282461353,
+          0.15679964686908263,
+          0.1568296987041607,
+          0.15625303100540056,
+          0.15688452637657457,
+          0.15708611416594193,
+          0.15643172416535775,
+          0.15674243758135975,
+          0.15603789380104668,
+          0.15664134271071373,
+          0.15628193080745353,
+          0.15626043657747776,
+          0.1569912052210595,
+          0.15683414107382904,
+          0.15684507428505104,
+          0.1566833747233302,
+          0.1561751487966572,
+          0.15630180893414428,
+          0.15621527011629072,
+          0.15620204852710645,
+          0.1568789973749864,
+          0.15584751826985657,
+          0.1573963341232889,
+          0.15686170204473546,
+          0.15708994362284565,
+          0.15666525417054708,
+          0.15665523425254024,
+          0.15620172939266067,
+          0.15628368229155123,
+          0.15636866524278206,
+          0.15763358290622956,
+          0.15846619449065671,
+          0.15676261888750453,
+          0.15632763340804295,
+          0.1560524341159374,
+          0.15698422262119152,
+          0.1564497521028287,
+          0.15626125336780985,
+          0.15682171034373504,
+          0.1560066398163822,
+          0.1563800297822248,
+          0.1568283289451931,
+          0.15685862772432427,
+          0.1562431677133649,
+          0.15674672042341747,
+          0.15754155963305336,
+          0.15629008793127586,
+          0.15684923063411038,
+          0.15679048822924546,
+          0.15782447387280035,
+          0.15632820821040538,
+          0.15623511866748363,
+          0.1561073659180443,
+          0.15608985098420114,
+          0.1568038537894028,
+          0.15647244305438696,
+          0.15766664467664648,
+          0.15600671096861174,
+          0.15619220621421193,
+          0.15621717551651015,
+          0.15589496335232836,
+          0.15615805523895757,
+          0.15629840717820964,
+          0.15598360131470307,
+          0.15697927110421006,
+          0.15568784847276723,
+          0.15756189392562103,
+          0.15652078463822783,
+          0.1573381020502882,
+          0.15696494402563338,
+          0.1563756865046466,
+          0.1568060006703815,
+          0.15670175432880729,
+          0.15656841018228648,
+          0.15724284918051723,
+          0.15687763676228422,
+          0.15611896596991712,
+          0.1565062872391931,
+          0.15620193420955913,
+          0.15661082122310338,
+          0.15669344953347752,
+          0.15657043575715202,
+          0.15662358584007596,
+          0.15612265230710964,
+          0.15643218568692743,
+          0.15631807572268538,
+          0.15753313161876156,
+          0.15700702298166191,
+          0.156136794444168,
+          0.15692118506128325,
+          0.15651763201738253,
+          0.15719783181237643,
+          0.15676403462695487,
+          0.15690257620211437,
+          0.15731366996108823,
+          0.15663306749174133,
+          0.15582453817784656,
+          0.15559584491949927,
+          0.15596882498339618,
+          0.1559809460896612,
+          0.1561755375234861,
+          0.15653326766075912,
+          0.15693757465397473,
+          0.1566565199509309,
+          0.1566484156527194,
+          0.15702685696678806,
+          0.15709116476652518,
+          0.15717314790069659,
+          0.1561301022675997,
+          0.1558703181247673,
+          0.15805646434321316,
+          0.15622474967781347,
+          0.1565752819350664,
+          0.15564632637903808,
+          0.15607173814747596,
+          0.15721928287644324,
+          0.15619302483519854,
+          0.15762451106215142,
+          0.15725178726529454,
+          0.15604151386679532,
+          0.15582063381563452,
+          0.15597246116110725,
+          0.1569831108261397,
+          0.15777260343147234,
+          0.15636626462496214,
+          0.15610666045693908,
+          0.15756841332357382,
+          0.15856470389485047,
+          0.15550277363169362,
+          0.15652481794323964,
+          0.15599610496714003,
+          0.15670448714130653,
+          0.15620763011450647,
+          0.15562539685796245,
+          0.15577785377569234,
+          0.15662822495870973,
+          0.15687113827976387,
+          0.1561752788089396,
+          0.15610480782183297,
+          0.15563228410850913,
+          0.15702632080153892,
+          0.15656614660193333,
+          0.15626132390601474,
+          0.1562194236817278,
+          0.15624714288733274,
+          0.15654504160783297,
+          0.15604588381085466,
+          0.1569054413904026,
+          0.15752764419952983,
+          0.15628277066137042,
+          0.15619538221495027,
+          0.15724063035343366,
+          0.1558641223981116,
+          0.15634108398426388,
+          0.15598597604665626,
+          0.15726022011139082,
+          0.15642126747495236,
+          0.15658087612632657,
+          0.15615266980764894,
+          0.1567427999119585,
+          0.15540477075031672,
+          0.1557895606677955,
+          0.155753053720493,
+          0.1560535754274497,
+          0.15610005416589753,
+          0.15635280697889506,
+          0.15869360993580464,
+          0.15711065459086432,
+          0.15729387964415406,
+          0.15758547871658435,
+          0.15833802060493474,
+          0.15629594935630098,
+          0.15825419034554492,
+          0.15613222387589729,
+          0.15770824873777115,
+          0.15591086771354892,
+          0.15664719938477678,
+          0.15828615021937975,
+          0.16170734719646399,
+          0.15644478038996376,
+          0.15702316520077642,
+          0.1574543042292792,
+          0.1566562334981475,
+          0.15654535945539055,
+          0.1563111778108383,
+          0.15727605818987228,
+          0.1579913994467882,
+          0.15664780749131096,
+          0.15854543067535984,
+          0.15820209534319374,
+          0.15620266118499113,
+          0.15651763201738253,
+          0.15972464594373578,
+          0.1556891012528161,
+          0.15823320294404106,
+          0.15712696462820236,
+          0.1571608836279491,
+          0.15605152719996207,
+          0.1554375554586868,
+          0.1561573845615648,
+          0.15531077633215704,
+          0.15700964863525782,
+          0.15585009108962303,
+          0.15589250729766507,
+          0.15703983219349432,
+          0.15657562359090282,
+          0.15525311454451432,
+          0.15663061360616654,
+          0.154551151796825,
+          0.15700912054959476,
+          0.15632349356376415,
+          0.15519635147833635,
+          0.1557778798750306,
+          0.15521669310372507,
+          0.15504906332986543,
+          0.15563245571103493,
+          0.15547986557297477,
+          0.1569788288986308,
+          0.1557453733477624,
+          0.1559759759262165,
+          0.1568607029354019,
+          0.15680604929733075,
+          0.15631209299254764,
+          0.15877498421675315,
+          0.15740445496666977,
+          0.15882485829980358,
+          0.1549146924700002,
+          0.15602561539950724,
+          0.1565847610947896,
+          0.15514924963712085,
+          0.15789156826613499,
+          0.15641102178103924,
+          0.1562078077225217,
+          0.15756764029772433,
+          0.15530384955435303,
+          0.15650293779236196,
+          0.15613581975570623,
+          0.15778947780456104,
+          0.15525057906173464,
+          0.15760386483646063,
+          0.15937199695329757,
+          0.1583183537440485,
+          0.1558163314543375,
+          0.1578153165451237,
+          0.15618171181813656,
+          0.1592646343483551,
+          0.15722516901554448,
+          0.15638026231366875,
+          0.15854080842896154,
+          0.15520711594996364,
+          0.15612297697520436,
+          0.15700024083318803,
+          0.15498630925344892,
+          0.15597914788364445,
+          0.15586769886359608,
+          0.1555066428301014,
+          0.15676533399628204,
+          0.15589155062219492,
+          0.15499124292143027,
+          0.15641385354401088,
+          0.1573630223829761,
+          0.15881458321292355,
+          0.1577170521209883,
+          0.15904022450806976,
+          0.155617271344859,
+          0.15584521891195074,
+          0.15953582057603047,
+          0.1551729065481958,
+          0.15633999782167138,
+          0.16007671386776487,
+          0.15589904441656352,
+          0.15647672118703998,
+          0.15471759372058994,
+          0.15561128489134698,
+          0.15551848302380558,
+          0.15501485736536627,
+          0.15535547318004814,
+          0.15839869507172338,
+          0.15738111876029007,
+          0.15638396899100285,
+          0.15451908509183132,
+          0.15554751190759353,
+          0.15759629238170378,
+          0.1574826522389165,
+          0.16129651409587845,
+          0.15864054381771017,
+          0.15850939929527638,
+          0.1573711465029573,
+          0.15809746208038225,
+          0.15499209245989015,
+          0.16277673694851927,
+          0.15782766032688528,
+          0.15856887140450235,
+          0.15564718398333027,
+          0.15974010922552423,
+          0.15443456404083383,
+          0.15637945494634461,
+          0.15910877443483115,
+          0.15557615902323588,
+          0.15514161875800364,
+          0.1583519767871658,
+          0.15861641849750738,
+          0.15896505216868828,
+          0.16102175264118984,
+          0.1614406260589793,
+          0.1558009745555937,
+          0.15423144296486524,
+          0.15467129431184284,
+          0.15311034959105357,
+          0.1546206437154961,
+          0.15361092661683487,
+          0.15495108594059753,
+          0.1548856690118696,
+          0.16084792420879757,
+          0.15740764667185173,
+          0.15437122844061088,
+          0.1549084854738252,
+          0.16003325918508235,
+          0.15419064301312593,
+          0.15600999063319604,
+          0.1565817282545331,
+          0.15577122717993877,
+          0.1545637454823108,
+          0.15808350894678366,
+          0.1574408364983712,
+          0.1596439136049855,
+          0.16053376386687154,
+          0.1542071223795193,
+          0.15967073925798628,
+          0.1646867824284543,
+          0.15738584942319864,
+          0.16286021732918465,
+          0.16018199419017864,
+          0.15651763201738253,
+          0.16048931411403916,
+          0.15486040368489418,
+          0.15332516619243772,
+          0.15599978122585226,
+          0.15684963825397075,
+          0.157500478182117,
+          0.15833316340953701,
+          0.15665729898511455,
+          0.15546050563380748,
+          0.1655064012921211,
+          0.1654749851324138,
+          0.15452360422315292,
+          0.16095760228280392,
+          0.16206185654262126,
+          0.16066480795441002,
+          0.16166104664681097,
+          0.16182371273778232,
+          0.1570359188217945,
+          0.15969865676346026,
+          0.16098095051173553,
+          0.1619150110327526,
+          0.15742586724956445,
+          0.15678006121727125
+        ],
+        "existence_probability_bayesian": 0.07031265448051474,
+        "bayesian_confidence": "Not Justified"
+      }
+    ]
+  }
+}</code></pre>
+        </div>
+    </main>
+
+    <script>
+        function openTab(evt, tabId) {
+            const contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+            const buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            document.getElementById(tabId).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+</html>
