@@ -4,10 +4,18 @@
 #==============================================================================
 
 #PBS -N run_multi_APC
-#PBS -l select=1:ncpus=8
+#PBS -l select=1:ncpus=16
 #PBS -l walltime=48:00:00
-#PBS -o /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/pbs_query/run_multi_APC.out
-#PBS -e /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/pbs_query/run_multi_APC.err
+
+#------------------------------------------------------------------------------
+# Timestamped output/error files
+#------------------------------------------------------------------------------
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+LOGDIR="/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/pbs_query"
+
+exec > "${LOGDIR}/run_multi_APC_${TIMESTAMP}.out" \
+     2> "${LOGDIR}/run_multi_APC_${TIMESTAMP}.err"
+
 
 #------------------------------------------------------------------------------
 # Go to submission directory
@@ -29,6 +37,14 @@ conda activate exo_model
 # check if the environment is activated
 echo $CONDA_DEFAULT_ENV
 
+# Prevent CPU oversubscription when running multi-chain inference.
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+export NUMEXPR_NUM_THREADS=1
+export VECLIB_MAXIMUM_THREADS=1
+export BLIS_NUM_THREADS=1
+
 #------------------------------------------------------------------------------
 # Job information
 #------------------------------------------------------------------------------
@@ -42,6 +58,11 @@ echo "Host            : $(hostname)"
 echo "Working Dir     : ${PBS_O_WORKDIR}"
 echo "Start Time      : $(date)"
 echo "Allocated CPUs  : ${PBS_NP:-Unknown}"
+echo "OMP_NUM_THREADS : ${OMP_NUM_THREADS}"
+echo "OPENBLAS_THREADS: ${OPENBLAS_NUM_THREADS}"
+echo "MKL_NUM_THREADS : ${MKL_NUM_THREADS}"
+echo "NUMEXPR_THREADS : ${NUMEXPR_NUM_THREADS}"
+echo "BLIS_NUM_THREADS: ${BLIS_NUM_THREADS}"
 echo "============================================================"
 
 echo

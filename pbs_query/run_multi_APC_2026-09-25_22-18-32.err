@@ -1,0 +1,10 @@
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/lightkurve/prf/__init__.py:7: UserWarning: Warning: the tpfmodel submodule is not available without oktopus installed, which requires a current version of autograd. See #1452 for details.
+  warnings.warn(
+Warning: 34% (6673/19412) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 22% (3922/18197) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 38% (7049/18749) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 26% (5028/19373) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 34% (6673/19412) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 22% (3922/18197) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 38% (7049/18749) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 26% (5028/19373) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).

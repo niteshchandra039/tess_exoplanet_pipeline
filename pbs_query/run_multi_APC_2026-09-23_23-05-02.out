@@ -1,0 +1,1069 @@
+exo_model
+============================================================
+                PBS JOB INFORMATION
+============================================================
+Job ID          : 34150.hn1
+Job Name        : run_multi_APC
+Queue           : regular
+Host            : hpc057
+Working Dir     : /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline
+Start Time      : Wed Sep 23 23:05:02 IST 2026
+Allocated CPUs  : Unknown
+OMP_NUM_THREADS : 1
+OPENBLAS_THREADS: 1
+MKL_NUM_THREADS : 1
+NUMEXPR_THREADS : 1
+BLIS_NUM_THREADS: 1
+============================================================
+
+Python executable:
+/mnt/home/project/cnitesh/.conda/envs/exo_model/bin/python
+
+Python 3.12.11
+
+Package versions:
+
+============================================================
+Starting Bayesian analysis...
+============================================================
+       toi        tid  ...          toi_created            rowupdate
+0  1012.01  427508467  ...  2019-07-24 15:58:33  2023-03-10 12:02:48
+1  1039.01  461867584  ...  2019-07-24 18:44:12  2023-05-05 16:02:01
+2  1060.01  101230735  ...  2019-08-16 20:20:42  2023-10-16 16:02:02
+3  1085.01  381979901  ...  2019-08-16 20:20:49  2023-07-12 16:02:01
+4  1094.01  136274063  ...  2019-08-06 19:29:59  2022-10-05 10:10:01
+
+[5 rows x 65 columns]
+Total TICs in the list: 481
+
+Skipping TIC 427508467: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 427508467
+
+Skipping TIC 461867584: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 461867584
+
+Skipping TIC 101230735: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 101230735
+
+Skipping TIC 381979901: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 381979901
+
+Skipping TIC 136274063: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 136274063
+
+Skipping TIC 409934330: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 409934330
+
+Skipping TIC 379286801: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 379286801
+
+Skipping TIC 261369656: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 261369656
+
+Skipping TIC 469782185: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 469782185
+
+Skipping TIC 128790976: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 128790976
+
+Skipping TIC 117789567: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 117789567
+
+Skipping TIC 154840461: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 154840461
+
+Skipping TIC 148914726: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 148914726
+
+Skipping TIC 287196418: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 287196418
+
+Skipping TIC 158276040: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 158276040
+
+
+Running pipeline for TIC 207081058...
+
+
+================================================================================
+TESS EXOPLANET PIPELINE
+================================================================================
+Target      : TIC 207081058
+Mode        : science
+Search      : TLS
+Backend     : exoplanet/PyMC
+Output      : output_bayesian_sector_longest_3000_draws_4_chains
+================================================================================
+
+======================================================================
+Step 1: Resolve Target
+======================================================================
+23:05:30  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 207081058
+23:05:30  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 207081058' to TIC 207081058
+23:05:30  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 207081058 (matched 1 row(s))
+23:05:30  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 207081058 from local archive
+23:05:30  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 207081058
+✓ Completed in 0.35 s
+
+======================================================================
+Step 2: Query NASA Exoplanet Archive
+======================================================================
+23:05:30  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 207081058
+23:05:30  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 14.774106 d)
+✓ Completed in 0.01 s
+
+======================================================================
+Step 4: Characterize Host Star
+======================================================================
+23:05:30  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+23:06:14  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+23:06:14  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+23:06:14  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 207081058 (matched 1 row(s))
+23:06:14  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 1.2300000 from local NASA archive
+23:06:14  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+23:06:18  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+23:06:20  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+23:06:20  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=6073.0, logg=4.3171000480651855, feh=None, r_star=1.227, m_star=1.1399999856948853, parallax=None
+23:06:22  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 207081058 measurements
+23:06:23  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=6101.0, logg=4.409999847412109, feh=-0.15000000596046448, parallax=5.4467
+✓ Completed in 52.93 s
+
+======================================================================
+Step 5: Download TESS Light Curves
+======================================================================
+23:06:23  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 207081058
+23:07:12  INFO      tess_pipeline.data.download  [download] Starting download for TIC 207081058 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+23:07:30  INFO      tess_pipeline.data.download  [download] Found 6 available sector(s): [1, 28, 68, 95, 105, 106]
+23:07:30  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [105, 106]
+23:07:30  INFO      tess_pipeline.data.download  [download] Downloading 2 selected sector(s) from MAST
+23:07:40  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+23:07:40  INFO      tess_pipeline.data.download  [fits] Step 2/4: 2 FITS file(s) queued
+23:07:40  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/2: data/fits/tess2026164183000-s0105-0000000207081058-0307-s_lc.fits
+23:07:41  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/2: data/fits/tess2026192185000-s0106-0000000207081058-0308-s_lc.fits
+23:07:41  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 2 light curve(s) from local FITS in 0.2s
+23:07:41  INFO      tess_pipeline.data.download  [download] Completed TIC 207081058 download in 29.0s (2 sector file(s))
+23:07:41  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [105, 106]
+✓ Completed in 77.45 s
+
+======================================================================
+Step 6: Preprocess Light Curves
+======================================================================
+23:07:41  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+23:07:41  INFO      tess_pipeline.data.preprocess  Saving diagnostic plots to directory: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots
+23:07:41  INFO      tess_pipeline.data.preprocess  Dynamic mask width calculated: 0.294 days for P = 14.77 d
+23:07:44  DEBUG     tess_pipeline.data.preprocess  Stitched 2 sectors -> 26536 cadences
+23:07:44  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 26536 cadences remain
+23:07:46  INFO      tess_pipeline.data.preprocess  Saved final stitched visualization to output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/final_stitched_preprocessing.png
+23:07:46  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/01_raw.png
+23:07:46  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/02_flat.png
+✓ Completed in 5.81 s
+
+======================================================================
+Step 7: Search for Transit Signals
+======================================================================
+23:07:46  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 14.774106 d; refining...
+23:07:46  INFO      tess_pipeline.transit.detection  Running TLS (period 14.8-14.8 d)
+23:07:56  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=300, dur_step=1.10)
+23:07:56  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 14.7641056, 'period_max': 14.7841056, 'duration_grid_step': 1.1, 'oversampling_factor': 300}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 26536 data points, 118 periods from 14.764 to 14.784 days
+Using all 32 CPU threads
+23:08:01  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 111 points...
+23:08:01  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=4217.2376...
+23:08:02  INFO      tess_pipeline.transit.tls  TLS: period=14.774855 d, epoch=4217.2612, duration=3.58 h, depth=0.014560, SDE=1.11
+23:08:02  INFO      tess_pipeline.analysis.stages.period  Searching for 1 additional planet(s) in residuals...
+23:08:02  INFO      tess_pipeline.transit.detection  Capping period_max 100.0 → 17.9 d (3-transit requirement over 54 d baseline)
+23:08:02  INFO      tess_pipeline.transit.detection  Searching for Planet 1 candidate (coarse search)...
+23:08:02  INFO      tess_pipeline.transit.detection  Running TLS (period 0.5-17.9 d)
+23:08:02  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=None, dur_step=1.10)
+23:08:02  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 0.5, 'period_max': 17.86412974650496, 'duration_grid_step': 1.1, 'period_grid': array([ 0.5       ,  0.50359598,  0.50721782,  0.51086571,  0.51453983,
+        0.51824038,  0.52196754,  0.5257215 ,  0.52950247,  0.53331063,
+        0.53714617,  0.5410093 ,  0.54490022,  0.54881912,  0.5527662 ,
+        0.55674167,  0.56074573,  0.56477859,  0.56884045,  0.57293153,
+        0.57705202,  0.58120216,  0.58538214,  0.58959218,  0.5938325 ,
+        0.59810332,  0.60240485,  0.60673732,  0.61110094,  0.61549595,
+        0.61992257,  0.62438103,  0.62887155,  0.63339437,  0.63794971,
+        0.64253781,  0.64715892,  0.65181326,  0.65650107,  0.66122259,
+        0.66597808,  0.67076776,  0.67559189,  0.68045072,  0.68534449,
+        0.69027346,  0.69523787,  0.70023799,  0.70527407,  0.71034637,
+        0.71545515,  0.72060067,  0.7257832 ,  0.731003  ,  0.73626034,
+        0.74155549,  0.74688873,  0.75226032,  0.75767054,  0.76311967,
+        0.76860799,  0.77413579,  0.77970334,  0.78531093,  0.79095885,
+        0.79664739,  0.80237684,  0.8081475 ,  0.81395966,  0.81981362,
+        0.82570969,  0.83164815,  0.83762933,  0.84365352,  0.84972104,
+        0.8558322 ,  0.8619873 ,  0.86818668,  0.87443064,  0.8807195 ,
+        0.8870536 ,  0.89343325,  0.89985878,  0.90633052,  0.91284881,
+        0.91941398,  0.92602636,  0.9326863 ,  0.93939414,  0.94615022,
+        0.95295489,  0.9598085 ,  0.9667114 ,  0.97366395,  0.98066649,
+        0.9877194 ,  0.99482304,  1.00197776,  1.00918394,  1.01644194,
+        1.02375215,  1.03111493,  1.03853066,  1.04599973,  1.05352251,
+        1.0610994 ,  1.06873077,  1.07641704,  1.08415858,  1.0919558 ,
+        1.0998091 ,  1.10771888,  1.11568554,  1.1237095 ,  1.13179117,
+        1.13993096,  1.14812929,  1.15638659,  1.16470327,  1.17307976,
+        1.1815165 ,  1.19001391,  1.19857244,  1.20719252,  1.21587459,
+        1.22461911,  1.23342651,  1.24229726,  1.25123181,  1.26023061,
+        1.26929413,  1.27842284,  1.2876172 ,  1.29687768,  1.30620477,
+        1.31559894,  1.32506066,  1.33459044,  1.34418876,  1.3538561 ,
+        1.36359297,  1.37339987,  1.3832773 ,  1.39322577,  1.40324579,
+        1.41333787,  1.42350253,  1.4337403 ,  1.44405169,  1.45443725,
+        1.4648975 ,  1.47543297,  1.48604422,  1.49673178,  1.50749621,
+        1.51833806,  1.52925788,  1.54025623,  1.55133368,  1.56249081,
+        1.57372817,  1.58504635,  1.59644594,  1.6079275 ,  1.61949165,
+        1.63113896,  1.64287003,  1.65468548,  1.66658591,  1.67857192,
+        1.69064413,  1.70280317,  1.71504965,  1.72738421,  1.73980748,
+        1.7523201 ,  1.76492271,  1.77761595,  1.79040049,  1.80327697,
+        1.81624605,  1.82930841,  1.84246472,  1.85571564,  1.86906186,
+        1.88250407,  1.89604296,  1.90967921,  1.92341354,  1.93724664,
+        1.95117924,  1.96521203,  1.97934575,  1.99358111,  2.00791886,
+        2.02235972,  2.03690444,  2.05155376,  2.06630845,  2.08116925,
+        2.09613692,  2.11121224,  2.12639599,  2.14168893,  2.15709186,
+        2.17260557,  2.18823085,  2.20396851,  2.21981935,  2.23578419,
+        2.25186385,  2.26805916,  2.28437094,  2.30080003,  2.31734728,
+        2.33401354,  2.35079966,  2.3677065 ,  2.38473494,  2.40188585,
+        2.41916011,  2.4365586 ,  2.45408222,  2.47173187,  2.48950845,
+        2.50741288,  2.52544608,  2.54360898,  2.5619025 ,  2.58032759,
+        2.59888519,  2.61757625,  2.63640175,  2.65536263,  2.67445988,
+        2.69369447,  2.7130674 ,  2.73257966,  2.75223225,  2.77202618,
+        2.79196247,  2.81204214,  2.83226622,  2.85263575,  2.87315178,
+        2.89381536,  2.91462755,  2.93558942,  2.95670205,  2.97796652,
+        2.99938392,  3.02095535,  3.04268193,  3.06456476,  3.08660497,
+        3.1088037 ,  3.13116207,  3.15368125,  3.17636238,  3.19920664,
+        3.22221519,  3.24538922,  3.26872991,  3.29223847,  3.3159161 ,
+        3.33976402,  3.36378345,  3.38797563,  3.4123418 ,  3.43688321,
+        3.46160112,  3.4864968 ,  3.51157153,  3.53682659,  3.56226329,
+        3.58788293,  3.61368682,  3.6396763 ,  3.66585268,  3.69221733,
+        3.71877159,  3.74551683,  3.77245442,  3.79958574,  3.82691219,
+        3.85443518,  3.8821561 ,  3.91007639,  3.93819749,  3.96652083,
+        3.99504787,  4.02378007,  4.05271892,  4.08186589,  4.11122249,
+        4.14079021,  4.17057059,  4.20056515,  4.23077542,  4.26120297,
+        4.29184935,  4.32271614,  4.35380492,  4.38511729,  4.41665486,
+        4.44841924,  4.48041207,  4.51263499,  4.54508966,  4.57777774,
+        4.61070091,  4.64386087,  4.67725931,  4.71089795,  4.74477851,
+        4.77890275,  4.8132724 ,  4.84788924,  4.88275504,  4.9178716 ,
+        4.95324071,  4.98886419,  5.02474388,  5.06088161,  5.09727925,
+        5.13393865,  5.17086171,  5.20805031,  5.24550638,  5.28323182,
+        5.32122859,  5.35949863,  5.3980439 ,  5.43686639,  5.47596809,
+        5.51535101,  5.55501716,  5.5949686 ,  5.63520736,  5.67573552,
+        5.71655515,  5.75766836,  5.79907725,  5.84078396,  5.88279061,
+        5.92509938,  5.96771243,  6.01063195,  6.05386014,  6.09739923,
+        6.14125146,  6.18541906,  6.22990432,  6.27470951,  6.31983694,
+        6.36528892,  6.41106779,  6.45717591,  6.50361563,  6.55038934,
+        6.59749944,  6.64494836,  6.69273853,  6.74087241,  6.78935246,
+        6.83818118,  6.88736107,  6.93689466,  6.9867845 ,  7.03703314,
+        7.08764317,  7.13861718,  7.18995779,  7.24166764,  7.29374939,
+        7.34620571,  7.39903929,  7.45225285,  7.50584912,  7.55983085,
+        7.61420081,  7.66896181,  7.72411663,  7.77966813,  7.83561916,
+        7.89197258,  7.94873129,  8.00589821,  8.06347627,  8.12146843,
+        8.17987767,  8.23870698,  8.29795939,  8.35763794,  8.4177457 ,
+        8.47828575,  8.5392612 ,  8.60067518,  8.66253085,  8.72483139,
+        8.78757998,  8.85077986,  8.91443428,  8.97854649,  9.04311979,
+        9.1081575 ,  9.17366296,  9.23963953,  9.30609061,  9.37301959,
+        9.44042993,  9.50832508,  9.57670852,  9.64558378,  9.71495439,
+        9.7848239 ,  9.85519592,  9.92607405,  9.99746192, 10.06936322,
+       10.14178163, 10.21472087, 10.28818468, 10.36217685, 10.43670116,
+       10.51176144, 10.58736156, 10.66350539, 10.74019684, 10.81743985,
+       10.8952384 , 10.97359646, 11.05251808, 11.13200729, 11.21206819,
+       11.29270488, 11.3739215 , 11.45572224, 11.53811128, 11.62109286,
+       11.70467123, 11.7888507 , 11.87363559, 11.95903024, 12.04503905,
+       12.13166643, 12.21891683, 12.30679474, 12.39530465, 12.48445113,
+       12.57423874, 12.6646721 , 12.75575585, 12.84749468, 12.93989328,
+       13.03295641, 13.12668885, 13.22109541, 13.31618093, 13.41195031,
+       13.50840845, 13.60556032, 13.7034109 , 13.80196522, 13.90122833,
+       14.00120534, 14.10190138, 14.20332162, 14.30547127, 14.40835558,
+       14.51197983, 14.61634934, 14.72146947, 14.82734561, 14.93398322,
+       15.04138775, 15.14956474, 15.25851973, 15.36825832, 15.47878614,
+       15.59010888, 15.70223224, 15.81516199, 15.92890393, 16.04346389,
+       16.15884776, 16.27506147, 16.39211098, 16.51000231, 16.6287415 ,
+       16.74833467, 16.86878794, 16.9901075 , 17.11229959, 17.23537048,
+       17.3593265 , 17.48417399, 17.60991939, 17.73656914, 17.86412975]), 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 40 durations
+Searching 26194 data points, 500 periods from 0.5 to 17.864 days
+Using all 32 CPU threads
+23:08:07  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+23:08:07  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=4207.2956...
+23:08:08  INFO      tess_pipeline.transit.tls  TLS: period=0.615496 d, epoch=4207.2946, duration=0.05 h, depth=0.000146, SDE=4.82
+23:08:08  INFO      tess_pipeline.transit.detection  Significant peak found (coarse SDE/SNR = 4.82 at 0.6155 d). Checking sub-harmonics for robustness...
+23:08:08  INFO      tess_pipeline.transit.detection  Running TLS (period 0.6-0.6 d)
+23:08:08  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+23:08:08  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 0.6031860351938574, 'period_max': 0.6278058733650353, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 16 durations
+Searching 26194 data points, 100 periods from 0.603 to 0.628 days
+Using all 32 CPU threads
+23:08:12  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+23:08:12  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=4207.3078...
+23:08:13  INFO      tess_pipeline.transit.tls  TLS: period=0.615298 d, epoch=4207.3072, duration=0.47 h, depth=0.000137, SDE=4.81
+23:08:13  INFO      tess_pipeline.transit.detection  Running TLS (period 1.2-1.3 d)
+23:08:13  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+23:08:13  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 1.2063720703877148, 'period_max': 1.2556117467300707, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 21 durations
+Searching 26194 data points, 79 periods from 1.207 to 1.255 days
+Using all 32 CPU threads
+23:08:17  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+23:08:17  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=4207.0511...
+23:08:18  INFO      tess_pipeline.transit.tls  TLS: period=1.249286 d, epoch=4207.0518, duration=0.41 h, depth=0.000186, SDE=3.20
+23:08:18  INFO      tess_pipeline.transit.detection  Running TLS (period 1.8-1.9 d)
+23:08:18  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+23:08:18  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 1.8095581055815724, 'period_max': 1.883417620095106, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 24 durations
+Searching 26194 data points, 69 periods from 1.81 to 1.883 days
+Using all 32 CPU threads
+23:08:22  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+23:08:22  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=4207.5513...
+23:08:23  INFO      tess_pipeline.transit.tls  TLS: period=1.819865 d, epoch=4207.5533, duration=0.59 h, depth=0.000180, SDE=2.76
+23:08:23  INFO      tess_pipeline.transit.detection  Harmonic resolution: selected fraction 1.00 (refined period=0.6153 d, SDE/SNR=4.81, max_sig was 4.81)
+Planet 1 derived robust period: 0.61530 days (SNR: 4.81, via fraction 1.00 of initial peak 0.61550d)
+23:08:23  INFO      tess_pipeline.transit.detection  Planet 1 found: Period = 0.615298 d, epoch = 4207.3072, SDE/SNR = 4.81
+23:08:23  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+23:08:23  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/03_tls_periodogram.png
+23:08:23  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/tls_periodogram_coarse_p0.png
+23:08:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/tls_periodogram_fine_p0.png
+23:08:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/tls_periodogram_coarse_p1.png
+23:08:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/tls_periodogram_fine_p1.png
+23:08:24  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/04_phase.png
+✓ Completed in 37.88 s
+
+======================================================================
+Step 8: Bayesian Transit Fit
+======================================================================
+23:08:34  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+23:08:34  INFO      tess_pipeline.analysis.stages.inference  Second candidate probability (25.0%) is below 75% threshold. Skipping multi-planet MCMC fit and proceeding with 1-planet model.
+23:08:34  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=26536 points, 1 planets)
+23:08:35  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+23:08:35  INFO      tess_pipeline.inference.bayesian  Sampling: 4 chains × 3000 draws (tune=3000, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   6000    0       0.084   31      1.53 draws/s   1:05…   0:00…  
+  ━━━━━━━━━━━━━   6000    1       0.078   15      1.57 draws/s   1:03…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.092   31      1.58 draws/s   1:03…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.079   19      1.52 draws/s   1:05…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+00:17:51  INFO      tess_pipeline.inference.bayesian  Sampling complete
+00:18:22  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/06_bayesian_fit.png
+00:18:43  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/07_corner.png
+00:18:45  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/08_trace.png
+00:18:46  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/09_posterior_predictive.png
+00:18:47  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/05_residuals.png
+✓ Completed in 4222.20 s
+
+======================================================================
+Step 9: Derive Planet Parameters
+======================================================================
+✓ Completed in 0.17 s
+
+======================================================================
+Step 10: Check MCMC Convergence
+======================================================================
+00:18:50  WARNING   tess_pipeline.inference.diagnostics  Convergence issues detected (see ConvergenceWarning)
+✓ Completed in 3.27 s
+
+======================================================================
+Step 11: Generate Figures
+======================================================================
+00:18:50  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+✓ Completed in 16.58 s
+
+======================================================================
+Step 12: Save Results
+======================================================================
+00:19:07  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058
+00:19:07  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/TIC207081058_summary.csv
+00:19:07  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/TIC207081058_metadata.json
+00:19:07  DEBUG     tess_pipeline.io.export  Saved compressed posterior sample values: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/data_for_plots/posterior_samples.npz
+00:19:07  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/TIC207081058_lightcurve.fits
+00:19:07  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/01_raw.png
+00:19:07  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/02_flat.png
+00:19:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/03_tls_periodogram.png
+00:19:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/03_tls_periodogram_coarse_p0.png
+00:19:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/03_tls_periodogram_fine_p0.png
+00:19:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/03_tls_periodogram_coarse_p1.png
+00:19:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/03_tls_periodogram_fine_p1.png
+00:19:08  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/04_phase_p0.png
+00:19:09  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/04_phase_p1.png
+00:19:09  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/05_residuals.png
+00:19:10  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/06_bayesian_fit.png
+00:19:10  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/10_gp_acf.png
+00:19:10  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/11_transit_stack_p0.png
+00:19:10  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/04_mcmc_phase_p0.png
+00:19:12  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/07_corner.png
+00:19:13  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/08_trace.png
+00:19:13  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/plots/09_posterior_predictive.png
+00:19:13  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/data_for_plots/periodogram_data.npz
+00:19:26  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/data_for_plots/lightcurve_model_data.npz
+00:19:26  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/recreate_plots.py
+00:19:26  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/report.html
+00:19:41  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058/TIC207081058_report.pdf
+00:19:41  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058
+✓ Completed in 34.96 s
+
+
+================================================================================
+PIPELINE SUMMARY
+================================================================================
+Detected Period : 14.774855 d
+Epoch           : 4217.261197
+Depth           : 0.014560
+Duration        : 3.58 hr
+SDE             : 1.11
+SNR             : 124.06
+
+Output Directory : output_bayesian_sector_longest_3000_draws_4_chains
+Total Runtime    : 74.19 minutes
+
+✓ Pipeline completed successfully.
+
+
+Running pipeline for TIC 319259194...
+
+
+================================================================================
+TESS EXOPLANET PIPELINE
+================================================================================
+Target      : TIC 319259194
+Mode        : science
+Search      : TLS
+Backend     : exoplanet/PyMC
+Output      : output_bayesian_sector_longest_3000_draws_4_chains
+================================================================================
+
+======================================================================
+Step 1: Resolve Target
+======================================================================
+00:19:41  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 319259194
+00:19:41  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 319259194' to TIC 319259194
+00:19:42  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 319259194 (matched 1 row(s))
+00:19:42  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 319259194 from local archive
+00:19:42  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 319259194
+✓ Completed in 0.17 s
+
+======================================================================
+Step 2: Query NASA Exoplanet Archive
+======================================================================
+00:19:42  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 319259194
+00:19:42  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 70.360726 d)
+✓ Completed in 0.01 s
+
+======================================================================
+Step 4: Characterize Host Star
+======================================================================
+00:19:42  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+00:20:06  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+00:20:06  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+00:20:06  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 319259194 (matched 1 row(s))
+00:20:06  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 2.0982201 from local NASA archive
+00:20:06  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+00:20:06  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+00:20:07  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+00:20:07  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=6495.0, logg=3.9182000160217285, feh=None, r_star=2.098, m_star=1.3300000429153442, parallax=None
+00:20:07  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 319259194 measurements
+00:20:08  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP at coordinates RA=71.65079025017336, DEC=-78.56160458208792 for measurements
+00:20:08  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=None, logg=None, feh=None, parallax=3.6597
+✓ Completed in 26.79 s
+
+======================================================================
+Step 5: Download TESS Light Curves
+======================================================================
+00:20:08  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 319259194
+00:20:08  INFO      tess_pipeline.data.download  [download] Starting download for TIC 319259194 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+00:20:22  INFO      tess_pipeline.data.download  [download] Found 31 available sector(s): [5, 8, 9, 11, 12, 13, 27, 28, 29, 31, 32, 35, 38, 39, 61, 62, 63, 64, 65, 66, 67, 68, 87, 88, 89, 90, 93, 94, 95, 96, 98]
+00:20:22  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [61, 62, 63, 64, 65, 66, 67, 68]
+00:20:22  INFO      tess_pipeline.data.download  [download] Downloading 8 selected sector(s) from MAST
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 2/4: 8 FITS file(s) queued
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/8: data/fits/tess2023018032328-s0061-0000000319259194-0250-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/8: data/fits/tess2023043185947-s0062-0000000319259194-0254-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 3/8: data/fits/tess2023069172124-s0063-0000000319259194-0255-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 4/8: data/fits/tess2023096110322-s0064-0000000319259194-0257-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 5/8: data/fits/tess2023124020739-s0065-0000000319259194-0259-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 6/8: data/fits/tess2023153011303-s0066-0000000319259194-0260-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 7/8: data/fits/tess2023181235917-s0067-0000000319259194-0261-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 8/8: data/fits/tess2023209231226-s0068-0000000319259194-0262-s_lc.fits
+00:20:59  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 8 light curve(s) from local FITS in 0.8s
+00:20:59  INFO      tess_pipeline.data.download  [download] Completed TIC 319259194 download in 50.9s (8 sector file(s))
+00:20:59  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [61, 62, 63, 64, 65, 66, 67, 68]
+✓ Completed in 50.92 s
+
+======================================================================
+Step 6: Preprocess Light Curves
+======================================================================
+00:20:59  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+00:21:00  INFO      tess_pipeline.data.preprocess  Saving diagnostic plots to directory: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots
+00:21:00  INFO      tess_pipeline.data.preprocess  Dynamic mask width calculated: 0.495 days for P = 70.36 d
+00:21:12  DEBUG     tess_pipeline.data.preprocess  Stitched 8 sectors -> 131601 cadences
+00:21:12  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 131601 cadences remain
+00:21:15  INFO      tess_pipeline.data.preprocess  Saved final stitched visualization to output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/final_stitched_preprocessing.png
+00:21:16  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/01_raw.png
+00:21:16  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/02_flat.png
+✓ Completed in 16.72 s
+
+======================================================================
+Step 7: Search for Transit Signals
+======================================================================
+00:21:16  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 70.360726 d; refining...
+00:21:16  INFO      tess_pipeline.transit.detection  Running TLS (period 70.4-70.4 d)
+00:21:16  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=300, dur_step=1.10)
+00:21:16  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 70.3507265, 'period_max': 70.3707265, 'duration_grid_step': 1.1, 'oversampling_factor': 300}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 131601 data points, 59 periods from 70.351 to 70.37 days
+Using all 32 CPU threads
+00:21:22  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 1037 points...
+00:21:25  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2987.5081...
+00:21:27  INFO      tess_pipeline.transit.tls  TLS: period=70.369803 d, epoch=2987.5061, duration=1.82 h, depth=0.000889, SDE=1.18
+00:21:28  INFO      tess_pipeline.analysis.stages.period  Searching for 1 additional planet(s) in residuals...
+00:21:28  INFO      tess_pipeline.transit.detection  Downsampled LC from 131356 → 26272 points (10-min cadence) for broad TLS search
+00:21:28  INFO      tess_pipeline.transit.detection  Capping period_max 100.0 → 71.8 d (3-transit requirement over 215 d baseline)
+00:21:28  INFO      tess_pipeline.transit.detection  Searching for Planet 1 candidate (coarse search)...
+00:21:28  INFO      tess_pipeline.transit.detection  Running TLS (period 0.5-71.8 d)
+00:21:28  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=None, dur_step=1.10)
+00:21:28  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 0.5, 'period_max': 71.82801618865717, 'duration_grid_step': 1.1, 'period_grid': array([ 0.5       ,  0.50500223,  0.51005451,  0.51515733,  0.52031121,
+        0.52551664,  0.53077416,  0.53608427,  0.54144751,  0.5468644 ,
+        0.55233549,  0.55786131,  0.56344241,  0.56907935,  0.57477269,
+        0.58052298,  0.58633081,  0.59219673,  0.59812135,  0.60410523,
+        0.61014898,  0.6162532 ,  0.62241848,  0.62864545,  0.63493471,
+        0.64128689,  0.64770262,  0.65418254,  0.66072729,  0.66733751,
+        0.67401387,  0.68075702,  0.68756763,  0.69444638,  0.70139394,
+        0.70841102,  0.71549829,  0.72265647,  0.72988626,  0.73718838,
+        0.74456356,  0.75201252,  0.759536  ,  0.76713476,  0.77480953,
+        0.78256109,  0.79039019,  0.79829763,  0.80628417,  0.81435061,
+        0.82249775,  0.8307264 ,  0.83903738,  0.8474315 ,  0.8559096 ,
+        0.86447252,  0.87312111,  0.88185622,  0.89067872,  0.89958948,
+        0.9085894 ,  0.91767935,  0.92686024,  0.93613298,  0.94549849,
+        0.9549577 ,  0.96451154,  0.97416097,  0.98390693,  0.99375039,
+        1.00369233,  1.01373374,  1.02387561,  1.03411893,  1.04446474,
+        1.05491405,  1.06546791,  1.07612735,  1.08689343,  1.09776721,
+        1.10874979,  1.11984224,  1.13104566,  1.14236117,  1.15378989,
+        1.16533294,  1.17699147,  1.18876664,  1.20065962,  1.21267158,
+        1.22480371,  1.23705722,  1.24943332,  1.26193323,  1.2745582 ,
+        1.28730947,  1.30018832,  1.31319601,  1.32633383,  1.3396031 ,
+        1.35300511,  1.3665412 ,  1.38021272,  1.39402101,  1.40796745,
+        1.42205341,  1.4362803 ,  1.45064951,  1.46516249,  1.47982066,
+        1.49462547,  1.5095784 ,  1.52468093,  1.53993455,  1.55534077,
+        1.57090113,  1.58661716,  1.60249041,  1.61852248,  1.63471493,
+        1.65106938,  1.66758745,  1.68427077,  1.701121  ,  1.71813981,
+        1.73532888,  1.75268992,  1.77022465,  1.7879348 ,  1.80582213,
+        1.82388842,  1.84213545,  1.86056503,  1.879179  ,  1.89797918,
+        1.91696745,  1.93614568,  1.95551579,  1.97507968,  1.9948393 ,
+        2.0147966 ,  2.03495357,  2.05531219,  2.07587449,  2.09664251,
+        2.1176183 ,  2.13880394,  2.16020153,  2.1818132 ,  2.20364107,
+        2.22568733,  2.24795414,  2.27044372,  2.2931583 ,  2.31610013,
+        2.33927147,  2.36267463,  2.38631193,  2.41018571,  2.43429833,
+        2.45865219,  2.48324969,  2.50809328,  2.53318542,  2.55852858,
+        2.5841253 ,  2.60997809,  2.63608953,  2.6624622 ,  2.68909871,
+        2.71600171,  2.74317386,  2.77061785,  2.7983364 ,  2.82633227,
+        2.85460821,  2.88316705,  2.91201159,  2.94114472,  2.9705693 ,
+        3.00028826,  3.03030454,  3.06062112,  3.091241  ,  3.12216722,
+        3.15340284,  3.18495095,  3.21681469,  3.2489972 ,  3.28150168,
+        3.31433136,  3.34748947,  3.38097932,  3.41480421,  3.44896751,
+        3.48347259,  3.51832287,  3.55352182,  3.58907291,  3.62497967,
+        3.66124565,  3.69787446,  3.73486972,  3.7722351 ,  3.8099743 ,
+        3.84809106,  3.88658916,  3.92547241,  3.96474467,  4.00440982,
+        4.04447181,  4.08493459,  4.12580218,  4.16707863,  4.20876803,
+        4.25087451,  4.29340224,  4.33635544,  4.37973836,  4.4235553 ,
+        4.46781061,  4.51250868,  4.55765392,  4.60325081,  4.64930388,
+        4.69581769,  4.74279684,  4.79024599,  4.83816984,  4.88657315,
+        4.93546071,  4.98483736,  5.034708  ,  5.08507756,  5.13595105,
+        5.1873335 ,  5.23923001,  5.29164571,  5.3445858 ,  5.39805553,
+        5.45206019,  5.50660515,  5.56169579,  5.61733759,  5.67353606,
+        5.73029676,  5.78762532,  5.84552742,  5.90400881,  5.96307526,
+        6.02273265,  6.08298688,  6.14384392,  6.2053098 ,  6.26739061,
+        6.33009251,  6.39342171,  6.45738448,  6.52198717,  6.58723617,
+        6.65313795,  6.71969905,  6.78692605,  6.85482562,  6.9234045 ,
+        6.99266946,  7.06262739,  7.13328521,  7.20464992,  7.2767286 ,
+        7.34952839,  7.4230565 ,  7.49732022,  7.57232691,  7.648084  ,
+        7.724599  ,  7.80187949,  7.87993313,  7.95876766,  8.03839088,
+        8.11881069,  8.20003506,  8.28207204,  8.36492975,  8.44861641,
+        8.53314031,  8.61850982,  8.70473341,  8.79181963,  8.87977709,
+        8.96861452,  9.05834073,  9.14896459,  9.2404951 ,  9.33294133,
+        9.42631242,  9.52061765,  9.61586635,  9.71206796,  9.80923202,
+        9.90736815, 10.00648608, 10.10659564, 10.20770674, 10.3098294 ,
+       10.41297374, 10.51714998, 10.62236846, 10.72863959, 10.8359739 ,
+       10.94438204, 11.05387474, 11.16446286, 11.27615735, 11.38896929,
+       11.50290985, 11.61799033, 11.73422212, 11.85161675, 11.97018586,
+       12.08994118, 12.21089459, 12.33305808, 12.45644374, 12.58106381,
+       12.70693065, 12.83405671, 12.9624546 , 13.09213704, 13.22311688,
+       13.35540711, 13.48902084, 13.62397129, 13.76027185, 13.89793603,
+       14.03697747, 14.17740994, 14.31924736, 14.46250379, 14.60719342,
+       14.7533306 , 14.9009298 , 15.05000565, 15.20057293, 15.35264655,
+       15.50624159, 15.66137326, 15.81805694, 15.97630816, 16.1361426 ,
+       16.2975761 , 16.46062465, 16.62530442, 16.79163172, 16.95962304,
+       17.12929502, 17.30066447, 17.47374839, 17.64856392, 17.82512839,
+       18.00345928, 18.18357429, 18.36549125, 18.54922819, 18.73480332,
+       18.92223503, 19.1115419 , 19.30274268, 19.49585632, 19.69090196,
+       19.88789892, 20.08686674, 20.28782513, 20.49079399, 20.69579345,
+       20.90284382, 21.11196562, 21.32317957, 21.53650661, 21.75196787,
+       21.9695847 , 22.18937867, 22.41137157, 22.63558538, 22.86204234,
+       23.09076487, 23.32177565, 23.55509757, 23.79075376, 24.02876756,
+       24.26916255, 24.51196258, 24.75719168, 25.00487418, 25.2550346 ,
+       25.50769775, 25.76288865, 26.02063261, 26.28095515, 26.54388209,
+       26.80943947, 27.0776536 , 27.34855108, 27.62215874, 27.8985037 ,
+       28.17761335, 28.45951533, 28.7442376 , 29.03180836, 29.32225611,
+       29.61560964, 29.91189801, 30.21115059, 30.51339703, 30.81866729,
+       31.12699161, 31.43840056, 31.75292498, 32.07059605, 32.39144525,
+       32.71550438, 33.04280555, 33.37338119, 33.70726406, 34.04448725,
+       34.38508418, 34.7290886 , 35.0765346 , 35.42745662, 35.78188942,
+       36.13986813, 36.50142823, 36.86660554, 37.23543626, 37.60795693,
+       37.98420447, 38.36421617, 38.74802969, 39.13568305, 39.52721468,
+       39.92266337, 40.32206832, 40.72546909, 41.13290568, 41.54441846,
+       41.9600482 , 42.37983609, 42.80382374, 43.23205316, 43.66456678,
+       44.10140748, 44.54261853, 44.98824366, 45.43832703, 45.89291325,
+       46.35204736, 46.81577486, 47.28414171, 47.75719432, 48.23497957,
+       48.7175448 , 49.20493785, 49.697207  , 50.19440104, 50.69656924,
+       51.20376136, 51.71602767, 52.23341894, 52.75598642, 53.28378192,
+       53.81685773, 54.35526667, 54.89906212, 55.44829794, 56.00302858,
+       56.563309  , 57.12919472, 57.70074183, 58.27800697, 58.86104734,
+       59.44992071, 60.04468544, 60.64540049, 61.25212536, 61.86492019,
+       62.48384571, 63.10896325, 63.74033475, 64.37802279, 65.02209056,
+       65.67260188, 66.32962123, 66.99321369, 67.66344505, 68.34038172,
+       69.02409077, 69.71463997, 70.41209775, 71.11653322, 71.82801619]), 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 50 durations
+Searching 26272 data points, 500 periods from 0.5 to 71.828 days
+Using all 32 CPU threads
+00:21:33  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+00:21:34  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2966.4032...
+00:21:34  INFO      tess_pipeline.transit.tls  TLS: period=5.787625 d, epoch=2966.3817, duration=0.50 h, depth=0.000262, SDE=4.65
+00:21:34  INFO      tess_pipeline.transit.detection  Significant peak found (coarse SDE/SNR = 4.65 at 5.7876 d). Checking sub-harmonics for robustness...
+00:21:34  INFO      tess_pipeline.transit.detection  Running TLS (period 1.9-2.0 d)
+00:21:34  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+00:21:34  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 1.890624271276312, 'period_max': 1.9677926088794266, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 24 durations
+Searching 131356 data points, 274 periods from 1.891 to 1.968 days
+Using all 32 CPU threads
+00:21:42  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+00:21:42  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2964.8987...
+00:21:48  INFO      tess_pipeline.transit.tls  TLS: period=1.920683 d, epoch=2964.8940, duration=0.58 h, depth=0.000073, SDE=3.81
+00:21:48  INFO      tess_pipeline.transit.detection  Running TLS (period 2.8-3.0 d)
+00:21:48  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+00:21:48  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 2.8359364069144677, 'period_max': 2.95168891331914, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 27 durations
+Searching 131356 data points, 240 periods from 2.836 to 2.951 days
+Using all 32 CPU threads
+00:21:55  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+00:21:56  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2966.5906...
+00:22:00  INFO      tess_pipeline.transit.tls  TLS: period=2.842809 d, epoch=2966.5839, duration=1.06 h, depth=0.000074, SDE=3.73
+00:22:00  INFO      tess_pipeline.transit.detection  Running TLS (period 5.7-5.9 d)
+00:22:00  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+00:22:00  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 5.671872813828935, 'period_max': 5.90337782663828, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 131356 data points, 190 periods from 5.673 to 5.902 days
+Using all 32 CPU threads
+00:22:07  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+00:22:08  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2969.8774...
+00:22:11  INFO      tess_pipeline.transit.tls  TLS: period=5.871111 d, epoch=2969.8976, duration=1.40 h, depth=0.000106, SDE=5.02
+00:22:11  INFO      tess_pipeline.transit.detection  Running TLS (period 11.3-11.8 d)
+00:22:11  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=4, dur_step=1.10)
+00:22:11  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 11.34374562765787, 'period_max': 11.80675565327656, 'duration_grid_step': 1.1, 'oversampling_factor': 4}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 131356 data points, 201 periods from 11.346 to 11.805 days
+Using all 32 CPU threads
+00:22:19  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+00:22:19  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2965.5210...
+00:22:22  INFO      tess_pipeline.transit.tls  TLS: period=11.535673 d, epoch=2965.5191, duration=1.14 h, depth=0.000159, SDE=3.30
+00:22:22  INFO      tess_pipeline.transit.detection  Running TLS (period 17.0-17.7 d)
+00:22:22  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+00:22:22  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 17.015618441486808, 'period_max': 17.710133479914838, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 131356 data points, 44 periods from 17.019 to 17.697 days
+Using all 32 CPU threads
+00:22:28  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+00:22:29  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2970.5661...
+00:22:32  INFO      tess_pipeline.transit.tls  TLS: period=17.552004 d, epoch=2970.5526, duration=1.25 h, depth=0.000200, SDE=3.59
+00:22:32  INFO      tess_pipeline.transit.detection  Harmonic resolution: selected fraction 1.00 (refined period=5.8711 d, SDE/SNR=5.02, max_sig was 5.02)
+Planet 1 derived robust period: 5.87111 days (SNR: 5.02, via fraction 1.00 of initial peak 5.78763d)
+00:22:32  INFO      tess_pipeline.transit.detection  Planet 1 found: Period = 5.871111 d, epoch = 2969.8976, SDE/SNR = 5.02
+00:22:32  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+00:22:32  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/03_tls_periodogram.png
+00:22:32  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/tls_periodogram_coarse_p0.png
+00:22:32  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/tls_periodogram_fine_p0.png
+00:22:33  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/tls_periodogram_coarse_p1.png
+00:22:33  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/tls_periodogram_fine_p1.png
+00:22:33  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/04_phase.png
+✓ Completed in 77.15 s
+
+======================================================================
+Step 8: Bayesian Transit Fit
+======================================================================
+00:22:33  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+00:22:33  INFO      tess_pipeline.analysis.stages.inference  Second candidate probability (27.1%) is below 75% threshold. Skipping multi-planet MCMC fit and proceeding with 1-planet model.
+00:22:33  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=131601 points, 1 planets)
+00:22:33  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+00:22:34  INFO      tess_pipeline.inference.bayesian  Sampling: 4 chains × 3000 draws (tune=3000, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   6000    0       0.146   31      1.93 s/draw    3:12…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.141   31      1.98 s/draw    3:18…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.134   31      1.80 s/draw    2:59…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.118   31      2.05 s/draw    3:25…   0:00…  
+                                                                                
+Computing ... ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00
+04:03:52  INFO      tess_pipeline.inference.bayesian  Sampling complete
+04:07:22  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/06_bayesian_fit.png
+04:09:50  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/07_corner.png
+04:09:55  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/08_trace.png
+04:09:56  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/09_posterior_predictive.png
+04:10:00  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/05_residuals.png
+✓ Completed in 13646.79 s
+
+======================================================================
+Step 9: Derive Planet Parameters
+======================================================================
+✓ Completed in 0.19 s
+
+======================================================================
+Step 10: Check MCMC Convergence
+======================================================================
+04:10:04  INFO      tess_pipeline.inference.diagnostics  Convergence OK (R̂_max=1.0007, ESS_min=5421, divergences=0)
+✓ Completed in 3.56 s
+
+======================================================================
+Step 11: Generate Figures
+======================================================================
+04:10:04  INFO      tess_pipeline.analysis.stages.visualization  Generating diagnostic figures
+✓ Completed in 110.08 s
+
+======================================================================
+Step 12: Save Results
+======================================================================
+04:11:54  INFO      tess_pipeline.io.export  Saving results to output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194
+04:11:54  DEBUG     tess_pipeline.io.export  Saved CSV: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/TIC319259194_summary.csv
+04:11:54  DEBUG     tess_pipeline.io.export  Saved JSON: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/TIC319259194_metadata.json
+04:11:54  DEBUG     tess_pipeline.io.export  Saved compressed posterior sample values: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/data_for_plots/posterior_samples.npz
+04:11:54  DEBUG     tess_pipeline.io.export  Saved light curve FITS: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/TIC319259194_lightcurve.fits
+04:11:55  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/01_raw.png
+04:11:55  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/02_flat.png
+04:11:55  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/03_tls_periodogram.png
+04:11:56  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/03_tls_periodogram_coarse_p0.png
+04:11:56  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/03_tls_periodogram_fine_p0.png
+04:11:56  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/03_tls_periodogram_coarse_p1.png
+04:11:56  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/03_tls_periodogram_fine_p1.png
+04:11:57  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/04_phase_p0.png
+04:11:57  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/04_phase_p1.png
+04:11:58  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/05_residuals.png
+04:12:00  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/06_bayesian_fit.png
+04:12:00  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/10_gp_acf.png
+04:12:00  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/11_transit_stack_p0.png
+04:12:01  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/04_mcmc_phase_p0.png
+04:12:02  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/07_corner.png
+04:12:04  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/08_trace.png
+04:12:04  DEBUG     tess_pipeline.io.export  Saved figure: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/plots/09_posterior_predictive.png
+04:12:04  DEBUG     tess_pipeline.io.export  Saved periodogram data: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/data_for_plots/periodogram_data.npz
+04:13:36  DEBUG     tess_pipeline.io.export  Saved lightcurve model data: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/data_for_plots/lightcurve_model_data.npz
+04:13:36  DEBUG     tess_pipeline.io.export  Saved recreate script: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/recreate_plots.py
+04:13:36  INFO      tess_pipeline.io.export  Saved HTML Report: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/report.html
+04:13:50  INFO      tess_pipeline.io.report  PDF report saved: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194/TIC319259194_report.pdf
+04:13:50  INFO      tess_pipeline.io.export  Export complete: output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194
+✓ Completed in 116.54 s
+
+
+================================================================================
+PIPELINE SUMMARY
+================================================================================
+Detected Period : 70.369803 d
+Epoch           : 2987.506098
+Depth           : 0.000889
+Duration        : 1.82 hr
+SDE             : 1.18
+SNR             : 12.39
+
+Output Directory : output_bayesian_sector_longest_3000_draws_4_chains
+Total Runtime    : 234.15 minutes
+
+✓ Pipeline completed successfully.
+
+
+Running pipeline for TIC 140760434...
+
+
+================================================================================
+TESS EXOPLANET PIPELINE
+================================================================================
+Target      : TIC 140760434
+Mode        : science
+Search      : TLS
+Backend     : exoplanet/PyMC
+Output      : output_bayesian_sector_longest_3000_draws_4_chains
+================================================================================
+
+======================================================================
+Step 1: Resolve Target
+======================================================================
+04:13:50  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 140760434
+04:13:50  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 140760434' to TIC 140760434
+04:13:54  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 140760434 (matched 1 row(s))
+04:13:54  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 140760434 from local archive
+04:13:54  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 140760434
+✓ Completed in 3.72 s
+
+======================================================================
+Step 2: Query NASA Exoplanet Archive
+======================================================================
+04:13:54  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 140760434
+04:13:54  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 31.813226 d)
+✓ Completed in 0.01 s
+
+======================================================================
+Step 4: Characterize Host Star
+======================================================================
+04:13:54  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+04:14:01  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+04:14:01  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+04:14:01  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 140760434 (matched 1 row(s))
+04:14:01  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 1.9889300 from local NASA archive
+04:14:01  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+04:14:01  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+04:14:03  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+04:14:03  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=6028.8, logg=None, feh=None, r_star=1.989, m_star=None, parallax=None
+04:14:03  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 140760434 measurements
+04:14:04  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=6083.0, logg=4.0229997634887695, feh=0.048700001090765, parallax=2.325
+✓ Completed in 10.05 s
+
+======================================================================
+Step 5: Download TESS Light Curves
+======================================================================
+04:14:04  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 140760434
+04:14:04  INFO      tess_pipeline.data.download  [download] Starting download for TIC 140760434 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+04:14:12  INFO      tess_pipeline.data.download  [download] Found 32 available sector(s): [11, 12, 13, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 61, 62, 63, 64, 65, 66, 67, 68, 69, 87, 88, 89, 90, 93, 95, 96, 97, 98]
+04:14:12  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [28, 29, 30, 31, 32, 33, 34, 35, 36]
+04:14:12  INFO      tess_pipeline.data.download  [download] Downloading 9 selected sector(s) from MAST
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 2/4: 9 FITS file(s) queued
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/9: data/fits/tess2020212050318-s0028-0000000140760434-0190-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/9: data/fits/tess2020238165205-s0029-0000000140760434-0193-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 3/9: data/fits/tess2020266004630-s0030-0000000140760434-0195-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 4/9: data/fits/tess2020294194027-s0031-0000000140760434-0198-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 5/9: data/fits/tess2020324010417-s0032-0000000140760434-0200-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 6/9: data/fits/tess2020351194500-s0033-0000000140760434-0203-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 7/9: data/fits/tess2021014023720-s0034-0000000140760434-0204-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 8/9: data/fits/tess2021039152502-s0035-0000000140760434-0205-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 9/9: data/fits/tess2021065132309-s0036-0000000140760434-0207-s_lc.fits
+04:14:45  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 9 light curve(s) from local FITS in 0.8s
+04:14:45  INFO      tess_pipeline.data.download  [download] Completed TIC 140760434 download in 41.2s (9 sector file(s))
+04:14:45  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [28, 29, 30, 31, 32, 33, 34, 35, 36]
+✓ Completed in 41.24 s
+
+======================================================================
+Step 6: Preprocess Light Curves
+======================================================================
+04:14:45  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+04:14:46  INFO      tess_pipeline.data.preprocess  Saving diagnostic plots to directory: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots
+04:14:46  INFO      tess_pipeline.data.preprocess  Dynamic mask width calculated: 0.380 days for P = 31.81 d
+04:14:58  DEBUG     tess_pipeline.data.preprocess  Stitched 9 sectors -> 143287 cadences
+04:14:58  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 143287 cadences remain
+04:15:01  INFO      tess_pipeline.data.preprocess  Saved final stitched visualization to output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/final_stitched_preprocessing.png
+04:15:01  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/01_raw.png
+04:15:02  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/02_flat.png
+✓ Completed in 16.27 s
+
+======================================================================
+Step 7: Search for Transit Signals
+======================================================================
+04:15:02  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 31.813226 d; refining...
+04:15:02  INFO      tess_pipeline.transit.detection  Running TLS (period 31.8-31.8 d)
+04:15:02  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=300, dur_step=1.10)
+04:15:02  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 31.8032264, 'period_max': 31.823226400000003, 'duration_grid_step': 1.1, 'oversampling_factor': 300}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 143287 data points, 192 periods from 31.803 to 31.823 days
+Using all 32 CPU threads
+04:15:24  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+04:15:25  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2079.8472...
+04:15:29  INFO      tess_pipeline.transit.tls  TLS: period=31.813084 d, epoch=2079.7249, duration=7.70 h, depth=0.012008, SDE=1.21
+04:15:29  INFO      tess_pipeline.analysis.stages.period  Searching for 1 additional planet(s) in residuals...
+04:15:29  INFO      tess_pipeline.transit.detection  Downsampled LC from 141210 → 28242 points (10-min cadence) for broad TLS search
+04:15:29  INFO      tess_pipeline.transit.detection  Capping period_max 100.0 → 81.4 d (3-transit requirement over 244 d baseline)
+04:15:29  INFO      tess_pipeline.transit.detection  Searching for Planet 1 candidate (coarse search)...
+04:15:29  INFO      tess_pipeline.transit.detection  Running TLS (period 0.5-81.4 d)
+04:15:29  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=None, dur_step=1.10)
+04:15:29  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 0.5, 'period_max': 81.37688165693469, 'duration_grid_step': 1.1, 'period_grid': array([ 0.5       ,  0.50512857,  0.51030974,  0.51554405,  0.52083206,
+        0.5261743 ,  0.53157134,  0.53702374,  0.54253207,  0.54809689,
+        0.55371879,  0.55939836,  0.56513618,  0.57093286,  0.576789  ,
+        0.5827052 ,  0.58868208,  0.59472028,  0.6008204 ,  0.6069831 ,
+        0.613209  ,  0.61949877,  0.62585305,  0.63227251,  0.63875782,
+        0.64530964,  0.65192867,  0.65861559,  0.6653711 ,  0.6721959 ,
+        0.6790907 ,  0.68605622,  0.69309319,  0.70020234,  0.70738441,
+        0.71464015,  0.72197031,  0.72937566,  0.73685696,  0.744415  ,
+        0.75205056,  0.75976445,  0.76755745,  0.77543039,  0.78338409,
+        0.79141936,  0.79953706,  0.80773802,  0.81602309,  0.82439315,
+        0.83284906,  0.84139171,  0.85002197,  0.85874076,  0.86754898,
+        0.87644755,  0.88543739,  0.89451944,  0.90369464,  0.91296396,
+        0.92232835,  0.9317888 ,  0.94134628,  0.9510018 ,  0.96075635,
+        0.97061096,  0.98056664,  0.99062445,  1.00078542,  1.01105061,
+        1.02142109,  1.03189794,  1.04248226,  1.05317514,  1.06397769,
+        1.07489106,  1.08591636,  1.09705475,  1.10830738,  1.11967544,
+        1.1311601 ,  1.14276256,  1.15448403,  1.16632573,  1.17828889,
+        1.19037476,  1.20258459,  1.21491966,  1.22738125,  1.23997067,
+        1.25268921,  1.26553822,  1.27851901,  1.29163295,  1.3048814 ,
+        1.31826575,  1.33178738,  1.3454477 ,  1.35924813,  1.37319012,
+        1.38727512,  1.40150459,  1.41588001,  1.43040288,  1.44507471,
+        1.45989704,  1.4748714 ,  1.48999935,  1.50528247,  1.52072236,
+        1.53632061,  1.55207886,  1.56799874,  1.58408191,  1.60033005,
+        1.61674485,  1.63332802,  1.65008128,  1.66700639,  1.6841051 ,
+        1.70137919,  1.71883046,  1.73646074,  1.75427185,  1.77226565,
+        1.79044401,  1.80880884,  1.82736203,  1.84610553,  1.86504128,
+        1.88417126,  1.90349746,  1.92302189,  1.94274658,  1.96267359,
+        1.982805  ,  2.00314289,  2.0236894 ,  2.04444665,  2.06541682,
+        2.08660207,  2.10800463,  2.12962672,  2.15147058,  2.17353851,
+        2.19583278,  2.21835573,  2.2411097 ,  2.26409707,  2.28732021,
+        2.31078156,  2.33448356,  2.35842867,  2.38261939,  2.40705824,
+        2.43174775,  2.45669052,  2.48188912,  2.50734619,  2.53306438,
+        2.55904636,  2.58529484,  2.61181255,  2.63860227,  2.66566676,
+        2.69300886,  2.72063142,  2.7485373 ,  2.77672941,  2.8052107 ,
+        2.83398412,  2.86305268,  2.89241939,  2.92208732,  2.95205957,
+        2.98233924,  3.01292949,  3.04383351,  3.07505452,  3.10659577,
+        3.13846053,  3.17065214,  3.20317395,  3.23602933,  3.26922172,
+        3.30275457,  3.33663136,  3.37085564,  3.40543095,  3.44036092,
+        3.47564916,  3.51129936,  3.54731523,  3.58370051,  3.62045901,
+        3.65759454,  3.69511098,  3.73301223,  3.77130224,  3.80998499,
+        3.84906452,  3.88854489,  3.92843021,  3.96872465,  4.00943239,
+        4.05055767,  4.09210479,  4.13407805,  4.17648185,  4.21932058,
+        4.26259872,  4.30632076,  4.35049127,  4.39511484,  4.44019613,
+        4.48573981,  4.53175065,  4.57823342,  4.62519297,  4.6726342 ,
+        4.72056203,  4.76898147,  4.81789755,  4.86731537,  4.91724008,
+        4.96767687,  5.018631  ,  5.07010777,  5.12211254,  5.17465074,
+        5.22772782,  5.28134933,  5.33552084,  5.39024799,  5.44553648,
+        5.50139208,  5.5578206 ,  5.61482791,  5.67241995,  5.73060272,
+        5.78938228,  5.84876475,  5.90875632,  5.96936322,  6.03059178,
+        6.09244837,  6.15493943,  6.21807147,  6.28185106,  6.34628485,
+        6.41137954,  6.47714192,  6.54357883,  6.6106972 ,  6.678504  ,
+        6.74700632,  6.81621126,  6.88612606,  6.95675797,  7.02811437,
+        7.10020268,  7.17303041,  7.24660515,  7.32093455,  7.39602635,
+        7.47188839,  7.54852855,  7.62595482,  7.70417526,  7.78319802,
+        7.86303132,  7.94368349,  8.02516291,  8.10747809,  8.19063757,
+        8.27465004,  8.35952424,  8.445269  ,  8.53189325,  8.61940602,
+        8.70781643,  8.79713367,  8.88736705,  8.97852596,  9.07061991,
+        9.16365847,  9.25765134,  9.35260831,  9.44853927,  9.5454542 ,
+        9.64336321,  9.74227647,  9.84220431,  9.94315712, 10.04514541,
+       10.14817982, 10.25227106, 10.35742997, 10.46366752, 10.57099476,
+       10.67942287, 10.78896314, 10.89962698, 11.01142592, 11.12437159,
+       11.23847576, 11.35375031, 11.47020725, 11.5878587 , 11.70671692,
+       11.82679429, 11.9481033 , 12.0706566 , 12.19446694, 12.31954722,
+       12.44591047, 12.57356984, 12.70253863, 12.83283027, 12.96445833,
+       13.09743652, 13.23177868, 13.36749881, 13.50461103, 13.64312964,
+       13.78306905, 13.92444383, 14.06726872, 14.21155858, 14.35732844,
+       14.50459348, 14.65336904, 14.80367061, 14.95551385, 15.10891456,
+       15.26388872, 15.42045247, 15.57862212, 15.73841413, 15.89984516,
+       16.062932  , 16.22769164, 16.39414125, 16.56229816, 16.73217987,
+       16.90380408, 17.07718866, 17.25235168, 17.42931136, 17.60808614,
+       17.78869464, 17.97115566, 18.15548822, 18.34171149, 18.52984489,
+       18.71990799, 18.91192059, 19.1059027 , 19.3018745 , 19.49985641,
+       19.69986905, 19.90193325, 20.10607005, 20.3123007 , 20.52064669,
+       20.73112972, 20.94377169, 21.15859476, 21.37562131, 21.59487392,
+       21.81637543, 22.04014892, 22.26621768, 22.49460526, 22.72533544,
+       22.95843225, 23.19391997, 23.43182311, 23.67216646, 23.91497505,
+       24.16027415, 24.40808932, 24.65844637, 24.91137135, 25.16689063,
+       25.4250308 , 25.68581875, 25.94928163, 26.21544689, 26.48434224,
+       26.75599569, 27.03043552, 27.30769032, 27.58778896, 27.87076061,
+       28.15663474, 28.44544111, 28.73720981, 29.03197123, 29.32975605,
+       29.63059528, 29.93452027, 30.24156266, 30.55175442, 30.86512786,
+       31.18171561, 31.50155065, 31.82466627, 32.15109614, 32.48087424,
+       32.81403492, 33.15061287, 33.49064315, 33.83416117, 34.18120269,
+       34.53180387, 34.88600121, 35.2438316 , 35.6053323 , 35.97054097,
+       36.33949563, 36.7122347 , 37.08879702, 37.46922178, 37.85354861,
+       38.24181753, 38.63406897, 39.0303438 , 39.43068326, 39.83512907,
+       40.24372332, 40.65650859, 41.07352784, 41.49482452, 41.9204425 ,
+       42.3504261 , 42.78482009, 43.22366972, 43.6670207 , 44.11491918,
+       44.56741182, 45.02454573, 45.48636853, 45.95292831, 46.42427366,
+       46.90045365, 47.38151789, 47.86751647, 48.3585    , 48.85451961,
+       49.35562697, 49.86187425, 50.37331418, 50.89000001, 51.41198556,
+       51.93932519, 52.4720738 , 53.0102869 , 53.55402051, 54.10333128,
+       54.6582764 , 55.21891366, 55.78530146, 56.35749878, 56.93556519,
+       57.51956091, 58.10954676, 58.70558417, 59.30773521, 59.9160626 ,
+       60.53062968, 61.15150046, 61.7787396 , 62.41241241, 63.05258489,
+       63.6993237 , 64.3526962 , 65.01277043, 65.67961513, 66.35329974,
+       67.03389443, 67.72147007, 68.41609826, 69.11785135, 69.82680242,
+       70.54302529, 71.26659455, 71.99758556, 72.73607444, 73.48213811,
+       74.23585424, 74.99730135, 75.76655872, 76.54370647, 77.32882552,
+       78.12199765, 78.92330545, 79.73283237, 80.55066271, 81.37688166]), 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 50 durations
+Searching 28242 data points, 500 periods from 0.5 to 81.377 days
+Using all 32 CPU threads
+04:15:44  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+04:15:45  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2073.6650...
+04:15:46  INFO      tess_pipeline.transit.tls  TLS: period=14.803671 d, epoch=2073.6466, duration=1.15 h, depth=0.000770, SDE=4.80
+04:15:46  INFO      tess_pipeline.transit.detection  Significant peak found (coarse SDE/SNR = 4.80 at 14.8037 d). Checking sub-harmonics for robustness...
+04:15:46  INFO      tess_pipeline.transit.detection  Running TLS (period 4.8-5.0 d)
+04:15:46  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+04:15:46  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 4.835865733783572, 'period_max': 5.0332480086318805, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 141210 data points, 228 periods from 4.836 to 5.033 days
+Using all 32 CPU threads
+04:16:07  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+04:16:08  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2062.5410...
+04:16:12  INFO      tess_pipeline.transit.tls  TLS: period=4.872802 d, epoch=2062.5461, duration=0.75 h, depth=0.000198, SDE=5.22
+04:16:12  INFO      tess_pipeline.transit.detection  Running TLS (period 7.3-7.5 d)
+04:16:12  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+04:16:12  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 7.253798600675358, 'period_max': 7.549872012947821, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 141210 data points, 199 periods from 7.254 to 7.549 days
+Using all 32 CPU threads
+04:16:28  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+04:16:29  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2063.5676...
+04:16:33  INFO      tess_pipeline.transit.tls  TLS: period=7.384705 d, epoch=2063.5698, duration=0.86 h, depth=0.000204, SDE=3.42
+04:16:33  INFO      tess_pipeline.transit.detection  Running TLS (period 14.5-15.1 d)
+04:16:33  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+04:16:33  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 14.507597201350716, 'period_max': 15.099744025895642, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 141210 data points, 52 periods from 14.517 to 15.091 days
+Using all 32 CPU threads
+04:16:53  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+04:16:53  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2067.6535...
+04:16:57  INFO      tess_pipeline.transit.tls  TLS: period=14.727045 d, epoch=2067.6500, duration=1.06 h, depth=0.000269, SDE=4.02
+04:16:57  INFO      tess_pipeline.transit.detection  Running TLS (period 29.0-30.2 d)
+04:16:57  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+04:16:57  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 29.015194402701432, 'period_max': 30.199488051791285, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 141210 data points, 42 periods from 29.03 to 30.193 days
+Using all 32 CPU threads
+04:17:12  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 209 points...
+04:17:13  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2082.3611...
+04:17:17  INFO      tess_pipeline.transit.tls  TLS: period=29.420070 d, epoch=2082.3616, duration=1.41 h, depth=0.000293, SDE=1.88
+04:17:17  INFO      tess_pipeline.transit.detection  Running TLS (period 43.5-45.3 d)
+04:17:17  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+04:17:17  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 43.522791604052145, 'period_max': 45.29923207768692, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 141210 data points, 37 periods from 43.525 to 45.277 days
+Using all 32 CPU threads
+04:17:31  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 408 points...
+04:17:33  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=2068.3175...
+04:17:36  INFO      tess_pipeline.transit.tls  TLS: period=43.858270 d, epoch=2068.3035, duration=1.44 h, depth=0.000384, SDE=4.08
+04:17:36  INFO      tess_pipeline.transit.detection  Harmonic resolution: selected fraction 0.33 (refined period=4.8728 d, SDE/SNR=5.22, max_sig was 5.22)
+Planet 1 derived robust period: 4.87280 days (SNR: 5.22, via fraction 0.33 of initial peak 14.80367d)
+04:17:36  INFO      tess_pipeline.transit.detection  Planet 1 found: Period = 4.872802 d, epoch = 2062.5461, SDE/SNR = 5.22
+04:17:36  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+04:17:37  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/03_tls_periodogram.png
+04:17:37  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/tls_periodogram_coarse_p0.png
+04:17:37  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/tls_periodogram_fine_p0.png
+04:17:37  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/tls_periodogram_coarse_p1.png
+04:17:37  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/tls_periodogram_fine_p1.png
+04:17:38  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434/plots/04_phase.png
+✓ Completed in 156.09 s
+
+======================================================================
+Step 8: Bayesian Transit Fit
+======================================================================
+04:17:38  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+04:17:38  INFO      tess_pipeline.analysis.stages.inference  Second candidate probability (29.1%) is below 75% threshold. Skipping multi-planet MCMC fit and proceeding with 1-planet model.
+04:17:38  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=143287 points, 1 planets)
+04:17:38  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+04:17:38  INFO      tess_pipeline.inference.bayesian  Sampling: 4 chains × 3000 draws (tune=3000, target_accept=0.95)
+                                                                                
+                                  Step    Grad                                  
+  Progress        Draw    Dive…   size    evals   Speed          Elap…   Rema…  
+ ────────────────────────────────────────────────────────────────────────────── 
+  ━━━━━━━━━━━━━   6000    0       0.121   63      2.47 s/draw    4:07…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.085   63      2.66 s/draw    4:26…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.100   95      2.56 s/draw    4:15…   0:00…  
+  ━━━━━━━━━━━━━   6000    0       0.092   31      2.39 s/draw    3:58…   0:00…  
+                                                                                
+
+============================================================
+Finished at : Thu Sep 24 08:51:35 IST 2026
+Elapsed     : 9h 46m 33s
+Exit Status : 1
+============================================================

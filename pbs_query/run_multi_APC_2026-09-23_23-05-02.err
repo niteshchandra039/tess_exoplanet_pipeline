@@ -1,0 +1,2213 @@
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/lightkurve/prf/__init__.py:7: UserWarning: Warning: the tpfmodel submodule is not available without oktopus installed, which requires a current version of autograd. See #1452 for details.
+  warnings.warn(
+Warning: 22% (4292/19462) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 38% (6941/18307) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 22% (4292/19462) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 38% (6941/18307) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+
+  0%|          | 0/118 periods | 00:00<?
+  1%|          | 1/118 periods | 00:03<06:45
+  3%|▎         | 3/118 periods | 00:03<01:49
+  5%|▌         | 6/118 periods | 00:03<00:43
+ 14%|█▎        | 16/118 periods | 00:03<00:10
+ 45%|████▍     | 53/118 periods | 00:03<00:01
+ 92%|█████████▏| 109/118 periods | 00:04<00:00
+100%|██████████| 118/118 periods | 00:04<00:00
+
+  0%|          | 0/500 periods | 00:00<?
+  0%|          | 1/500 periods | 00:03<30:43
+  4%|▍         | 19/500 periods | 00:03<01:09
+ 15%|█▍        | 74/500 periods | 00:03<00:12
+ 29%|██▊       | 143/500 periods | 00:03<00:04
+ 41%|████      | 206/500 periods | 00:04<00:02
+ 54%|█████▍    | 271/500 periods | 00:04<00:01
+ 67%|██████▋   | 334/500 periods | 00:04<00:00
+ 81%|████████  | 403/500 periods | 00:04<00:00
+ 93%|█████████▎| 464/500 periods | 00:04<00:00
+100%|██████████| 500/500 periods | 00:04<00:00
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/transitleastsquares/stats.py:458: RuntimeWarning: divide by zero encountered in scalar divide
+  snr_pink_per_transit[i] = (1 - mean_flux) / pinknoise
+
+  0%|          | 0/100 periods | 00:00<?
+  1%|          | 1/100 periods | 00:02<04:56
+  4%|▍         | 4/100 periods | 00:03<00:57
+  7%|▋         | 7/100 periods | 00:03<00:27
+ 10%|█         | 10/100 periods | 00:03<00:16
+ 14%|█▍        | 14/100 periods | 00:03<00:09
+ 21%|██        | 21/100 periods | 00:03<00:04
+ 28%|██▊       | 28/100 periods | 00:03<00:02
+ 40%|████      | 40/100 periods | 00:03<00:01
+ 86%|████████▌ | 86/100 periods | 00:03<00:00
+100%|██████████| 100/100 periods | 00:03<00:00
+
+  0%|          | 0/79 periods | 00:00<?
+  1%|▏         | 1/79 periods | 00:03<04:50
+ 29%|██▉       | 23/79 periods | 00:03<00:06
+100%|██████████| 79/79 periods | 00:03<00:00
+
+  0%|          | 0/69 periods | 00:00<?
+  1%|▏         | 1/69 periods | 00:03<04:13
+ 30%|███       | 21/69 periods | 00:03<00:06
+100%|██████████| 69/69 periods | 00:03<00:00
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/celerite2/pymc/ops.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/tensor/random/op.py:97: FutureWarning: ndim_supp is deprecated. Provide signature instead.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/tensor/random/op.py:107: FutureWarning: ndims_params is deprecated. Provide signature instead.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: _CeleriteOp should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: QuadSolutionVector should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+Initializing NUTS using adapt_diag...
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(ExpandDims{axis=1}.0, AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: _CeleriteOp should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: QuadSolutionVector should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_rev', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_rev', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [period, t0, log_rp, b, log_t14, q1, q2, mean_flux, log_jitter, log_sigma_gp, log_rho_gp]
+Sampling 4 chains for 3_000 tune and 3_000 draw iterations (12_000 + 12_000 draws total) took 3971 seconds.
+There was 1 divergence after tuning. Increase `target_accept` or reparameterize.
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(ExpandDims{axis=1}.0, AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(26536, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/stages/inference.py:236: ConvergenceWarning: 1 divergent transition(s) detected. Consider increasing target_accept or reparameterizing.
+  diag = check_convergence(self.results.posterior)
+/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/visualization/periodogram.py:35: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axes = plt.subplots(n_panels, 1, figsize=(12, 3.5 * n_panels), sharex=False, squeeze=False)
+findfont: Failed to find font weight medium, now using 400.
+Warning: 24% (4827/20262) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 27% (5293/19536) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 21% (4042/19402) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 24% (4827/20262) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 27% (5293/19536) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+Warning: 21% (4042/19402) of the cadences will be ignored due to the quality mask (quality_bitmask=65535).
+
+  0%|          | 0/59 periods | 00:00<?
+  2%|▏         | 1/59 periods | 00:04<04:31
+ 22%|██▏       | 13/59 periods | 00:04<00:12
+ 34%|███▍      | 20/59 periods | 00:04<00:06
+ 54%|█████▍    | 32/59 periods | 00:05<00:02
+ 86%|████████▋ | 51/59 periods | 00:05<00:00
+100%|██████████| 59/59 periods | 00:05<00:00
+
+  0%|          | 0/500 periods | 00:00<?
+  0%|          | 1/500 periods | 00:03<32:46
+  1%|          | 3/500 periods | 00:04<08:48
+  1%|          | 5/500 periods | 00:04<04:33
+  1%|▏         | 7/500 periods | 00:04<02:47
+  2%|▏         | 9/500 periods | 00:04<01:54
+  2%|▏         | 11/500 periods | 00:04<01:25
+  4%|▍         | 22/500 periods | 00:04<00:25
+  9%|▊         | 43/500 periods | 00:04<00:09
+ 18%|█▊        | 91/500 periods | 00:04<00:03
+ 30%|██▉       | 149/500 periods | 00:04<00:01
+ 42%|████▏     | 209/500 periods | 00:05<00:00
+ 53%|█████▎    | 267/500 periods | 00:05<00:00
+ 65%|██████▌   | 327/500 periods | 00:05<00:00
+ 76%|███████▋  | 382/500 periods | 00:05<00:00
+ 87%|████████▋ | 437/500 periods | 00:05<00:00
+100%|██████████| 500/500 periods | 00:05<00:00
+100%|██████████| 500/500 periods | 00:05<00:00
+
+  0%|          | 0/274 periods | 00:00<?
+  0%|          | 1/274 periods | 00:04<18:37
+  1%|          | 3/274 periods | 00:04<05:05
+  2%|▏         | 6/274 periods | 00:04<02:03
+  4%|▎         | 10/274 periods | 00:04<01:00
+  5%|▍         | 13/274 periods | 00:04<00:41
+  9%|▉         | 25/274 periods | 00:04<00:14
+ 11%|█         | 30/274 periods | 00:04<00:11
+ 13%|█▎        | 35/274 periods | 00:04<00:09
+ 15%|█▍        | 41/274 periods | 00:05<00:07
+ 23%|██▎       | 64/274 periods | 00:05<00:03
+ 28%|██▊       | 78/274 periods | 00:05<00:02
+ 33%|███▎      | 90/274 periods | 00:05<00:02
+ 38%|███▊      | 105/274 periods | 00:05<00:01
+ 44%|████▍     | 120/274 periods | 00:05<00:01
+ 49%|████▉     | 134/274 periods | 00:05<00:01
+ 54%|█████▎    | 147/274 periods | 00:05<00:01
+ 58%|█████▊    | 160/274 periods | 00:05<00:00
+ 64%|██████▎   | 174/274 periods | 00:06<00:00
+ 69%|██████▉   | 189/274 periods | 00:06<00:00
+ 74%|███████▍  | 203/274 periods | 00:06<00:00
+ 79%|███████▉  | 216/274 periods | 00:06<00:00
+ 85%|████████▍ | 232/274 periods | 00:06<00:00
+ 89%|████████▉ | 245/274 periods | 00:06<00:00
+ 95%|█████████▍| 259/274 periods | 00:06<00:00
+100%|██████████| 274/274 periods | 00:06<00:00
+100%|██████████| 274/274 periods | 00:06<00:00
+
+  0%|          | 0/240 periods | 00:00<?
+  0%|          | 1/240 periods | 00:04<16:20
+  1%|▏         | 3/240 periods | 00:04<04:32
+  3%|▎         | 7/240 periods | 00:04<01:29
+  4%|▍         | 10/240 periods | 00:04<00:56
+  7%|▋         | 17/240 periods | 00:04<00:24
+ 10%|█         | 24/240 periods | 00:04<00:14
+ 13%|█▎        | 32/240 periods | 00:04<00:09
+ 16%|█▌        | 38/240 periods | 00:05<00:07
+ 21%|██▏       | 51/240 periods | 00:05<00:04
+ 28%|██▊       | 67/240 periods | 00:05<00:02
+ 32%|███▎      | 78/240 periods | 00:05<00:02
+ 38%|███▊      | 90/240 periods | 00:05<00:01
+ 43%|████▎     | 103/240 periods | 00:05<00:01
+ 48%|████▊     | 116/240 periods | 00:05<00:01
+ 53%|█████▎    | 128/240 periods | 00:05<00:01
+ 59%|█████▉    | 141/240 periods | 00:05<00:00
+ 64%|██████▍   | 154/240 periods | 00:05<00:00
+ 69%|██████▉   | 166/240 periods | 00:06<00:00
+ 74%|███████▍  | 178/240 periods | 00:06<00:00
+ 80%|███████▉  | 191/240 periods | 00:06<00:00
+ 85%|████████▌ | 204/240 periods | 00:06<00:00
+ 90%|█████████ | 217/240 periods | 00:06<00:00
+ 96%|█████████▋| 231/240 periods | 00:06<00:00
+100%|██████████| 240/240 periods | 00:06<00:00
+
+  0%|          | 0/190 periods | 00:00<?
+  1%|          | 1/190 periods | 00:04<13:14
+  1%|          | 2/190 periods | 00:04<05:51
+  2%|▏         | 4/190 periods | 00:04<02:17
+  4%|▍         | 8/190 periods | 00:04<00:52
+  7%|▋         | 14/190 periods | 00:04<00:23
+ 11%|█         | 21/190 periods | 00:04<00:12
+ 14%|█▎        | 26/190 periods | 00:05<00:09
+ 18%|█▊        | 34/190 periods | 00:05<00:06
+ 25%|██▌       | 48/190 periods | 00:05<00:03
+ 32%|███▏      | 61/190 periods | 00:05<00:02
+ 39%|███▉      | 74/190 periods | 00:05<00:01
+ 46%|████▌     | 87/190 periods | 00:05<00:01
+ 53%|█████▎    | 101/190 periods | 00:05<00:00
+ 59%|█████▉    | 113/190 periods | 00:05<00:00
+ 65%|██████▌   | 124/190 periods | 00:05<00:00
+ 73%|███████▎  | 138/190 periods | 00:06<00:00
+ 79%|███████▉  | 150/190 periods | 00:06<00:00
+ 85%|████████▌ | 162/190 periods | 00:06<00:00
+ 92%|█████████▏| 174/190 periods | 00:06<00:00
+ 99%|█████████▉| 188/190 periods | 00:06<00:00
+100%|██████████| 190/190 periods | 00:06<00:00
+
+  0%|          | 0/201 periods | 00:00<?
+  0%|          | 1/201 periods | 00:04<14:50
+  3%|▎         | 7/201 periods | 00:04<01:35
+  5%|▍         | 10/201 periods | 00:04<01:00
+ 11%|█▏        | 23/201 periods | 00:04<00:18
+ 14%|█▍        | 28/201 periods | 00:05<00:13
+ 19%|█▉        | 38/201 periods | 00:05<00:08
+ 29%|██▉       | 59/201 periods | 00:05<00:03
+ 36%|███▌      | 72/201 periods | 00:05<00:02
+ 42%|████▏     | 84/201 periods | 00:05<00:01
+ 48%|████▊     | 97/201 periods | 00:05<00:01
+ 54%|█████▍    | 109/201 periods | 00:05<00:01
+ 60%|██████    | 121/201 periods | 00:05<00:00
+ 66%|██████▌   | 133/201 periods | 00:05<00:00
+ 72%|███████▏  | 145/201 periods | 00:06<00:00
+ 78%|███████▊  | 157/201 periods | 00:06<00:00
+ 84%|████████▍ | 169/201 periods | 00:06<00:00
+ 91%|█████████ | 182/201 periods | 00:06<00:00
+ 97%|█████████▋| 194/201 periods | 00:06<00:00
+100%|██████████| 201/201 periods | 00:06<00:00
+
+  0%|          | 0/44 periods | 00:00<?
+  2%|▏         | 1/44 periods | 00:04<03:00
+  5%|▍         | 2/44 periods | 00:04<01:18
+ 16%|█▌        | 7/44 periods | 00:04<00:13
+ 23%|██▎       | 10/44 periods | 00:04<00:08
+ 48%|████▊     | 21/44 periods | 00:04<00:01
+ 59%|█████▉    | 26/44 periods | 00:04<00:01
+ 93%|█████████▎| 41/44 periods | 00:05<00:00
+100%|██████████| 44/44 periods | 00:05<00:00
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/tensor/random/op.py:97: FutureWarning: ndim_supp is deprecated. Provide signature instead.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/tensor/random/op.py:107: FutureWarning: ndims_params is deprecated. Provide signature instead.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: _CeleriteOp should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: QuadSolutionVector should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+Initializing NUTS using adapt_diag...
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(ExpandDims{axis=1}.0, AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: _CeleriteOp should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: QuadSolutionVector should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_rev', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_rev', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [period, t0, log_rp, b, log_t14, q1, q2, mean_flux, log_jitter, log_sigma_gp, log_rho_gp]
+Sampling 4 chains for 3_000 tune and 3_000 draw iterations (12_000 + 12_000 draws total) took 12329 seconds.
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(ExpandDims{axis=1}.0, AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(131601, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+
+  0%|          | 0/192 periods | 00:00<?
+  1%|          | 1/192 periods | 00:19<1:00:30
+  2%|▏         | 3/192 periods | 00:19<15:40  
+  3%|▎         | 5/192 periods | 00:19<07:37
+  4%|▎         | 7/192 periods | 00:19<04:28
+  9%|▉         | 17/192 periods | 00:19<01:04
+ 14%|█▎        | 26/192 periods | 00:19<00:32
+ 19%|█▉        | 37/192 periods | 00:19<00:16
+ 26%|██▌       | 50/192 periods | 00:19<00:09
+ 31%|███       | 59/192 periods | 00:19<00:06
+ 36%|███▌      | 69/192 periods | 00:20<00:04
+ 43%|████▎     | 83/192 periods | 00:20<00:02
+ 50%|█████     | 96/192 periods | 00:20<00:01
+ 56%|█████▌    | 107/192 periods | 00:20<00:01
+ 61%|██████▏   | 118/192 periods | 00:20<00:01
+ 68%|██████▊   | 131/192 periods | 00:20<00:00
+ 74%|███████▍  | 142/192 periods | 00:20<00:00
+ 80%|████████  | 154/192 periods | 00:20<00:00
+ 87%|████████▋ | 167/192 periods | 00:20<00:00
+ 93%|█████████▎| 179/192 periods | 00:21<00:00
+100%|██████████| 192/192 periods | 00:21<00:00
+100%|██████████| 192/192 periods | 00:21<00:00
+
+  0%|          | 0/500 periods | 00:00<?
+  0%|          | 1/500 periods | 00:13<1:53:34
+  1%|          | 5/500 periods | 00:13<16:58  
+  2%|▏         | 9/500 periods | 00:13<07:44
+  3%|▎         | 14/500 periods | 00:14<03:58
+  4%|▍         | 21/500 periods | 00:14<02:03
+  7%|▋         | 33/500 periods | 00:14<00:56
+  9%|▉         | 47/500 periods | 00:14<00:30
+ 12%|█▏        | 58/500 periods | 00:14<00:20
+ 14%|█▎        | 68/500 periods | 00:14<00:15
+ 17%|█▋        | 85/500 periods | 00:14<00:09
+ 21%|██        | 104/500 periods | 00:14<00:06
+ 28%|██▊       | 141/500 periods | 00:14<00:03
+ 39%|███▊      | 193/500 periods | 00:15<00:01
+ 50%|████▉     | 248/500 periods | 00:15<00:00
+ 60%|██████    | 302/500 periods | 00:15<00:00
+ 71%|███████   | 354/500 periods | 00:15<00:00
+ 83%|████████▎ | 414/500 periods | 00:15<00:00
+ 94%|█████████▎| 468/500 periods | 00:15<00:00
+100%|██████████| 500/500 periods | 00:15<00:00
+
+  0%|          | 0/228 periods | 00:00<?
+  0%|          | 1/228 periods | 00:17<1:06:37
+  3%|▎         | 7/228 periods | 00:17<06:50  
+  5%|▌         | 12/228 periods | 00:17<03:17
+ 11%|█         | 24/228 periods | 00:17<01:08
+ 14%|█▍        | 32/228 periods | 00:18<00:42
+ 19%|█▉        | 44/228 periods | 00:18<00:22
+ 25%|██▌       | 57/228 periods | 00:18<00:13
+ 32%|███▏      | 72/228 periods | 00:18<00:07
+ 36%|███▋      | 83/228 periods | 00:18<00:05
+ 41%|████      | 94/228 periods | 00:18<00:03
+ 47%|████▋     | 107/228 periods | 00:18<00:02
+ 52%|█████▏    | 118/228 periods | 00:18<00:02
+ 57%|█████▋    | 129/228 periods | 00:19<00:01
+ 62%|██████▏   | 141/228 periods | 00:19<00:01
+ 67%|██████▋   | 152/228 periods | 00:19<00:00
+ 72%|███████▏  | 164/228 periods | 00:19<00:00
+ 77%|███████▋  | 175/228 periods | 00:19<00:00
+ 82%|████████▏ | 186/228 periods | 00:19<00:00
+ 87%|████████▋ | 198/228 periods | 00:19<00:00
+ 92%|█████████▏| 209/228 periods | 00:19<00:00
+ 97%|█████████▋| 222/228 periods | 00:19<00:00
+100%|██████████| 228/228 periods | 00:19<00:00
+
+  0%|          | 0/199 periods | 00:00<?
+  1%|          | 1/199 periods | 00:13<43:07
+  2%|▏         | 4/199 periods | 00:13<08:07
+  4%|▍         | 8/199 periods | 00:13<03:11
+  8%|▊         | 15/199 periods | 00:13<01:15
+ 10%|█         | 20/199 periods | 00:13<00:46
+ 14%|█▍        | 28/199 periods | 00:13<00:25
+ 18%|█▊        | 35/199 periods | 00:13<00:16
+ 21%|██        | 42/199 periods | 00:13<00:11
+ 25%|██▌       | 50/199 periods | 00:14<00:07
+ 30%|███       | 60/199 periods | 00:14<00:04
+ 37%|███▋      | 74/199 periods | 00:14<00:02
+ 44%|████▎     | 87/199 periods | 00:14<00:01
+ 51%|█████     | 101/199 periods | 00:14<00:01
+ 56%|█████▋    | 112/199 periods | 00:14<00:01
+ 62%|██████▏   | 123/199 periods | 00:14<00:00
+ 68%|██████▊   | 136/199 periods | 00:14<00:00
+ 74%|███████▍  | 147/199 periods | 00:14<00:00
+ 79%|███████▉  | 158/199 periods | 00:15<00:00
+ 86%|████████▌ | 171/199 periods | 00:15<00:00
+ 91%|█████████▏| 182/199 periods | 00:15<00:00
+ 98%|█████████▊| 195/199 periods | 00:15<00:00
+100%|██████████| 199/199 periods | 00:15<00:00
+
+  0%|          | 0/52 periods | 00:00<?
+  2%|▏         | 1/52 periods | 00:17<15:12
+  6%|▌         | 3/52 periods | 00:18<03:50
+ 13%|█▎        | 7/52 periods | 00:18<01:08
+ 21%|██        | 11/52 periods | 00:18<00:32
+ 40%|████      | 21/52 periods | 00:18<00:09
+ 52%|█████▏    | 27/52 periods | 00:18<00:04
+ 67%|██████▋   | 35/52 periods | 00:18<00:02
+ 79%|███████▉  | 41/52 periods | 00:18<00:01
+100%|██████████| 52/52 periods | 00:18<00:00
+100%|██████████| 52/52 periods | 00:18<00:00
+
+  0%|          | 0/42 periods | 00:00<?
+  2%|▏         | 1/42 periods | 00:12<08:41
+  5%|▍         | 2/42 periods | 00:12<03:35
+ 10%|▉         | 4/42 periods | 00:13<01:18
+ 19%|█▉        | 8/42 periods | 00:13<00:25
+ 31%|███       | 13/42 periods | 00:13<00:10
+ 45%|████▌     | 19/42 periods | 00:13<00:04
+ 62%|██████▏   | 26/42 periods | 00:13<00:01
+ 79%|███████▊  | 33/42 periods | 00:13<00:00
+ 95%|█████████▌| 40/42 periods | 00:13<00:00
+100%|██████████| 42/42 periods | 00:13<00:00
+
+  0%|          | 0/37 periods | 00:00<?
+  3%|▎         | 1/37 periods | 00:13<07:48
+  8%|▊         | 3/37 periods | 00:13<01:56
+ 27%|██▋       | 10/37 periods | 00:13<00:20
+ 41%|████      | 15/37 periods | 00:13<00:09
+ 57%|█████▋    | 21/37 periods | 00:13<00:04
+ 76%|███████▌  | 28/37 periods | 00:13<00:01
+ 97%|█████████▋| 36/37 periods | 00:13<00:00
+100%|██████████| 37/37 periods | 00:13<00:00
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/tensor/random/op.py:97: FutureWarning: ndim_supp is deprecated. Provide signature instead.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/tensor/random/op.py:107: FutureWarning: ndims_params is deprecated. Provide signature instead.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: _CeleriteOp should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: QuadSolutionVector should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+Initializing NUTS using adapt_diag...
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(ExpandDims{axis=1}.0, AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: _CeleriteOp should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/gradient.py:1327: FutureWarning: QuadSolutionVector should implement `pullback` instead of `L_op`/`grad`. Direct `L_op`/`grad` implementations are deprecated and will stop being called in a future version.
+  input_grads = node.op.pullback(inputs, node.outputs, new_output_grads)
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedSetSubtensor.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+<<!! BUG IN FGRAPH.REPLACE OR A LISTENER !!>> <class 'TypeError'> The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))). local_add_of_sparse_write
+Rewrite failure due to: local_add_of_sparse_write
+node: Add(AdvancedIncSubtensor1{no_inplace,set}.0, ExpandDims{axis=1}.0)
+TRACEBACK:
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/rewriting/basic.py", line 1968, in process_node
+    fgraph.replace_all_validate_remove(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 842, in replace_all_validate_remove
+    chk = fgraph.replace_all_validate(replacements, reason=reason, **kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/features.py", line 787, in replace_all_validate
+    fgraph.replace(r, new_r, reason=reason, verbose=False, **kwargs)
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 530, in replace
+    self.change_node_input(
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/graph/fg.py", line 458, in change_node_input
+    raise TypeError(
+TypeError: The type of the replacement (Matrix(float64, shape=(1, 1))) must be compatible with the type of the original Variable (Matrix(float64, shape=(143287, 1))).
+
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_rev', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_rev', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='factor_fwd', quiet=True}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run QuadSolutionVector's perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_lower_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pytensor/link/numba/dispatch/basic.py:214: UserWarning: Numba will use object mode to run _CeleriteOp{name='solve_upper_fwd', quiet=False}'s perform method. Set `pytensor.config.compiler_verbose = True` to see more details.
+  warnings.warn(
+Multiprocess sampling (4 chains in 4 jobs)
+NUTS: [period, t0, log_rp, b, log_t14, q1, q2, mean_flux, log_jitter, log_sigma_gp, log_rho_gp]
+Sampling 4 chains for 3_000 tune and 3_000 draw iterations (12_000 + 12_000 draws total) took 16007 seconds.
+Traceback (most recent call last):
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_multi.py", line 199, in <module>
+    main(tic_str)
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_multi.py", line 140, in main
+    run_step(8, "Bayesian Transit Fit", analysis.fit_transit)
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_multi.py", line 64, in run_step
+    result = func()
+             ^^^^^^
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/session.py", line 231, in fit_transit
+    self._inference.fit_transit(period=period)
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/analysis/stages/inference.py", line 108, in fit_transit
+    posterior, model_outputs = run_bayesian_fit(
+                               ^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/inference/bayesian.py", line 327, in run_bayesian_fit
+    trace = _run_sampling_with_fallback(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/src/tess_pipeline/inference/bayesian.py", line 48, in _run_sampling_with_fallback
+    return sample_fn(
+           ^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pymc/sampling/mcmc.py", line 1163, in sample
+    return _sample_return(
+           ^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pymc/sampling/mcmc.py", line 1328, in _sample_return
+    idata = pm.to_inference_data(mtrace, **ikwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pymc/backends/arviz.py", line 684, in to_inference_data
+    ).to_inference_data()
+      ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pymc/backends/arviz.py", line 573, in to_inference_data
+    **(self.posterior_to_xarray() or {}),
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pymc/backends/arviz.py", line 63, in wrapped
+    return func(cls)
+           ^^^^^^^^^
+  File "/mnt/home/project/cnitesh/.conda/envs/exo_model/lib/python3.12/site-packages/pymc/backends/arviz.py", line 410, in posterior_to_xarray
+    data[var_name] = np.array(
+                     ^^^^^^^^^
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 12.8 GiB for an array with shape (4, 3000, 143287) and data type float64
+Command exited with non-zero status 1
+	Command being timed: "python -u /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/run_multi.py"
+	User time (seconds): 123383.87
+	System time (seconds): 1070.97
+	Percent of CPU this job got: 353%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 9:46:32
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 155453316
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 79417
+	Minor (reclaiming a frame) page faults: 60388527
+	Voluntary context switches: 1737939
+	Involuntary context switches: 228073
+	Swaps: 0
+	File system inputs: 6106736
+	File system outputs: 248000
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 1

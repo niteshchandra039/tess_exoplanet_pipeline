@@ -1,0 +1,166 @@
+exo_model
+============================================================
+                PBS JOB INFORMATION
+============================================================
+Job ID          : 34380.hn1
+Job Name        : run_multi_APC
+Queue           : regular
+Host            : hpc065
+Working Dir     : /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline
+Start Time      : Fri Sep 25 22:18:33 IST 2026
+Allocated CPUs  : Unknown
+OMP_NUM_THREADS : 1
+OPENBLAS_THREADS: 1
+MKL_NUM_THREADS : 1
+NUMEXPR_THREADS : 1
+BLIS_NUM_THREADS: 1
+============================================================
+
+Python executable:
+/mnt/home/project/cnitesh/.conda/envs/exo_model/bin/python
+
+Python 3.12.11
+
+Package versions:
+
+============================================================
+Starting Bayesian analysis...
+============================================================
+       toi        tid  ...          toi_created            rowupdate
+0  1012.01  427508467  ...  2019-07-24 15:58:33  2023-03-10 12:02:48
+1  1039.01  461867584  ...  2019-07-24 18:44:12  2023-05-05 16:02:01
+2  1060.01  101230735  ...  2019-08-16 20:20:42  2023-10-16 16:02:02
+3  1085.01  381979901  ...  2019-08-16 20:20:49  2023-07-12 16:02:01
+4  1094.01  136274063  ...  2019-08-06 19:29:59  2022-10-05 10:10:01
+
+[5 rows x 65 columns]
+Total TICs in the list: 481
+
+Skipping TIC 427508467: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 427508467
+
+Skipping TIC 461867584: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 461867584
+
+Skipping TIC 101230735: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 101230735
+
+Skipping TIC 381979901: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 381979901
+
+Skipping TIC 136274063: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 136274063
+
+Skipping TIC 409934330: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 409934330
+
+Skipping TIC 379286801: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 379286801
+
+Skipping TIC 261369656: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 261369656
+
+Skipping TIC 469782185: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 469782185
+
+Skipping TIC 128790976: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 128790976
+
+Skipping TIC 117789567: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 117789567
+
+Skipping TIC 154840461: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 154840461
+
+Skipping TIC 148914726: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 148914726
+
+Skipping TIC 287196418: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 287196418
+
+Skipping TIC 158276040: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 158276040
+
+Skipping TIC 207081058: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 207081058
+
+Skipping TIC 319259194: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 319259194
+
+Skipping TIC 140760434: output already exists at output_bayesian_sector_longest_3000_draws_4_chains/TIC 140760434
+
+
+Running pipeline for TIC 29831208...
+
+
+================================================================================
+TESS EXOPLANET PIPELINE
+================================================================================
+Target      : TIC 29831208
+Mode        : science
+Search      : TLS
+Backend     : exoplanet/PyMC
+Output      : output_bayesian_sector_longest_3000_draws_4_chains
+================================================================================
+
+======================================================================
+Step 1: Resolve Target
+======================================================================
+22:18:48  INFO      tess_pipeline.analysis.stages.target  Resolving target: TIC 29831208
+22:18:48  DEBUG     tess_pipeline.data.metadata  Resolved 'TIC 29831208' to TIC 29831208
+22:18:49  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 29831208 (matched 1 row(s))
+22:18:49  INFO      tess_pipeline.data.metadata  Loaded coordinates for TIC 29831208 from local archive
+22:18:49  INFO      tess_pipeline.analysis.stages.target  Resolved to TIC 29831208
+✓ Completed in 0.37 s
+
+======================================================================
+Step 2: Query NASA Exoplanet Archive
+======================================================================
+22:18:49  INFO      tess_pipeline.analysis.stages.period  Querying NASA Exoplanet Archive for TIC 29831208
+22:18:49  INFO      tess_pipeline.analysis.stages.period  Archive periods found: 1 planets (Primary: 1.842808 d)
+✓ Completed in 0.01 s
+
+======================================================================
+Step 4: Characterize Host Star
+======================================================================
+22:18:49  INFO      tess_pipeline.analysis.stages.stellar  Querying Gaia DR3
+In preparation for Gaia DR4, the Gaia archive is in evolution. Unfortunately, it may be unstable at times and particular types of queries may time out. Please consider registering for a user account (https://www.cosmos.esa.int/web/gaia-users/register). For questions or advice, please contact the Gaia helpdesk (https://www.cosmos.esa.int/web/gaia/gaia-helpdesk).
+22:19:21  WARNING   tess_pipeline.catalogs.gaia  Gaia DR3: r_star not available for this source
+22:19:21  INFO      tess_pipeline.analysis.stages.stellar  Parameters ['r_star'] missing in Gaia DR3; checking local NASA TOI archive
+22:19:21  INFO      tess_pipeline.catalogs.nasa_archive  Using local NASA archive CSV /mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/data/TOI_2026.06.28_09.42.00.csv for TIC 29831208 (matched 1 row(s))
+22:19:21  INFO      tess_pipeline.analysis.stages.stellar  Retrieved r_star = 4.0900000 from local NASA archive
+22:19:21  INFO      tess_pipeline.analysis.stages.stellar  Running stellar characterization (gaia_only)
+22:19:23  DEBUG     tess_pipeline.catalogs.stellar  Querying VizieR TIC v8.2 via vizier.cds.unistra.fr
+22:19:25  INFO      tess_pipeline.catalogs.stellar  VizieR TIC v8.2 query succeeded via vizier.cds.unistra.fr
+22:19:25  INFO      tess_pipeline.catalogs.stellar  VizieR (TIC8.2) query successful: Teff=5343.0, logg=None, feh=None, r_star=4.095, m_star=None, parallax=None
+22:19:26  INFO      tess_pipeline.catalogs.stellar  Querying SIMBAD TAP for TIC 29831208 measurements
+22:19:27  INFO      tess_pipeline.catalogs.stellar  SIMBAD query successful: Teff=5078.0, logg=3.194999933242798, feh=-1.0640000104904175, parallax=1.2441
+✓ Completed in 38.42 s
+
+======================================================================
+Step 5: Download TESS Light Curves
+======================================================================
+22:19:27  INFO      tess_pipeline.analysis.stages.lightcurve  Downloading TESS data for TIC 29831208
+22:19:54  INFO      tess_pipeline.data.download  [download] Starting download for TIC 29831208 (author=SPOC, cadence=120, sectors=longest, force_download=False)
+22:20:05  INFO      tess_pipeline.data.download  [download] Found 31 available sector(s): [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 61, 62, 63, 64, 65, 66, 67, 68, 69, 87, 88, 89, 90, 93, 94, 95, 96, 97, 98]
+22:20:05  INFO      tess_pipeline.data.download  [download] Selected sectors for analysis: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+22:20:05  INFO      tess_pipeline.data.download  [download] Downloading 11 selected sector(s) from MAST
+22:20:41  INFO      tess_pipeline.data.download  [fits] Step 1/4: normalizing FITS paths
+22:20:41  INFO      tess_pipeline.data.download  [fits] Step 2/4: 11 FITS file(s) queued
+22:20:41  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 1/11: data/fits/tess2018263035959-s0003-0000000029831208-0123-s_lc.fits
+22:20:41  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 2/11: data/fits/tess2018292075959-s0004-0000000029831208-0124-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 3/11: data/fits/tess2018319095959-s0005-0000000029831208-0125-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 4/11: data/fits/tess2018349182500-s0006-0000000029831208-0126-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 5/11: data/fits/tess2019006130736-s0007-0000000029831208-0131-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 6/11: data/fits/tess2019032160000-s0008-0000000029831208-0136-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 7/11: data/fits/tess2019058134432-s0009-0000000029831208-0139-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 8/11: data/fits/tess2019085135100-s0010-0000000029831208-0140-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 9/11: data/fits/tess2019112060037-s0011-0000000029831208-0143-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 10/11: data/fits/tess2019140104343-s0012-0000000029831208-0144-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 3/4: reading file 11/11: data/fits/tess2019169103026-s0013-0000000029831208-0146-s_lc.fits
+22:20:42  INFO      tess_pipeline.data.download  [fits] Step 4/4: loaded 11 light curve(s) from local FITS in 0.8s
+22:20:42  INFO      tess_pipeline.data.download  [download] Completed TIC 29831208 download in 48.2s (11 sector file(s))
+22:20:42  INFO      tess_pipeline.analysis.stages.lightcurve  Loaded light curves for sector(s): [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+✓ Completed in 75.05 s
+
+======================================================================
+Step 6: Preprocess Light Curves
+======================================================================
+22:20:42  INFO      tess_pipeline.analysis.stages.lightcurve  Preprocessing light curves
+22:20:43  INFO      tess_pipeline.data.preprocess  Saving diagnostic plots to directory: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots
+22:20:43  INFO      tess_pipeline.data.preprocess  Dynamic mask width calculated: 0.147 days for P = 1.84 d
+22:20:55  DEBUG     tess_pipeline.data.preprocess  Stitched 11 sectors -> 159547 cadences
+22:20:55  INFO      tess_pipeline.data.preprocess  Preprocessing complete: 159547 cadences remain
+22:20:57  INFO      tess_pipeline.data.preprocess  Saved final stitched visualization to output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/final_stitched_preprocessing.png
+22:20:58  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/01_raw.png
+22:20:58  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/02_flat.png
+✓ Completed in 15.78 s
+
+======================================================================
+Step 7: Search for Transit Signals
+======================================================================
+22:20:58  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 1.842808 d; refining...
+22:20:58  INFO      tess_pipeline.transit.detection  Running TLS (period 1.8-1.8 d)

@@ -179,8 +179,6 @@ def main(TIC):
 import pandas as pd
 
 if __name__ == "__main__":
-    # tic_id_adopted = 381979901
-    # TIC = tic_id_adopted  # <-- Change this
 
     df = pd.read_csv("/mnt/home/project/cnitesh/nitesh/tess_exoplanet_pipeline/apc_list/APC_list.csv")
 
@@ -189,5 +187,13 @@ if __name__ == "__main__":
     print(f"Total TICs in the list: {len(df)}")
 
     for TIC in df['tid']:
-        print(f"\n\nRunning pipeline for TIC {TIC}...")
-        main(TIC)
+        tic_str = str(TIC).strip()
+        tic_output_dir = OUTPUT_DIR / f"TIC {tic_str}"
+
+        # Skip TICs that already have an output directory.
+        if tic_output_dir.exists():
+            print(f"\nSkipping TIC {tic_str}: output already exists at {tic_output_dir}")
+            continue
+
+        print(f"\n\nRunning pipeline for TIC {tic_str}...")
+        main(tic_str)
