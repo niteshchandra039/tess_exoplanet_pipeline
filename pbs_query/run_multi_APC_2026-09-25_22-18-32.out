@@ -164,3 +164,196 @@ Step 7: Search for Transit Signals
 ======================================================================
 22:20:58  INFO      tess_pipeline.analysis.stages.period  Archive period found for Planet 1: 1.842808 d; refining...
 22:20:58  INFO      tess_pipeline.transit.detection  Running TLS (period 1.8-1.8 d)
+22:21:06  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=4, dur_step=1.10)
+22:21:06  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 1.8391221844, 'period_max': 1.8464934156000001, 'duration_grid_step': 1.1, 'oversampling_factor': 4}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 24 durations
+Searching 159547 data points, 51 periods from 1.839 to 1.846 days
+Using all 32 CPU threads
+22:21:11  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+22:21:12  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1387.3640...
+22:21:17  INFO      tess_pipeline.transit.tls  TLS: period=1.842815 d, epoch=1387.3565, duration=1.10 h, depth=0.001856, SDE=2.87
+22:21:17  INFO      tess_pipeline.analysis.stages.period  Searching for 1 additional planet(s) in residuals...
+22:21:17  INFO      tess_pipeline.transit.detection  Downsampled LC from 153547 → 30710 points (10-min cadence) for broad TLS search
+22:21:17  INFO      tess_pipeline.transit.detection  Capping period_max 100.0 → 98.8 d (3-transit requirement over 296 d baseline)
+22:21:17  INFO      tess_pipeline.transit.detection  Searching for Planet 1 candidate (coarse search)...
+22:21:17  INFO      tess_pipeline.transit.detection  Running TLS (period 0.5-98.8 d)
+22:21:17  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=None, dur_step=1.10)
+22:21:17  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 0.5, 'period_max': 98.80219613048955, 'duration_grid_step': 1.1, 'period_grid': array([ 0.5       ,  0.50532502,  0.51070675,  0.51614579,  0.52164276,
+        0.52719827,  0.53281295,  0.53848743,  0.54422234,  0.55001832,
+        0.55587604,  0.56179613,  0.56777928,  0.57382615,  0.57993742,
+        0.58611377,  0.5923559 ,  0.59866451,  0.60504031,  0.61148401,
+        0.61799634,  0.62457802,  0.63122979,  0.63795241,  0.64474663,
+        0.6516132 ,  0.6585529 ,  0.66556651,  0.67265482,  0.67981862,
+        0.68705871,  0.69437591,  0.70177103,  0.70924492,  0.7167984 ,
+        0.72443233,  0.73214755,  0.73994495,  0.74782539,  0.75578976,
+        0.76383894,  0.77197385,  0.7801954 ,  0.78850451,  0.79690211,
+        0.80538914,  0.81396656,  0.82263533,  0.83139643,  0.84025083,
+        0.84919953,  0.85824353,  0.86738385,  0.87662152,  0.88595757,
+        0.89539305,  0.90492901,  0.91456654,  0.9243067 ,  0.9341506 ,
+        0.94409933,  0.95415402,  0.9643158 ,  0.97458579,  0.98496516,
+        0.99545507,  1.0060567 ,  1.01677124,  1.02759989,  1.03854386,
+        1.04960439,  1.06078271,  1.07208008,  1.08349777,  1.09503706,
+        1.10669924,  1.11848563,  1.13039754,  1.14243631,  1.15460329,
+        1.16689986,  1.17932738,  1.19188726,  1.20458089,  1.21740972,
+        1.23037518,  1.24347871,  1.2567218 ,  1.27010593,  1.2836326 ,
+        1.29730333,  1.31111966,  1.32508313,  1.33919531,  1.35345778,
+        1.36787215,  1.38244004,  1.39716307,  1.4120429 ,  1.42708121,
+        1.44227967,  1.45764   ,  1.47316391,  1.48885316,  1.50470949,
+        1.5207347 ,  1.53693058,  1.55329894,  1.56984162,  1.58656049,
+        1.60345741,  1.62053429,  1.63779303,  1.65523558,  1.6728639 ,
+        1.69067996,  1.70868575,  1.72688331,  1.74527468,  1.76386191,
+        1.7826471 ,  1.80163235,  1.8208198 ,  1.84021159,  1.85980991,
+        1.87961694,  1.89963493,  1.9198661 ,  1.94031274,  1.96097714,
+        1.98186161,  2.0029685 ,  2.02430019,  2.04585905,  2.06764752,
+        2.08966803,  2.11192307,  2.13441512,  2.15714671,  2.1801204 ,
+        2.20333875,  2.22680439,  2.25051993,  2.27448804,  2.29871141,
+        2.32319277,  2.34793485,  2.37294043,  2.39821233,  2.42375337,
+        2.44956643,  2.47565439,  2.50202019,  2.52866679,  2.55559718,
+        2.58281437,  2.61032143,  2.63812145,  2.66621753,  2.69461283,
+        2.72331055,  2.7523139 ,  2.78162614,  2.81125055,  2.84119046,
+        2.87144923,  2.90203026,  2.93293698,  2.96417286,  2.9957414 ,
+        3.02764615,  3.05989068,  3.09247862,  3.12541362,  3.15869938,
+        3.19233964,  3.22633816,  3.26069877,  3.29542532,  3.33052171,
+        3.36599188,  3.40183981,  3.43806952,  3.47468507,  3.51169059,
+        3.54909021,  3.58688814,  3.62508862,  3.66369593,  3.70271442,
+        3.74214845,  3.78200246,  3.82228091,  3.86298833,  3.90412929,
+        3.94570839,  3.98773032,  4.03019978,  4.07312155,  4.11650043,
+        4.1603413 ,  4.20464907,  4.24942872,  4.29468528,  4.34042383,
+        4.38664949,  4.43336745,  4.48058296,  4.52830132,  4.57652788,
+        4.62526806,  4.67452732,  4.72431119,  4.77462527,  4.82547518,
+        4.87686666,  4.92880545,  4.9812974 ,  5.03434838,  5.08796436,
+        5.14215135,  5.19691544,  5.25226276,  5.30819953,  5.36473204,
+        5.42186661,  5.47960968,  5.5379677 ,  5.59694725,  5.65655492,
+        5.71679742,  5.77768151,  5.83921401,  5.90140183,  5.96425196,
+        6.02777145,  6.09196741,  6.15684707,  6.2224177 ,  6.28868666,
+        6.35566138,  6.42334939,  6.49175828,  6.56089572,  6.63076948,
+        6.7013874 ,  6.7727574 ,  6.84488749,  6.91778578,  6.99146043,
+        7.06591972,  7.141172  ,  7.21722572,  7.29408942,  7.37177171,
+        7.45028133,  7.52962708,  7.60981786,  7.69086267,  7.77277062,
+        7.85555089,  7.93921277,  8.02376565,  8.10921903,  8.19558248,
+        8.28286571,  8.37107851,  8.46023078,  8.55033252,  8.64139385,
+        8.73342498,  8.82643625,  8.92043809,  9.01544106,  9.11145581,
+        9.20849312,  9.30656388,  9.4056791 ,  9.5058499 ,  9.60708752,
+        9.70940332,  9.8128088 ,  9.91731554, 10.02293528, 10.12967988,
+       10.23756131, 10.34659168, 10.45678323, 10.56814833, 10.68069946,
+       10.79444927, 10.90941052, 11.02559611, 11.14301908, 11.2616926 ,
+       11.38163001, 11.50284475, 11.62535043, 11.74916081, 11.87428976,
+       12.00075135, 12.12855975, 12.25772932, 12.38827455, 12.52021009,
+       12.65355075, 12.78831149, 12.92450744, 13.06215388, 13.20126626,
+       13.34186018, 13.48395144, 13.62755598, 13.77268991, 13.91936952,
+       14.06761127, 14.21743181, 14.36884793, 14.52187665, 14.67653512,
+       14.83284071, 14.99081096, 15.15046361, 15.31181655, 15.47488791,
+       15.63969599, 15.80625928, 15.97459647, 16.14472646, 16.31666834,
+       16.49044141, 16.66606516, 16.84355931, 17.02294379, 17.20423871,
+       17.38746443, 17.57264151, 17.75979073, 17.9489331 , 18.14008984,
+       18.33328241, 18.52853248, 18.72586198, 18.92529304, 19.12684804,
+       19.33054962, 19.53642062, 19.74448416, 19.95476358, 20.16728248,
+       20.38206472, 20.59913439, 20.81851587, 21.04023376, 21.26431296,
+       21.4907786 , 21.71965612, 21.95097119, 22.18474977, 22.4210181 ,
+       22.65980269, 22.90113035, 23.14502816, 23.39152349, 23.640644  ,
+       23.89241766, 24.14687271, 24.40403771, 24.66394153, 24.92661334,
+       25.19208261, 25.46037914, 25.73153303, 26.00557472, 26.28253497,
+       26.56244485, 26.84533578, 27.13123951, 27.42018812, 27.71221404,
+       28.00735006, 28.30562928, 28.60708518, 28.9117516 , 29.21966272,
+       29.53085311, 29.84535769, 30.16321175, 30.48445097, 30.8091114 ,
+       31.13722947, 31.46884201, 31.80398624, 32.14269976, 32.48502059,
+       32.83098716, 33.18063827, 33.53401318, 33.89115155, 34.25209346,
+       34.6168794 , 34.98555033, 35.35814762, 35.73471308, 36.11528897,
+       36.49991802, 36.88864337, 37.28150866, 37.67855798, 38.07983589,
+       38.48538742, 38.89525809, 39.3094939 , 39.72814133, 40.15124737,
+       40.5788595 , 41.01102572, 41.44779452, 41.88921493, 42.33533648,
+       42.78620923, 43.2418838 , 43.70241132, 44.16784346, 44.63823248,
+       45.11363116, 45.59409285, 46.07967147, 46.57042152, 47.06639807,
+       47.56765679, 48.07425394, 48.58624636, 49.10369152, 49.62664748,
+       50.15517294, 50.68932722, 51.22917026, 51.77476265, 52.32616561,
+       52.88344103, 53.44665146, 54.01586009, 54.59113082, 55.17252819,
+       55.76011747, 56.3539646 , 56.95413622, 57.56069968, 58.17372307,
+       58.79327517, 59.41942553, 60.05224441, 60.69180283, 61.33817257,
+       61.99142617, 62.65163694, 63.31887898, 63.99322717, 64.67475719,
+       65.36354553, 66.05966949, 66.76320719, 67.47423759, 68.19284049,
+       68.91909653, 69.65308722, 70.39489494, 71.14460294, 71.90229535,
+       72.66805722, 73.44197447, 74.22413396, 75.01462349, 75.81353175,
+       76.62094841, 77.43696409, 78.26167036, 79.09515978, 79.93752589,
+       80.78886322, 81.64926733, 82.51883477, 83.39766314, 84.28585105,
+       85.1834982 , 86.09070532, 87.00757422, 87.93420781, 88.87071008,
+       89.81718613, 90.77374218, 91.74048559, 92.71752484, 93.7049696 ,
+       94.70293068, 95.71152007, 96.73085098, 97.76103779, 98.80219613]), 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 52 durations
+Searching 30710 data points, 500 periods from 0.5 to 98.802 days
+Using all 32 CPU threads
+22:21:21  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+22:21:21  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1394.4895...
+22:21:22  INFO      tess_pipeline.transit.tls  TLS: period=14.832841 d, epoch=1394.5515, duration=2.27 h, depth=0.000588, SDE=4.69
+22:21:22  INFO      tess_pipeline.transit.detection  Significant peak found (coarse SDE/SNR = 4.69 at 14.8328 d). Checking sub-harmonics for robustness...
+22:21:22  INFO      tess_pipeline.transit.detection  Running TLS (period 4.8-5.0 d)
+22:21:22  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+22:21:22  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 4.845394632799235, 'period_max': 5.043165842301245, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 153547 data points, 277 periods from 4.845 to 5.043 days
+Using all 32 CPU threads
+22:21:29  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+22:21:29  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1387.7333...
+22:21:33  INFO      tess_pipeline.transit.tls  TLS: period=4.905935 d, epoch=1387.7371, duration=0.66 h, depth=0.000208, SDE=3.56
+22:21:33  INFO      tess_pipeline.transit.detection  Running TLS (period 7.3-7.6 d)
+22:21:33  DEBUG     tess_pipeline.transit.tls  TLS search mode: narrow (osf=3, dur_step=1.10)
+22:21:33  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 7.268091949198854, 'period_max': 7.564748763451868, 'duration_grid_step': 1.1, 'oversampling_factor': 3}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 153547 data points, 241 periods from 7.269 to 7.564 days
+Using all 32 CPU threads
+22:21:39  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+22:21:39  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1387.7337...
+22:21:42  INFO      tess_pipeline.transit.tls  TLS: period=7.360372 d, epoch=1387.7049, duration=0.75 h, depth=0.000228, SDE=3.40
+22:21:42  INFO      tess_pipeline.transit.detection  Running TLS (period 14.5-15.1 d)
+22:21:42  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+22:21:42  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 14.536183898397708, 'period_max': 15.129497526903736, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 153547 data points, 64 periods from 14.54 to 15.125 days
+Using all 32 CPU threads
+22:21:46  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 100 points...
+22:21:47  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1396.6563...
+22:21:49  INFO      tess_pipeline.transit.tls  TLS: period=14.722089 d, epoch=1396.6893, duration=0.97 h, depth=0.000361, SDE=4.34
+22:21:49  INFO      tess_pipeline.transit.detection  Running TLS (period 29.1-30.3 d)
+22:21:49  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+22:21:49  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 29.072367796795415, 'period_max': 30.25899505380747, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 153547 data points, 51 periods from 29.079 to 30.25 days
+Using all 32 CPU threads
+22:21:53  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 176 points...
+22:21:54  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1405.2536...
+22:21:57  INFO      tess_pipeline.transit.tls  TLS: period=29.633723 d, epoch=1405.2474, duration=1.35 h, depth=0.000490, SDE=2.89
+22:21:57  INFO      tess_pipeline.transit.detection  Running TLS (period 43.6-45.4 d)
+22:21:57  DEBUG     tess_pipeline.transit.tls  TLS search mode: broad (osf=1, dur_step=1.10)
+22:21:57  DEBUG     tess_pipeline.transit.tls  TLS kwargs: {'period_min': 43.60855169519312, 'period_max': 45.38849258071121, 'duration_grid_step': 1.1, 'oversampling_factor': 1, 'n_transits_min': 2}
+Transit Least Squares TLS 1.32 (5 Apr 2024)
+Creating model cache for 29 durations
+Searching 153547 data points, 44 periods from 43.64 to 45.37 days
+Using all 32 CPU threads
+22:22:01  INFO      tess_pipeline.transit.tls  Optimized T0 search: running coarse pass with 235 points...
+22:22:01  INFO      tess_pipeline.transit.tls  Optimized T0 search: running fine pass with 300 points around T0=1422.3998...
+22:22:04  INFO      tess_pipeline.transit.tls  TLS: period=44.193791 d, epoch=1422.4507, duration=2.52 h, depth=0.000547, SDE=3.72
+22:22:04  INFO      tess_pipeline.transit.detection  Harmonic resolution: selected fraction 1.00 (refined period=14.7221 d, SDE/SNR=4.34, max_sig was 4.34)
+Planet 1 derived robust period: 14.72209 days (SNR: 4.34, via fraction 1.00 of initial peak 14.83284d)
+22:22:04  INFO      tess_pipeline.transit.detection  Planet 1 found: Period = 14.722089 d, epoch = 1396.6893, SDE/SNR = 4.34
+22:22:04  INFO      tess_pipeline.analysis.stages.period  Detections completed. Found 2 planet candidate(s).
+22:22:04  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/03_tls_periodogram.png
+22:22:04  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/tls_periodogram_coarse_p0.png
+22:22:04  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/tls_periodogram_fine_p0.png
+22:22:04  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/tls_periodogram_coarse_p1.png
+22:22:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/tls_periodogram_fine_p1.png
+22:22:05  INFO      tess_pipeline.analysis.session  Saved step plot: output_bayesian_sector_longest_3000_draws_4_chains/TIC 29831208/plots/04_phase.png
+✓ Completed in 67.08 s
+
+======================================================================
+Step 8: Bayesian Transit Fit
+======================================================================
+22:22:15  INFO      tess_pipeline.analysis.stages.inference  Running Bayesian transit fit (exoplanet + PyMC)
+22:22:15  INFO      tess_pipeline.analysis.stages.inference  Second candidate probability (20.9%) is below 75% threshold. Skipping multi-planet MCMC fit and proceeding with 1-planet model.
+22:22:15  INFO      tess_pipeline.inference.bayesian  Building PyMC model (N=159547 points, 1 planets)
+22:22:16  DEBUG     tess_pipeline.inference.gp  Using SHO GP kernel
+22:22:16  INFO      tess_pipeline.inference.bayesian  Sampling: 4 chains × 3000 draws (tune=3000, target_accept=0.95)
